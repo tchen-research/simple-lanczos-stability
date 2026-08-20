@@ -1,0 +1,93 @@
+# Monochrome figure style for the paper's late-1980s LAA presentation.
+#
+# Use from a plotting script with
+#
+#   plt.style.use(Path(__file__).with_name("oldstyle.mplstyle"))
+#
+# The reference figures use a complete black frame, ticks pointing into the
+# plotting area on every side, fine black curves, and monoline plotter
+# lettering.  Routed Gothic supplies the Latin letters, numerals, and common
+# operators; STIX Sans is retained only as a fallback for Greek and any other
+# mathematical glyphs absent from Routed Gothic.  Keep the PDF itself clean
+# and vector-based; any scan texture should be added only to a reproduction
+# copy, never to the publication master.
+
+# Typography
+font.family: sans-serif
+font.sans-serif: Routed Gothic, Nimbus Sans, Helvetica, Arial, Liberation Sans, DejaVu Sans
+font.size: 9
+font.weight: normal
+text.color: black
+text.usetex: False
+mathtext.fontset: custom
+mathtext.rm: Routed Gothic
+mathtext.it: Routed Gothic
+mathtext.bf: Routed Gothic
+mathtext.sf: Routed Gothic
+mathtext.fallback: stixsans
+
+# Figure and axes
+figure.facecolor: white
+figure.edgecolor: white
+axes.facecolor: white
+axes.edgecolor: black
+axes.labelcolor: black
+axes.linewidth: 0.8
+axes.grid: False
+axes.axisbelow: False
+axes.spines.left: True
+axes.spines.right: True
+axes.spines.bottom: True
+axes.spines.top: True
+axes.labelsize: 9
+axes.titlesize: 9
+axes.titleweight: normal
+axes.titlepad: 5
+axes.prop_cycle: cycler('color', ['black'])
+
+# Curves and markers
+lines.color: black
+lines.linewidth: 1.05
+lines.linestyle: -
+lines.markeredgewidth: 0.8
+lines.markersize: 3.5
+lines.solid_capstyle: round
+lines.solid_joinstyle: round
+patch.edgecolor: black
+patch.facecolor: white
+
+# Four-sided inward ticks, as in typeset/scanned numerical-analysis figures
+xtick.color: black
+ytick.color: black
+xtick.direction: in
+ytick.direction: in
+xtick.top: True
+ytick.right: True
+xtick.labelsize: 8
+ytick.labelsize: 8
+xtick.major.size: 4.0
+ytick.major.size: 4.0
+xtick.major.width: 0.8
+ytick.major.width: 0.8
+xtick.minor.visible: True
+ytick.minor.visible: True
+xtick.minor.size: 2.2
+ytick.minor.size: 2.2
+xtick.minor.width: 0.6
+ytick.minor.width: 0.6
+
+# Sparse, unboxed annotations
+legend.frameon: False
+legend.fontsize: 7
+legend.handlelength: 2.4
+legend.handletextpad: 0.6
+legend.borderaxespad: 0.5
+
+# Publication output
+savefig.facecolor: white
+savefig.edgecolor: white
+savefig.transparent: False
+savefig.bbox: tight
+savefig.pad_inches: 0.04
+pdf.fonttype: 42
+ps.fonttype: 42

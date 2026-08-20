@@ -1,0 +1,303 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,longtable,array}
+\usepackage[table]{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\definecolor{ok}{RGB}{20,110,55}
+\definecolor{warn}{RGB}{166,91,0}
+\definecolor{lightgray}{RGB}{245,246,248}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\lVert #1\rVert_2}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\eps}{\varepsilon}
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\.\do\_}
+\makeatother
+\newcommand{\lean}[1]{\nolinkurl{#1}}
+\newcommand{\match}{\textcolor{ok}{\textbf{Match}}}
+\newcommand{\qualified}{\textcolor{warn}{\textbf{Qualified}}}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=2em}
+
+\hypersetup{
+  pdftitle={Audit of body.tex against the Lean verification},
+  pdfauthor={Codex},
+  pdfsubject={Statement correspondence audit for FinitePrecisionLanczos}
+}
+
+\title{Audit of \texttt{body.tex} against the Lean verification}
+\author{Statement-correspondence report}
+\date{20 August 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Executive conclusion}
+
+The principal mathematical claims agree with the Lean development, subject to
+the formal scope described below.  All thirteen labeled theorem or lemma
+statements in \texttt{body.tex} have corresponding proved Lean declarations;
+no contradictory bound or missing hypothesis was found in those displayed
+results.  The asymptotic notation $\lesssim_k$ is justified by stronger,
+explicit polynomial bounds in the code.
+
+The body as a whole should nevertheless not be described as literally proved
+by Lean without qualification.  There are two material wording issues:
+
+\begin{enumerate}
+  \item The Lean development starts from an abstract family of real vectors,
+  scalars, and error terms satisfying the \lean{LanczosRun} interface.  It does
+  not prove that executing Algorithm~1 in IEEE floating point produces such an
+  interface.
+  \item Exact preservation of starting spectral weights holds between the
+  original matrix $A$ and the unperturbed dilation $S$.  For the nearby exact
+  Lanczos problem $\widetilde T$, Lean proves perturbative Wasserstein and
+  separated-cluster mass bounds, not exact equality of starting weights.
+\end{enumerate}
+
+Thus the appropriate verdict is: \textbf{the labeled mathematical results
+match; the algorithmic and spectral-weight prose needs qualification.}
+
+\section*{Verification performed}
+
+The following checks were run directly on the supplied sources.
+
+\begin{itemize}
+  \item \texttt{lake\ build} completed successfully (3,238 jobs).  The output
+  contained linter warnings but no build error.
+  \item \texttt{lake\ env\ lean\ Audit.lean} checked the principal declarations.
+  Each depends only on \lean{propext}, \lean{Classical.choice}, and
+  \lean{Quot.sound}, the standard logical axioms used by Lean/Mathlib.
+  \item A source search found no \lean{sorry}, \lean{admit}, or user-declared
+  \lean{axiom} in the Lean files.
+  \item The pinned toolchain is Lean~4.32.2.
+\end{itemize}
+
+The authoritative formal input is the structure
+\lean{FinitePrecisionLanczos.LanczosRun} in
+\lean{Lanczos/Run.lean}.  Its important global hypotheses are
+\[
+  H^T=H,\qquad \eps\ge 0,\qquad k>0,\qquad k\eps\le \frac1{100},
+\]
+together with the five local arithmetic identities and error bounds,
+near-normalization, nonnegative $\beta_j$, and strict positivity of the
+internal subdiagonals $\beta_1,\ldots,\beta_{k-1}$.
+
+\section*{Correspondence of labeled results}
+
+In the table, ``match'' means that the body statement follows immediately
+from the cited Lean declaration after replacing the explicit polynomial bound
+by $\lesssim_k$.  Line numbers refer to the supplied \texttt{body.tex}.
+
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}
+                    >{\raggedright\arraybackslash}p{0.32\textwidth}
+                    >{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Body result & Principal Lean declaration & Finding \\
+\midrule
+\endfirsthead
+\toprule
+Body result & Principal Lean declaration & Finding \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+Local error bounds (lines 265--275)
+& \lean{LanczosRun.local\_errors}
+& \match.  Lean proves
+$\norm{f_j}\le700j\eps\norm H$, $\abs{g_j}\le\eps$, and
+$\abs{p_j}\le1200j\eps\norm H$.  The exact identity used for $p_j$ omits
+$e^u_j$, confirming the stated cancellation. \\
+
+A priori coefficient bounds (282--290)
+& \lean{LanczosRun.coefficients}
+& \match.  Each of $\norm{u_j},\norm{w_j},\abs{\alpha_j},\norm{z_j}$ and
+$\beta_j$ is at most $100j\norm H$. \\
+
+Gram commutator (447--464)
+& \lean{LanczosRun.gram\_commutator\_conclusion}
+& \match.  Lean proves both exact commutator identities, the support statement
+for the diagonal-defect commutator, and explicit entry bounds. \\
+
+Paige loss bound (521--529)
+& \lean{LanczosRun.paige\_bound}
+& \match.  Lean proves the absolute boundary product is at most
+$6000k^3\eps\norm H$, which is exactly the body quantity after regrouping
+$\beta_k$. \\
+
+Paige descent (577--586)
+& \lean{LanczosRun.paige\_descent}
+& \match.  The two conclusions are both bounded by
+$8t(6000k^3\eps\norm H)$ for a smaller prefix. \\
+
+Ritz containment (709--716)
+& \lean{LanczosRun.containment\_prefix},
+\lean{LanczosRun.containment\_eigenvalue}
+& \match.  Lean proves the stronger explicit radius
+$[(8t^2+5)6000k^3+2100k^2]\eps\norm H$ for every prefix $T_t$. \\
+
+Stabilized Ritz localization (784--793)
+& \lean{LanczosRun.stabilized},
+\lean{LanczosRun.terminal\_localization\_eigenvalue}
+& \match.  The code gives
+$3\beta_k\abs{y_k}$ plus an explicit $O(k^5\eps\norm H)$ term, and the
+terminal conclusion when $\beta_k=0$. \\
+
+Normalized local errors (850--859)
+& \lean{LanczosRun.normalized\_local\_errors},
+\lean{LanczosRun.normalized\_governing}
+& \match.  The residual is at most $2600k^4\eps\norm H$ and both kinds of
+weighted adjacent product are at most $4800k\eps\norm H$. \\
+
+Normalized commutator (892--904)
+& \lean{LanczosRun.normalized\_gram\_commutator}
+& \match.  Upper triangularity and the exact skew identity are proved, with
+norm bound $50000k^5\eps\norm H$. \\
+
+Nilpotent isometry (950--961)
+& \lean{LanczosRun.nilpotent\_isometry}
+& \match.  Strict upper triangularity, $K^k=0$, $\norm K\le1$,
+$\norm C\le2$, and all three displayed identities are formal theorems. \\
+
+Physical dilation (1001--1017)
+& \lean{LanczosRun.physical\_dilation},
+\lean{LanczosRun.block\_recurrence}
+& \match.  Lean proves the orthogonality, first-column, recurrence, and norm
+claims, with $\norm{\widehat E}\le10^6k^8\eps\norm H$. \\
+
+Symmetric completion (1110--1120)
+& \lean{LanczosRun.greenbaum\_exact\_completion},
+\lean{GreenbaumModel.prescribed\_subdiagonal\_positive}
+& \match.  The leading block is exactly $T_k$, the completed matrix is
+symmetric tridiagonal, and the operator difference is at most
+$3\norm{\widehat E}$.  Positivity is guaranteed through the leading block. \\
+
+Greenbaum backward model (1146--1159)
+& \lean{LanczosRun.exists\_greenbaumModel},
+\lean{GreenbaumModel.exact\_lanczos\_returns\_Tmat}
+& \qualified.  The matrix, dimension, leading block, and
+$3{,}000{,}000k^8\eps\norm H$ bound match.  Exact reproduction is proved for
+the formal \lean{ExactLanczos} interface, not by verification of a particular
+software implementation. \\
+
+\end{longtable}
+
+\section*{Scope difference: Algorithm~1 versus \texttt{LanczosRun}}
+
+The body moves from kernel assumptions and Algorithm~1 to a completed run.
+The Lean code does not contain floating-point values, a rounding operator
+$\operatorname{fl}$, IEEE~754 semantics, or an implementation of Algorithm~1.
+Instead, every run-level theorem accepts the local identities and bounds as
+fields of \lean{LanczosRun}.  Consequently, statements such as
+
+\begin{quote}
+``Suppose Algorithm~1 completes $k$ iterations under the assumptions of the
+model''
+\end{quote}
+
+are supported only after an external proof supplies the bridge
+\[
+ \text{execution of Algorithm 1}
+ \quad\Longrightarrow\quad
+ \text{an instance of \lean{LanczosRun}}.
+\]
+No such bridge is present in the supplied Lean project.  This does not weaken
+the conditional matrix analysis; it limits what has been verified about an
+actual floating-point program.
+
+There are also two benign differences showing that the formal interface is
+slightly more general than the paper's operational description.  Lean does
+not assume $k\le n$, and when $\beta_k=0$ it does not require separately that
+$z_k=\Delta_k=0$; it needs only the stated local recurrence identity and
+error bound.  Every body run satisfying its conventions is still covered.
+
+\section*{Material wording issue: starting spectral weights}
+
+The prose at lines 819 and 1261 says that the construction or model
+``preserves the starting spectral weights exactly.''  This is correct only
+for the unperturbed dilation $S$, which is orthogonally similar to $k$ copies
+of $A$.  Lean proves
+\[
+  \mu_{S,e_1}=\mu_{A,\bar v_1}
+\]
+in \lean{GreenbaumModel.starting\_spectralMass} (and proves equality of every
+starting moment in \lean{starting\_moment}).
+
+The nearby problem on which exact Lanczos reproduces $T_k$ is instead
+$\widetilde T$.  Between $A$ and $\widetilde T$, Lean proves
+\[
+ \mathcal W^{\rm dual}_1
+   (\mu_{A,\bar v_1},\mu_{\widetilde T,e_1})
+ \le \sqrt{nk}\,\delta,
+ \qquad
+ \delta=\norm{S-\widetilde T}
+ \le 3{,}000{,}000k^8\eps\norm H,
+\]
+not exact equality.  It also proves a cluster-mass estimate only when the
+chosen physical cluster is separated by a gap $g>2\delta$:
+\[
+ \abs{\text{physical mass}-\text{model cluster mass}}
+ \le \frac{\sqrt{nk}\,\delta}{g-2\delta}.
+\]
+
+A precise replacement for the disputed wording is:
+
+\begin{quote}
+``The unperturbed dilation preserves the starting spectral measure exactly;
+the nearby completed problem differs from it by one operator perturbation,
+which yields dual-Wasserstein and separated-cluster mass bounds.''
+\end{quote}
+
+With this change, the spectral interpretation matches the formal results.
+
+\section*{Claims outside the Lean verification}
+
+The following parts of the body are not contradicted by the code, but they
+are not established by its declarations and should not be presented as
+machine-checked consequences:
+
+\begin{itemize}
+  \item the IEEE single-precision experiments and all numerical values in the
+  three figure discussions;
+  \item historical and literature-priority claims;
+  \item broad empirical statements about practical convergence and accuracy
+  of Lanczos-based matrix-function approximations;
+  \item the informal eigenvector-accuracy remark following the Ritz residual
+  bound (standard perturbation reasoning, but not packaged in this Lean
+  development).
+\end{itemize}
+
+The Lean development actually proves two useful spectral consequences that
+the main backward theorem in the body does not state explicitly: every
+eigenvalue of $\widetilde T$ lies within $\delta$ of $\spec(H)$, and the
+starting measures satisfy the dual-Wasserstein and separated-cluster bounds
+displayed above.
+
+\section*{Recommended minimal edits to \texttt{body.tex}}
+
+\begin{enumerate}
+  \item After the sentence about the companion Lean proof (line 93), add:
+  ``The formalization begins from the local real-arithmetic run interface
+  displayed below; it does not formalize a floating-point implementation of
+  Algorithm~1.''
+  \item At lines 819 and 1261, replace unqualified exact preservation of
+  ``the model'' weights by the precise $S$ versus $\widetilde T$ statement
+  given above.
+  \item In the consequence of Theorem~\texttt{thm:greenbaum}, describe exact
+  Lanczos as the formal exact three-term-recurrence interface, or define that
+  interface explicitly.
+\end{enumerate}
+
+After those edits, the paper-facing theorem statements and the formal scope
+would be aligned without a material caveat.
+
+\end{document}

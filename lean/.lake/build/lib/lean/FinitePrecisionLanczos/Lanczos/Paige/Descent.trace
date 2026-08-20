@@ -1,0 +1,58 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["5d444efc67ab1f87.olean"],
+  "m": false,
+  "i": "5b7a78365bd84d1d.ilean",
+  "c": "539adc3462913799.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.lean -o /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.olean -i /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Lanczos/Paige/Descent.c --setup /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Lanczos/Paige/Descent.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:68:27: Variable name `ht0` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:73:0: Definition `prefixHermitian` is a proposition; use `theorem` instead of `def`\n\nNote: This linter can be disabled with `set_option linter.defProp false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:262:21: This simp argument is unused:\n  P\n\nHint: Omit it from the simp argument list.\n  simp [lastIndex, P̵,̵ ̵descentPrefix]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:262:24: This simp argument is unused:\n  descentPrefix\n\nHint: Omit it from the simp argument list.\n  simp [lastIndex, P,̵ ̵d̵e̵s̵c̵e̵n̵t̵P̵r̵e̵f̵i̵x̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:301:12: This simp argument is unused:\n  P\n\nHint: Omit it from the simp argument list.\n  simp [P̵,̵ ̵Rmat, hij]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:476:13: This simp argument is unused:\n  Finset.sum_const_zero\n\nHint: Omit it from the simp argument list.\n  simp only [̵F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵c̵o̵n̵s̵t̵_̵z̵e̵r̵o̵,̵ ̵F̵i̵n̵s̵e̵t̵.̵c̵a̵r̵d̵_̵u̵n̵i̵v̵,̵[̲F̲i̲n̲s̲e̲t̲.̲c̲a̲r̲d̲_̲u̲n̲i̲v̲,̲ Fintype.card_fin, one_pow, Finset.sum_const, nsmul_eq_mul, mul_one,\n  ̲  ̲ ̲ ̲abs_pow] at hc\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Paige/Descent.lean:477:54: This simp argument is unused:\n  abs_pow\n\nHint: Omit it from the simp argument list.\n  simp only [Finset.sum_const_zero, Finset.card_univ, Fintype.card_fin,\n  ̵  ̵ ̵ ̵one_pow, Finset.sum_const,\n  ̲  ̲ ̲ ̲nsmul_eq_mul, mul_one,̵ ̵a̵b̵s̵_̵p̵o̵w̵] at hc\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Lanczos.Paige.Descent:deps",
+   [["deps",
+     [["FinitePrecisionLanczos/FinitePrecisionLanczos:extraDep",
+       [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Core.Descent transitive imports (legacy)",
+         "39926ed25360815c"],
+        ["FinitePrecisionLanczos.Core.Descent:importAllArts",
+         "31b6786541f98466"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.lean",
+   "92ae9ab055befddc"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Lanczos.Paige.Descent",
+   "d0900b75adae9e1c"],
+  ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "f5340f4e9f694dae"}

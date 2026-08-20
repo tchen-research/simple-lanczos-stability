@@ -1,0 +1,43 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["1420391c7bc8ea2b.olean"],
+  "m": false,
+  "i": "b0bef7b4b40cfd78.ilean",
+  "c": "ebc4f4899694f401.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.lean -o /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.olean -i /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.c --setup /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.lean:45:27: This simp argument is unused:\n  Matrix.one_apply\n\nHint: Omit it from the simp argument list.\n  simp [blockDiagonal, M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵hij, hp]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.lean:68:29: This simp argument is unused:\n  Matrix.mul_apply\n\nHint: Omit it from the simp argument list.\n  simp [physicalFirst, hr, Matrix.mul_̵a̵p̵p̵l̵y̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵m̵u̵l̵Vec, dotProduct]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Lanczos.Greenbaum.Measure:deps",
+   [["deps",
+     [["FinitePrecisionLanczos/FinitePrecisionLanczos:extraDep",
+       [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Lanczos.Greenbaum.Spectral transitive imports (legacy)",
+         "01a195ac4f026d46"],
+        ["FinitePrecisionLanczos.Lanczos.Greenbaum.Spectral:importAllArts",
+         "267cf5d6eaad9624"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.lean",
+   "9d3ec0bc38ad6f12"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Lanczos.Greenbaum.Measure",
+   "fe81b5c60468a0d1"],
+  ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "cfbdfe27576bb70c"}

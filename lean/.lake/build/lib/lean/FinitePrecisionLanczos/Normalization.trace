@@ -1,0 +1,42 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["a14f5350a8d91e7f.olean"],
+  "m": false,
+  "i": "93f54ebe70486204.ilean",
+  "c": "33033ebaee18f589.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Normalization.lean -o /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Normalization.olean -i /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Normalization.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Normalization.c --setup /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Normalization.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Normalization.lean:234:5: Variable name `hb` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Normalization.lean:294:42: This simp argument is unused:\n  hnot\n\nHint: Omit it from the simp argument list.\n  simp [boundary, rawBoundary, lastOuter, Matrix.vecMulVec,\n  ̵  ̵ ̵ ̵ ̵ ̵lastCoord, lastIndex, hlast, hnext,̵ ̵h̵n̵o̵t̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Normalization:deps",
+   [["deps",
+     [["Paige/FinitePrecisionLanczos:extraDep",
+       [["@Paige:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.DilationBounds transitive imports (legacy)",
+         "6ca6abd14d37179a"],
+        ["FinitePrecisionLanczos.DilationBounds:importAllArts",
+         "7416f07529541a99"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Normalization.lean",
+   "47c53faa5c592315"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Normalization", "4fcb8b20762f7fce"],
+  ["Package.id?: (some Paige)", "51d68ade68902554"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "a3aefe75dfcd03ac"}

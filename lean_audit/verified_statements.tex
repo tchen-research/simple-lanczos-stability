@@ -1,0 +1,735 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\.\do\_\do\;\do\-}
+\makeatother
+\hypersetup{
+  pdftitle={Verified Statements for a Finite-Precision Lanczos Analysis},
+  pdfauthor={Anonymous formalization report},
+  pdfsubject={Journal-style statement record for a Lean 4 formalization}
+}
+
+\definecolor{leanblue}{RGB}{24,72,120}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\lVert #1\rVert_2}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Wone}{\mathcal W_1^{\mathrm{dual}}}
+\newcommand{\lean}[1]{\texorpdfstring{\textcolor{leanblue}{\nolinkurl{#1}}}{#1}}
+\newcommand{\formalnote}[1]{%
+  \par\smallskip\noindent{\small\emph{Formal declaration(s):}}%
+  \par\noindent{\scriptsize #1.}%
+  \par\smallskip}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{assumption}{Assumption}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Verified Statements for a Finite-Precision Lanczos Analysis\\
+\large A Formal Statement Record}
+\author{Anonymous formalization report}
+\date{20 August 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document gives a mathematical rendering of the principal statements
+checked in a Lean~4 development of finite-precision Lanczos analysis.  The
+formal input is not an implementation of floating-point arithmetic.  It is a
+real symmetric matrix together with computed vectors and coefficients that
+satisfy explicitly stated local arithmetic identities and error bounds.  From
+that interface the development verifies explicit local-error estimates, a
+Paige-type commutator identity and loss-of-orthogonality bound, Ritz-value
+containment and stabilization, and a Greenbaum-type backward model.  The
+backward model is a symmetric tridiagonal matrix whose leading block is the
+computed Lanczos tridiagonal, which reproduces that block under exact Lanczos,
+and whose spectrum and starting spectral measure are controlled relative to
+the original matrix.  Every constant and hypothesis used below is displayed.
+The purpose is auditability: the theorem names attached to the statements
+identify the corresponding Lean declarations.
+\end{abstract}
+
+\section{Purpose, scope, and formal status}
+
+The authoritative objects are the Lean sources in the accompanying project.
+This manuscript translates their paper-facing declarations into conventional
+numerical-linear-algebra notation.  It is deliberately conservative: no
+asymptotic notation is substituted for a proved constant, and conclusions
+that are conditional in Lean remain conditional here.
+
+The project builds with Lean~4 and Mathlib using the pinned toolchain
+\texttt{v4.32.2}.  A full \texttt{lake build} completed successfully.  An
+axiom audit of the principal results reported only \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}, the standard logical
+axioms used by Lean and Mathlib.  A source search found no occurrences of
+\texttt{sorry}, \texttt{admit}, or user-declared axioms.
+
+\begin{center}
+\fbox{\begin{minipage}{0.91\textwidth}
+\textbf{Central modelling limitation.}
+The Lean development does not prove that executing a particular machine-level
+Algorithm~1 produces the formal run described below.  It proves that
+\emph{any} family of real objects satisfying Assumption~\ref{ass:run} obeys
+the conclusions in this document.  Connecting an implementation, a
+floating-point semantics, or a probabilistic rounding model to that interface
+is a separate obligation.
+\end{minipage}}
+\end{center}
+
+\section{Notation}
+
+All matrices and vectors are real.  The vector norm and matrix norm are the
+Euclidean norm and its induced operator $2$-norm, respectively.  Transpose is
+written ${}^{T}$, and $e_j$ denotes a coordinate vector.  The indices in the
+mathematical presentation are one-based.  The formal development uses natural
+indices with the phantom values $v_0=0$ and $\beta_0=0$.
+
+For a real symmetric matrix $H\in\R^{n\times n}$, write
+\[
+  \lambda_{\min}(H)=\min\spec(H),\qquad
+  \lambda_{\max}(H)=\max\spec(H),
+  \qquad
+  d_H(\theta)=\dist(\theta,\spec(H)).
+\]
+The formal definitions return zero outside the symmetric, positive-dimensional
+case; Assumption~\ref{ass:run} implies symmetry, and the run assumptions imply
+$n>0$, so only the usual spectral interpretation occurs in the results below.
+
+For $x\in\R^n$ and a symmetric $A$, define its starting spectral mass by
+\begin{equation}\label{eq:spectral-measure}
+  \mu_{A,x}=\sum_i (u_i^Tx)^2\,\delta_{\lambda_i(A)},
+\end{equation}
+where $(u_i)$ is the orthonormal eigenbasis selected by the formal spectral
+theorem.  Repeated eigenvalues are combined because the formal measure is a
+finitely supported function on $\R$.
+
+For finite atomic masses $\mu$ and $\nu$, the development defines
+\begin{equation}\label{eq:dual-wasserstein}
+ \Wone(\mu,\nu)
+ =\sup_{\operatorname{Lip}(f)\leq 1}
+   \abs{\int f\,d\mu-\int f\,d\nu}.
+\end{equation}
+This is the dual quantity named \lean{atomicWasserstein} in the code.  We retain
+the superscript ``dual'' here to make the formal definition explicit.
+
+\section{The formal finite-precision interface}
+
+\begin{assumption}[Lanczos run interface]\label{ass:run}
+Let $n,k\in\N$.  The input to every run-level result consists of
+\[
+ H\in\R^{n\times n},\quad
+ v_j,u_j,w_j,z_j,e^u_j,e^w_j,e^z_j,\Delta_j\in\R^n,
+ \quad
+ \alpha_j,\beta_j,e^\alpha_j\in\R,
+ \quad \varepsilon\in\R,
+\]
+subject to all of the following conditions.
+
+\begin{enumerate}[label=(A\arabic*),leftmargin=3.2em]
+\item $H^T=H$, $\varepsilon\geq0$, $k>0$, and
+      $k\varepsilon\leq 1/100$.
+\item The phantom entries satisfy $v_0=0$ and $\beta_0=0$.
+\item For every $j=0,\ldots,k-1$,
+\begin{align}
+ u_{j+1}&=Hv_{j+1}+e^u_{j+1},
+ &\norm{e^u_{j+1}}
+   &\leq\varepsilon\norm H\norm{v_{j+1}},\label{eq:run-u}\\
+ w_{j+1}&=u_{j+1}-\beta_jv_j+e^w_{j+1},
+ &\norm{e^w_{j+1}}
+   &\leq\varepsilon\bigl(\norm{u_{j+1}}
+       +\abs{\beta_j}\norm{v_j}\bigr),\label{eq:run-w}\\
+ \alpha_{j+1}&=v_{j+1}^Tw_{j+1}+e^\alpha_{j+1},
+ &\abs{e^\alpha_{j+1}}
+   &\leq\varepsilon\norm{v_{j+1}}\norm{w_{j+1}},\label{eq:run-a}\\
+ z_{j+1}&=w_{j+1}-\alpha_{j+1}v_{j+1}+e^z_{j+1},
+ &\norm{e^z_{j+1}}
+   &\leq\varepsilon\bigl(\norm{w_{j+1}}
+      +\abs{\alpha_{j+1}}\norm{v_{j+1}}\bigr),\label{eq:run-z}\\
+ \beta_{j+1}v_{j+2}&=z_{j+1}+\Delta_{j+1},
+ &\norm{\Delta_{j+1}}&\leq\varepsilon\norm{z_{j+1}}.
+ \label{eq:run-b}
+\end{align}
+\item The computed Lanczos vectors are nearly normalized:
+\[
+ \abs{\norm{v_j}^2-1}\leq\varepsilon,
+ \qquad 1\leq j\leq k.
+\]
+If $\beta_k\neq0$, the additional vector satisfies
+$\abs{\norm{v_{k+1}}^2-1}\leq\varepsilon$.
+\item $\beta_j\geq0$ for $0\leq j\leq k$, and
+$\beta_j>0$ for $1\leq j<k$.
+\end{enumerate}
+\end{assumption}
+\formalnote{\lean{FinitePrecisionLanczos.LanczosRun}}
+
+There are no other numerical assumptions at the run interface.  In
+particular, $k\leq n$ is not assumed, $\beta_k$ need not be positive, and no
+orthogonality between distinct $v_i$ and $v_j$ is assumed.  The condition
+$\beta_j>0$ only excludes an internal exact breakdown before the last
+reported step.
+
+Define, for $1\leq j\leq k$,
+\begin{align}
+ f_j&=Hv_j-\beta_{j-1}v_{j-1}-\alpha_jv_j-\beta_jv_{j+1},\label{eq:def-f}\\
+ g_j&=v_j^Tv_j-1,\qquad
+ p_j=v_j^T(\beta_jv_{j+1}),
+ \quad p_0=0.\label{eq:def-gp}
+\end{align}
+Let
+\[
+ V=[v_1\ \cdots\ v_k],\qquad F=[f_1\ \cdots\ f_k],
+\]
+and let $T_k$ be the symmetric tridiagonal matrix with diagonal
+$(\alpha_1,\ldots,\alpha_k)$ and sub/superdiagonal
+$(\beta_1,\ldots,\beta_{k-1})$.  Finally set
+\[
+ b=\beta_kv_{k+1},\qquad B=b e_k^T.
+\]
+
+\section{Local errors and assembled recurrence}
+
+\begin{theorem}[Explicit local errors]\label{thm:local}
+Under Assumption~\ref{ass:run}, for every $1\leq j\leq k$,
+\begin{equation}\label{eq:local-bounds}
+ \norm{f_j}\leq 700j\,\varepsilon\norm H,
+ \qquad
+ \abs{g_j}\leq\varepsilon,
+ \qquad
+ \abs{p_j}\leq1200j\,\varepsilon\norm H.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:assembled}
+  HV=VT_k+B+F,
+  \qquad
+  \norm F\leq700k^2\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.local_errors}; \lean{LanczosRun.governing_matrix}; \lean{LanczosRun.Fmat_bound}}
+
+For audit purposes, the local proof also verifies the componentwise estimates
+\begin{equation}\label{eq:component-errors}
+ \norm{e^u_j}\leq2j\varepsilon\norm H,
+ \quad \norm{e^w_j}\leq200j\varepsilon\norm H,
+ \quad \abs{e^\alpha_j}\leq200j\varepsilon\norm H,
+\end{equation}
+and
+\begin{equation}\label{eq:component-errors-2}
+ \norm{e^z_j}\leq300j\varepsilon\norm H,
+ \qquad \norm{\Delta_j}\leq100j\varepsilon\norm H.
+\end{equation}
+These are the declarations \lean{LanczosRun.eu_explicit},
+\lean{LanczosRun.ew_explicit}, \lean{LanczosRun.ealpha_explicit},
+\lean{LanczosRun.ez_explicit}, and \lean{LanczosRun.delta_explicit}.
+
+\section{Gram commutator and Paige bounds}
+
+Set
+\[
+ \Omega=V^TV-I,
+ \qquad D=\diag(g_1,\ldots,g_k),
+\]
+and let $R$ be the strictly upper-triangular part of $\Omega$.  Thus
+\begin{equation}\label{eq:gram-split}
+  \Omega=R^T+D+R.
+\end{equation}
+Introduce
+\begin{align*}
+ C_b&=V^TB,&
+ G&=V^TF-F^TV,\\
+ Q&=T_kD-DT_k,&
+ N&=\diag(p_0-p_1,p_1-p_2,\ldots,p_{k-1}-p_k).
+\end{align*}
+For a matrix $M$, write $M_{\mathrm{up}}$ for its strictly upper-triangular
+part.
+
+\begin{theorem}[Gram commutator]\label{thm:commutator}
+Under Assumption~\ref{ass:run},
+\begin{equation}\label{eq:full-commutator}
+ T_k\Omega-\Omega T_k=C_b-C_b^T+G,
+\end{equation}
+and every entry of $G$ satisfies
+\begin{equation}\label{eq:G-bound}
+ \abs{G_{rs}}\leq2800k\,\varepsilon\norm H.
+\end{equation}
+The upper-triangular commutator has the exact form
+\begin{equation}\label{eq:upper-commutator}
+ T_kR-RT_k=C_b+N+G_{\mathrm{up}}-Q_{\mathrm{up}}.
+\end{equation}
+Furthermore, $Q_{\mathrm{up}}$ is supported on the first superdiagonal and
+\begin{equation}\label{eq:Q-bound}
+ \abs{(Q_{\mathrm{up}})_{rs}}
+ \leq600k\,\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.gram_commutator_conclusion}}
+
+For a unit vector $y\in\R^k$ satisfying $T_ky=\theta y$, let
+$x=Vy$ be its computed Ritz vector.  The last coordinate of $y$ is denoted
+$y_k$.
+
+\begin{theorem}[Paige boundary-product bound]\label{thm:paige}
+For every unit eigenpair $(\theta,y)$ of $T_k$,
+\begin{equation}\label{eq:paige-bound}
+  \abs{(x^Tb)y_k}
+  \leq 6000k^3\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.paige_bound}}
+
+The theorem is an absolute product bound.  It does not separately bound
+$\norm b$, $\abs{y_k}$, or the angle between $x$ and $b$.
+
+\section{Ritz-value containment and stabilization}
+
+Define the three nonnegative scales
+\begin{align}
+ E_k&=6000k^3\varepsilon\norm H,\label{eq:Ek}\\
+ F_k&=700k^2\varepsilon\norm H,\label{eq:Fk}\\
+ \Psi_k&=8kE_k=48000k^4\varepsilon\norm H,\label{eq:Psik}
+\end{align}
+and, for $1\leq t\leq k$,
+\begin{equation}\label{eq:radius}
+ \mathcal R(t)=(8t^2+5)E_k+3F_k.
+\end{equation}
+The prefix $T_t$ below is the leading $t\times t$ principal submatrix of the
+computed tridiagonal $T_k$.
+
+\begin{theorem}[Containment for every prefix]\label{thm:containment}
+For every $1\leq t\leq k$ and every unit eigenpair
+$T_ty=\theta y$,
+\begin{equation}\label{eq:containment}
+ \lambda_{\min}(H)-\mathcal R(t)
+ \leq\theta\leq
+ \lambda_{\max}(H)+\mathcal R(t).
+\end{equation}
+In particular, this holds with $t=k$ for every eigenvalue of $T_k$.
+\end{theorem}
+\formalnote{\lean{LanczosRun.containment_prefix}; \lean{LanczosRun.containment}; \lean{LanczosRun.containment_eigenvalue}}
+
+The proof in Lean does not assume a small Gram defect.  It uses a formally
+verified descent argument when $\abs{y^TRy}>3/8$.  In the complementary case,
+the following sharper local statement is available.
+
+\begin{proposition}[Small-loss localization]\label{prop:small-loss}
+If $T_ky=\theta y$, $y^Ty=1$, and $\abs{y^TRy}\leq3/8$, then
+\begin{equation}\label{eq:small-loss}
+ d_H(\theta)\leq 3\beta_k\abs{y_k}+3F_k.
+\end{equation}
+\end{proposition}
+\formalnote{\lean{LanczosRun.small_loss_localization}}
+
+\begin{theorem}[Stabilized Ritz localization]\label{thm:stabilized}
+For every unit eigenpair $T_ky=\theta y$,
+\begin{equation}\label{eq:stabilized-max}
+ d_H(\theta)
+ \leq (k-1)\Psi_k
+   +3\max\{\beta_k\abs{y_k},\Psi_k\}+3F_k.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:stabilized-add}
+ d_H(\theta)
+ \leq3\beta_k\abs{y_k}+(k+2)\Psi_k+3F_k.
+\end{equation}
+If either $\beta_k\abs{y_k}\leq\Psi_k$ or $\beta_k=0$, then
+\begin{equation}\label{eq:stabilized-terminal}
+ d_H(\theta)\leq(k+2)\Psi_k+3F_k.
+\end{equation}
+The terminal statement also holds directly for every eigenvalue of $T_k$ when
+$\beta_k=0$.
+\end{theorem}
+\formalnote{\lean{LanczosRun.stabilized_max_form}; \lean{LanczosRun.stabilized}; \lean{LanczosRun.stabilized_of_boundary_le}; \lean{LanczosRun.terminal_localization_eigenvalue}}
+
+Because $k>0$, the displayed coefficient $k+2$ is exactly the mathematical
+simplification of the formal natural-number expression $(k-1)+3$.
+
+\section{Normalization and the Greenbaum construction}
+
+Let $d_j=\norm{v_j}$ for $1\leq j\leq k$,
+$D_v=\diag(d_1,\ldots,d_k)$, and
+\[
+ \bar V=VD_v^{-1}=[\bar v_1\ \cdots\ \bar v_k].
+\]
+The run assumptions imply $d_j>0$, so this normalization is well-defined, and
+$\norm{\bar v_j}=1$.  If $\beta_k\neq0$, set
+\[
+ d_{k+1}=\norm{v_{k+1}},\qquad
+ \bar v_{k+1}=v_{k+1}/d_{k+1},\qquad
+ \bar\beta_k=\beta_kd_{k+1}/d_k.
+\]
+If $\beta_k=0$, the formal definitions use
+$\bar v_{k+1}=\bar v_1$ and $\bar\beta_k=0$.
+
+\begin{theorem}[Normalized local recurrence]\label{thm:normalized-local}
+There is a matrix $\bar E\in\R^{n\times k}$ such that
+\begin{equation}\label{eq:normalized-recurrence}
+ H\bar V=\bar VT_k+\bar\beta_k\bar v_{k+1}e_k^T+\bar E,
+\end{equation}
+with
+\begin{equation}\label{eq:normalized-E}
+ \norm{\bar E}\leq2600k^4\varepsilon\norm H.
+\end{equation}
+For $1\leq j<k$,
+\begin{equation}\label{eq:normalized-adjacent}
+ \beta_j\abs{\bar v_j^T\bar v_{j+1}}
+ \leq4800k\varepsilon\norm H,
+\end{equation}
+and at the boundary
+\begin{equation}\label{eq:normalized-boundary}
+ \bar\beta_k\abs{\bar v_k^T\bar v_{k+1}}
+ \leq4800k\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.normalized_governing}; \lean{LanczosRun.normalized_local_errors}}
+
+Let $U$ be the strictly upper-triangular part of $\bar V^T\bar V$.  Since the
+columns of $\bar V$ are unit vectors,
+\begin{equation}\label{eq:normalized-gram}
+ \bar V^T\bar V=I+U+U^T.
+\end{equation}
+Set $a=\bar V^T\bar v_{k+1}$ and
+\begin{equation}\label{eq:J}
+ J=T_kU-UT_k-\bar\beta_k e_ka^T.
+\end{equation}
+
+\begin{theorem}[Normalized commutator]\label{thm:normalized-commutator}
+The matrix $J$ is upper triangular,
+\begin{equation}\label{eq:J-skew}
+ J-J^T=\bar V^T\bar E-\bar E^T\bar V,
+\end{equation}
+and
+\begin{equation}\label{eq:J-bound}
+ \norm J\leq50000k^5\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.normalized_gram_commutator}}
+
+Define the finite geometric transform
+\begin{equation}\label{eq:CK}
+ C=\sum_{r=0}^{k-1}(-U)^r,
+ \qquad K=I-C,
+\end{equation}
+and set
+\begin{equation}\label{eq:sy}
+ s=Ca,qquad y_0=\bar v_{k+1}-\bar VCs.
+\end{equation}
+
+\begin{theorem}[Nilpotent isometry identities]\label{thm:nilpotent}
+The matrix $K$ is strictly upper triangular and
+\begin{equation}\label{eq:nilpotent-bounds}
+ K^k=0,\qquad \norm K\leq1,\qquad \norm C\leq2.
+\end{equation}
+Moreover,
+\begin{align}
+ (\bar VC)^T(\bar VC)&=I-K^TK,\label{eq:nil-gram}\\
+ (\bar VC)^Ty_0&=-K^Ts,\label{eq:nil-cross}\\
+ \norm s^2+\norm{y_0}^2&=1.\label{eq:nil-norm}
+\end{align}
+\end{theorem}
+\formalnote{\lean{LanczosRun.nilpotent_isometry}}
+
+The notation $\norm s^2$ in \eqref{eq:nil-norm} means
+$(\norm s)^2$; both $s$ and $y_0$ use Euclidean norms.
+
+\section{Physical dilation and exact backward model}
+
+Let
+\begin{equation}\label{eq:blockH}
+ \mathcal H=\diag(H,\ldots,H)\in\R^{nk\times nk}
+\end{equation}
+contain $k$ copies of $H$.  Form $X\in\R^{nk\times k}$ by stacking the
+$k$ blocks
+\begin{equation}\label{eq:Xblocks}
+ \bar VC,\ \bar VCK,\ \ldots,\ \bar VCK^{k-1}.
+\end{equation}
+The boundary vector $q\in\R^{nk}$ has first block $y_0$ and, for
+$r=1,\ldots,k-1$, block $r+1$ equal to $\bar VCK^{r-1}s$.
+
+\begin{theorem}[Physical dilation]\label{thm:dilation}
+The scalar $\bar\beta_k$ is nonnegative and
+\begin{equation}\label{eq:dilation-orthogonality}
+ X^TX=I,qquad X^Tq=0,qquad \norm q\leq1.
+\end{equation}
+The first column of $X$ is
+$(\bar v_1^T,0,\ldots,0)^T$.  There is
+$\widehat E\in\R^{nk\times k}$ such that
+\begin{equation}\label{eq:dilation-recurrence}
+ \mathcal HX=XT_k+\bar\beta_kq e_k^T+\widehat E,
+\end{equation}
+and
+\begin{equation}\label{eq:dilation-error}
+ \norm{\widehat E}
+ \leq10^6k^8\varepsilon\norm H.
+\end{equation}
+At the block level, each of the $k$ propagated recurrence errors is bounded by
+$10^6k^7\varepsilon\norm H$.
+\end{theorem}
+\formalnote{\lean{LanczosRun.physical_dilation}; \lean{LanczosRun.block_recurrence}}
+
+The formal correction is a symmetric matrix
+$\widehat\Delta\in\R^{nk\times nk}$ satisfying
+\begin{equation}\label{eq:correction}
+ \widehat\Delta^T=\widehat\Delta,qquad
+ \widehat\Delta X=-\widehat E,qquad
+ \norm{\widehat\Delta}\leq3\norm{\widehat E}
+ \leq3{,}000{,}000k^8\varepsilon\norm H.
+\end{equation}
+Consequently, $\widehat H=\mathcal H+\widehat\Delta$ is symmetric and obeys
+the exact recurrence
+\begin{equation}\label{eq:corrected-recurrence}
+ \widehat HX=XT_k+\bar\beta_kq e_k^T.
+\end{equation}
+
+\formalnote{\lean{LanczosRun.greenbaumDelta_transpose}; \lean{LanczosRun.greenbaumDelta_mul_X}; \lean{LanczosRun.greenbaumDelta_bound}; \lean{LanczosRun.greenbaum_corrected_recurrence}}
+
+\begin{theorem}[Existence of the Greenbaum model]\label{thm:model}
+There exist an integer $d\geq0$, an orthogonal square matrix
+\[
+ Q\in\R^{nk\times(k+d)},\qquad nk=k+d,qquad Q^TQ=I,quad QQ^T=I,
+\]
+and a real symmetric tridiagonal matrix
+$\widetilde T\in\R^{(k+d)\times(k+d)}$ with the following properties.
+
+\begin{enumerate}[label=(G\arabic*),leftmargin=3.2em]
+\item The first $k$ columns of $Q$ are the columns of $X$.
+\item The leading $k\times k$ block of $\widetilde T$ is exactly $T_k$.
+\item With
+\begin{equation}\label{eq:S}
+ S=Q^T\mathcal H Q,
+\end{equation}
+one has
+\begin{equation}\label{eq:model-distance}
+ \delta:=\norm{S-\widetilde T}
+ \leq3\norm{\widehat E}
+ \leq3{,}000{,}000k^8\varepsilon\norm H.
+\end{equation}
+\item The first $k-1$ prescribed subdiagonal entries of $\widetilde T$ are
+$\beta_1,\ldots,\beta_{k-1}$ and are positive.
+\end{enumerate}
+\end{theorem}
+\formalnote{\lean{LanczosRun.exists_greenbaumModel}; \lean{LanczosRun.GreenbaumModel.delta_explicit}; \lean{LanczosRun.GreenbaumModel.prescribed_subdiagonal_positive}}
+
+Here ``tridiagonal'' follows from the conjunction of formal symmetry and the
+formal upper-tridiagonal predicate.  The theorem does not assert positivity of
+the subdiagonal beyond the leading $k\times k$ block.
+
+\begin{theorem}[Exact Lanczos reproduction]\label{thm:reproduction}
+Let exact Lanczos be initialized at $e_1\in\R^{k+d}$ and applied to
+$\widetilde T$ for $k$ steps.  In the precise sense of the exact-run interface
+in Definition~\ref{def:exact-run}, an exact run exists, and every such run
+returns the tridiagonal matrix $T_k$.  In particular, its computed
+$\alpha_1,\ldots,\alpha_k$ and internal
+$\beta_1,\ldots,\beta_{k-1}$ agree with those of the original formal run.
+\end{theorem}
+\formalnote{\lean{LanczosRun.GreenbaumModel.exactLanczosRun}; \lean{LanczosRun.GreenbaumModel.exact_lanczos_alpha}; \lean{LanczosRun.GreenbaumModel.exact_lanczos_beta}; \lean{LanczosRun.GreenbaumModel.exact_lanczos_returns_Tmat}}
+
+\begin{definition}[Exact-run interface]\label{def:exact-run}
+For a symmetric matrix $A$, starting vector $q$, and number of steps $k$, the
+formal exact run contains sequences $v_j,\alpha_j,\beta_j$ satisfying
+\[
+ v_0=0,\quad \beta_0=0,\quad v_1=q,\quad \norm{v_{j+1}}=1
+ \quad(0\leq j<k),
+\]
+\[
+ \alpha_{j+1}=v_{j+1}^TAv_{j+1},
+\]
+and, for $j+1<k$,
+\[
+ \beta_{j+1}>0,qquad
+ \beta_{j+1}v_{j+2}
+ =Av_{j+1}-\alpha_{j+1}v_{j+1}-\beta_jv_j.
+\]
+This is the exact scope of Theorem~\ref{thm:reproduction}; no particular
+software implementation of exact Lanczos is invoked.
+\end{definition}
+\formalnote{\lean{FinitePrecisionLanczos.ExactLanczos}}
+
+\section{Spectral and starting-measure consequences}
+
+Let $q_H=\bar v_1$ and $q_M=e_1\in\R^{k+d}$.  The matrix $S$ in
+\eqref{eq:S} is orthogonally similar to $k$ copies of $H$.
+
+\begin{theorem}[Exact starting moments for the unperturbed dilation]
+\label{thm:moments}
+For every $m\in\N$,
+\begin{equation}\label{eq:moments}
+ q_M^TS^mq_M=q_H^TH^mq_H.
+\end{equation}
+Equivalently, the finite atomic starting spectral masses agree exactly:
+\begin{equation}\label{eq:mass-equality}
+ \mu_{S,q_M}=\mu_{H,q_H}.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.GreenbaumModel.starting_moment}; \lean{LanczosRun.GreenbaumModel.starting_spectralMass}}
+
+The exact equality is between $H$ and $S$, not between $H$ and
+$\widetilde T$.  The latter comparison is perturbative, as in the next two
+theorems.
+
+\begin{theorem}[Localization of every model eigenvalue]\label{thm:eigloc}
+For every $\widetilde\lambda\in\spec(\widetilde T)$,
+\begin{equation}\label{eq:eigloc}
+ d_H(\widetilde\lambda)\leq\delta
+ \leq3{,}000{,}000k^8\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.GreenbaumModel.eigenvalue_localization}; \lean{LanczosRun.GreenbaumModel.eigenvalue_localization_explicit}}
+
+\begin{theorem}[Starting spectral mass in dual Wasserstein distance]
+\label{thm:wasserstein}
+The physical and model starting masses satisfy
+\begin{equation}\label{eq:wasserstein}
+ \Wone(\mu_{H,q_H},\mu_{\widetilde T,q_M})
+ \leq\sqrt{nk}\,\delta
+ \leq\sqrt{nk}\,
+       3{,}000{,}000k^8\varepsilon\norm H.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.GreenbaumModel.starting_wasserstein}; \lean{LanczosRun.GreenbaumModel.starting_wasserstein_explicit}}
+
+We finally state the proved cluster-mass estimate in full.  Let
+$\lambda_i$ and $w_i=(u_i^Tq_H)^2$ be the physical eigenvalues and starting
+weights.  Let $\widetilde\lambda_j$ and
+$\widetilde w_j=(\widetilde u_j^Tq_M)^2$ be their model counterparts.  For a
+predicate $G$ on $\R$, define its $\delta$-neighborhood relative to the
+physical eigenvalue list by
+\begin{equation}\label{eq:cluster-neighborhood}
+ C_G=\{t\in\R:\text{there exists }i\text{ with }
+     G(\lambda_i)\text{ and }\abs{t-\lambda_i}\leq\delta\}.
+\end{equation}
+
+\begin{theorem}[Starting cluster mass]\label{thm:cluster}
+Assume that $G$ and membership in $C_G$ are decidable.  Suppose there is
+$g\in\R$ such that every pair of physical eigenvalues lying on opposite sides
+of $G$ satisfies
+\begin{equation}\label{eq:cluster-gap}
+ g\leq\abs{\lambda_i-\lambda_j},
+\end{equation}
+and assume $2\delta<g$.  Then
+\begin{equation}\label{eq:cluster-product}
+ (g-2\delta)
+ \abs{\sum_{i:G(\lambda_i)}w_i-
+       \sum_{j:\widetilde\lambda_j\in C_G}\widetilde w_j}
+ \leq\sqrt{nk}\,\delta,
+\end{equation}
+and hence
+\begin{equation}\label{eq:cluster}
+ \abs{\sum_{i:G(\lambda_i)}w_i-
+       \sum_{j:\widetilde\lambda_j\in C_G}\widetilde w_j}
+ \leq\frac{\sqrt{nk}\,\delta}{g-2\delta}.
+\end{equation}
+\end{theorem}
+\formalnote{\lean{LanczosRun.GreenbaumModel.starting_cluster_mass_product}; \lean{LanczosRun.GreenbaumModel.starting_cluster_mass}}
+
+The theorem uses the actual model error $\delta$, not merely its explicit
+upper bound.  Substituting the bound in \eqref{eq:model-distance} into a
+denominator would require separately checking that the resulting denominator
+remains positive; that substitution is not packaged as a Lean theorem.
+
+\section{What is, and is not, established}
+
+The verified implication can be summarized as
+\[
+ \boxed{\text{formal run interface}}
+ \Longrightarrow
+ \begin{gathered}
+ \text{local bounds and exact matrix recurrence}\\
+ \text{Paige commutator, loss, containment, stabilization}\\
+ \text{normalized recurrence and physical dilation}\\
+ \text{symmetric tridiagonal backward model}\\
+ \text{exact reproduction and spectral-measure bounds}.
+ \end{gathered}
+\]
+
+The following claims are intentionally \emph{not} made by the formalization.
+
+\begin{enumerate}[leftmargin=2.3em]
+\item It does not derive Assumption~\ref{ass:run} from source code, hardware
+floating-point operations, IEEE~754, or a compiler semantics.
+\item It does not identify $\varepsilon$ with a particular unit roundoff; the
+five local error bounds in Assumption~\ref{ass:run} are hypotheses.
+\item It does not assume or prove $k\leq n$.
+\item It does not claim exact equality of the starting spectral masses of
+$H$ and $\widetilde T$; exact equality holds for $H$ and the unperturbed
+dilation $S$, while \eqref{eq:wasserstein} controls $\widetilde T$.
+\item It does not claim that all subdiagonal entries of the completed
+$\widetilde T$ are positive.  Positivity is verified only for the first
+$k-1$ entries inherited from the computed run.
+\item The constants are explicit sufficient bounds proved in Lean.  No claim
+of sharpness or optimal dependence on $k$ is made.
+\end{enumerate}
+
+\section{Declaration correspondence}
+
+Table~\ref{tab:map} is a compact audit map from the displayed mathematical
+results to the principal Lean declarations.  Supporting algebraic,
+finite-dimensional spectral, tridiagonal-completion, and finite-atomic-measure
+lemmas are imported by these declarations but are not individually restated as
+journal theorems here.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\begin{tabular}{p{0.31\textwidth}p{0.60\textwidth}}
+\toprule
+Mathematical item & Lean declaration(s) \\
+\midrule
+Run assumptions & \lean{FinitePrecisionLanczos.LanczosRun} \\
+Local errors & \lean{LanczosRun.local_errors} \\
+Assembled recurrence & \lean{LanczosRun.governing_matrix}, \lean{LanczosRun.Fmat_bound} \\
+Gram commutator & \lean{LanczosRun.gram_commutator_conclusion} \\
+Paige bound & \lean{LanczosRun.paige_bound} \\
+Prefix containment & \lean{LanczosRun.containment_prefix}, \lean{LanczosRun.containment} \\
+Stabilization & \lean{LanczosRun.stabilized_max_form}, \lean{LanczosRun.stabilized} \\
+Normalized errors & \lean{LanczosRun.normalized_local_errors} \\
+Normalized commutator & \lean{LanczosRun.normalized_gram_commutator} \\
+Nilpotent transform & \lean{LanczosRun.nilpotent_isometry} \\
+Physical dilation & \lean{LanczosRun.physical_dilation} \\
+Symmetric correction & \lean{LanczosRun.greenbaumDelta_bound}, \lean{LanczosRun.greenbaum_corrected_recurrence} \\
+Backward model existence & \lean{LanczosRun.exists_greenbaumModel} \\
+Model error & \lean{LanczosRun.GreenbaumModel.delta_explicit} \\
+Exact reproduction & \lean{LanczosRun.GreenbaumModel.exact_lanczos_returns_Tmat} \\
+Starting moments/mass & \lean{LanczosRun.GreenbaumModel.starting_moment}, \lean{LanczosRun.GreenbaumModel.starting_spectralMass} \\
+Eigenvalue localization & \lean{LanczosRun.GreenbaumModel.eigenvalue_localization_explicit} \\
+Dual Wasserstein bound & \lean{LanczosRun.GreenbaumModel.starting_wasserstein_explicit} \\
+Cluster mass & \lean{LanczosRun.GreenbaumModel.starting_cluster_mass} \\
+\bottomrule
+\end{tabular}
+\caption{Principal correspondence between this statement record and Lean.}
+\label{tab:map}
+\end{table}
+
+\section{Conclusion}
+
+Subject exactly to Assumption~\ref{ass:run}, the formal development verifies a
+complete chain from local floating-point-style identities to explicit Paige
+and Greenbaum conclusions.  The central backward object is a symmetric
+tridiagonal $\widetilde T$ with computed leading block $T_k$ and operator-norm
+distance at most
+$3{,}000{,}000k^8\varepsilon\norm H$ from an orthogonal copy of $k$ repeated
+blocks of $H$.  Exact Lanczos on that model reproduces $T_k$; every model
+eigenvalue lies within the same explicit radius of $\spec(H)$; and the
+starting spectral measures obey the dual Wasserstein and cluster-mass bounds
+stated above.  The formal scope begins at the run interface, rather than at an
+executable floating-point algorithm, and that boundary should be preserved in
+any comparison with an informal draft.
+
+\end{document}

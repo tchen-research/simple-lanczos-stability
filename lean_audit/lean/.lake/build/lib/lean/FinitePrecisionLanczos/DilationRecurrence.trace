@@ -1,0 +1,61 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["89d118170a0a9fed.olean"],
+  "m": false,
+  "i": "eab98ab2bd03b05f.ilean",
+  "c": "7304518318955599.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/DilationRecurrence.lean -o /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/DilationRecurrence.olean -i /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/DilationRecurrence.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/DilationRecurrence.c --setup /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/DilationRecurrence.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:75:44: This simp argument is unused:\n  Matrix.vecMul\n\nHint: Omit it from the simp argument list.\n  simp ̵[̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵M̵u̵l̵]̵\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:90:8: This simp argument is unused:\n  Matrix.vecMul\n\nHint: Omit it from the simp argument list.\n  simp ̵[̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵M̵u̵l̵]̵\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:164:14: This simp argument is unused:\n  Matrix.vecMul\n\nHint: Omit it from the simp argument list.\n  simp ̵[̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵M̵u̵l̵]̵\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:183:42: This simp argument is unused:\n  zero_add\n\nHint: Omit it from the simp argument list.\n  simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, hboundary,\n  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲z̵e̵r̵o̵_̵a̵d̵d̵,̵ ̵powerResidual, hleft]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:192:8: Variable name `K` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:226:50: This simp argument is unused:\n  Matrix.one_mul\n\nHint: Omit it from the simp argument list.\n  simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, hVlast, Matrix.mul_assoc,\n  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲M̵a̵t̵r̵i̵x̵.̵m̵u̵l̵_̵o̵n̵e̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵m̵u̵l̵]̵M̲a̲t̲r̲i̲x̲.̲m̲u̲l̲_̲o̲n̲e̲]̲\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:373:6: This simp argument is unused:\n  Pi.smul_apply\n\nHint: Omit it from the simp argument list.\n  simp only [pow_zero, Matrix.mul_one, physicalP, physicalPBlock, physicalErrorBlock, ↓reduceIte,\n  ̲  ̲ ̲ ̲ ̲ ̲lastOuter, Matrix.vecMulVec, P̵i̵.̵s̵m̵u̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵smul_eq_mul]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/DilationRecurrence.lean:373:21: This simp argument is unused:\n  smul_eq_mul\n\nHint: Omit it from the simp argument list.\n  simp only [pow_zero, Matrix.mul_one, physicalP, physicalPBlock, physicalErrorBlock, ↓reduceIte,\n  ̲  ̲ ̲ ̲ ̲ ̲lastOuter, Matrix.vecMulVec, P̵i̵.̵s̵m̵u̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]̵P̲i̲.̲s̲m̲u̲l̲_̲a̲p̲p̲l̲y̲]̲\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.DilationRecurrence:deps",
+   [["deps",
+     [["Paige/FinitePrecisionLanczos:extraDep",
+       [["@Paige:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.DilationCore transitive imports (legacy)",
+         "39a6ce23bb1b8401"],
+        ["FinitePrecisionLanczos.DilationCore:importAllArts",
+         "7755f5ae4bc22199"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/DilationRecurrence.lean",
+   "ba4578e80a9ca948"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.DilationRecurrence",
+   "ee1c52ed391d27af"],
+  ["Package.id?: (some Paige)", "51d68ade68902554"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "c2d780c32347e5c0"}

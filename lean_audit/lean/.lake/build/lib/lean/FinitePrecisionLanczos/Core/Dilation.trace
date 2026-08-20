@@ -1,0 +1,57 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["75a469e90f769c3d.olean"],
+  "m": false,
+  "i": "35fb60bc792b2f90.ilean",
+  "c": "32b2f695650db729.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/scratch/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Core/Dilation.lean -o /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Dilation.olean -i /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Dilation.ilean -c /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Dilation.c --setup /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Dilation.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:48:2: 'congr 1' tactic does nothing\n\nNote: This linter can be disabled with `set_option linter.unusedTactic false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:319:6: This simp argument is unused:\n  Matrix.transpose_one\n\nHint: Omit it from the simp argument list.\n  simp only [pow_zero, pow_one, Matrix.mul_one, Matrix.transpose_mul, M̵a̵t̵r̵i̵x̵.̵t̵r̵a̵n̵s̵p̵o̵s̵e̵_̵o̵n̵e̵,̵ ̵one_mul,\n  ̲  ̲ ̲ ̲ ̲ ̲Matrix.mulVec_mulVec, Pi.add_apply, Pi.neg_apply, Pi.zero_apply] at hi ⊢\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:319:28: This simp argument is unused:\n  one_mul\n\nHint: Omit it from the simp argument list.\n  simp only [pow_zero, pow_one, Matrix.mul_one, Matrix.transpose_mul,\n  ̵  ̵ ̵ ̵ ̵ ̵Matrix.transpose_one,\n  ̲ o̵n̵e̵_̵m̵u̵l̵,̵  ̲ ̲ ̲ ̲Matrix.mulVec_mulVec, Pi.add_apply,\n  ̵  ̵ ̵ ̵ ̵ ̵Pi.neg_apply, Pi.zero_apply] at hi ⊢\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:320:6: This simp argument is unused:\n  Pi.neg_apply\n\nHint: Omit it from the simp argument list.\n  simp only [pow_zero, pow_one, Matrix.mul_one, Matrix.transpose_mul, Matrix.transpose_one,\n  ̲  ̲ ̲ ̲ ̲ ̲one_mul, Matrix.mulVec_mulVec, Pi.add_apply, P̵i̵.̵n̵e̵g̵_̵a̵p̵p̵l̵y̵,̵ ̵Pi.zero_apply] at hi ⊢\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:456:41: This simp argument is unused:\n  Fin.isValue\n\nHint: Omit it from the simp argument list.\n  simp only [pow_zero, Matrix.mul_one, F̵i̵n̵.̵i̵s̵V̵a̵l̵u̵e̵,̵ ̵↓reduceIte]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:458:37: This simp argument is unused:\n  Pi.single_apply\n\nHint: Omit it from the simp argument list.\n  simp [Matrix.mulVec, firstCoord,̵ ̵P̵i̵.̵s̵i̵n̵g̵l̵e̵_̵a̵p̵p̵l̵y̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Dilation.lean:482:33: Variable name `hk` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Core.Dilation:deps",
+   [["deps",
+     [["FinitePrecisionLanczos/FinitePrecisionLanczos:extraDep",
+       [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Core.Nilpotent transitive imports (legacy)",
+         "0cc77b7420c28b72"],
+        ["FinitePrecisionLanczos.Core.Nilpotent:importAllArts",
+         "9cf12ad04635f687"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Core/Dilation.lean",
+   "537992ed60971558"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Core.Dilation", "569cbc62f6065be6"],
+  ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "8f08ad22ba7b4f1d"}

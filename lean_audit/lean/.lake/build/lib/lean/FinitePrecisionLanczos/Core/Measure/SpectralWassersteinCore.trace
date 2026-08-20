@@ -1,0 +1,62 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["0992c1ec01a763a2.olean"],
+  "m": false,
+  "i": "8a62a5404b663791.ilean",
+  "c": "fd74611ff6c33dc1.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/scratch/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean -o /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.olean -i /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.ilean -c /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.c --setup /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:20:0: automatically included section variable(s) unused in theorem `FinitePrecisionLanczos.spectralSum_sub_eq_crossSum`:\n  [DecidableEq I]\nconsider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:\n  omit [DecidableEq I] in theorem ...\n\nNote: This linter can be disabled with `set_option linter.unusedSectionVars false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:114:22: This simp argument is unused:\n  Finset.mem_univ\n\nHint: Omit it from the simp argument list.\n  simp only [s, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵↓reduceIte]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:114:39: This simp argument is unused:\n  ↓reduceIte\n\nHint: Omit it from the simp argument list.\n  simp only [s, Finset.mem_univ,̵ ̵↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:120:20: This simp argument is unused:\n  Finset.mem_univ\n\nHint: Omit it from the simp argument list.\n  simp only [s, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵↓reduceIte]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:120:37: This simp argument is unused:\n  ↓reduceIte\n\nHint: Omit it from the simp argument list.\n  simp only [s, Finset.mem_univ,̵ ̵↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:131:20: This simp argument is unused:\n  Finset.mem_univ\n\nHint: Omit it from the simp argument list.\n  simp only [s, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵↓reduceIte]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:131:37: This simp argument is unused:\n  ↓reduceIte\n\nHint: Omit it from the simp argument list.\n  simp only [s, Finset.mem_univ,̵ ̵↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Core.Measure.SpectralWassersteinCore:deps",
+   [["deps",
+     [["FinitePrecisionLanczos/FinitePrecisionLanczos:extraDep",
+       [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Core.Measure.Wasserstein transitive imports (legacy)",
+         "5d6e8b4ceaa93fff"],
+        ["FinitePrecisionLanczos.Core.Measure.Wasserstein:importAllArts",
+         "22ada541ba4e5286"],
+        ["Mathlib.Analysis.InnerProductSpace.PiL2 transitive imports (legacy)",
+         "309b9cf445af2fd7"],
+        ["Mathlib.Analysis.InnerProductSpace.PiL2:importAllArts",
+         "f1b1acc05d665fe9"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean",
+   "a0f3ca01f76238de"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Core.Measure.SpectralWassersteinCore",
+   "b78e81af63f8d0c3"],
+  ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "8a6f7663d09f4d5f"}

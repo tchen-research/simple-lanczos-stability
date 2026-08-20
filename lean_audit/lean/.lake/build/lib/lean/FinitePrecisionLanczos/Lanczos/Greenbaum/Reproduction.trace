@@ -1,0 +1,52 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["db583e42b57234d7.olean"],
+  "m": false,
+  "i": "95d699f5c61d9d4a.ilean",
+  "c": "2ff88aa3b24a58c6.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/scratch/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean -o /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.olean -i /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.ilean -c /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.c --setup /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean:212:10: This simp argument is unused:\n  single_dotProduct\n\nHint: Omit it from the simp argument list.\n  simp ̵[̵s̵i̵n̵g̵l̵e̵_̵d̵o̵t̵P̵r̵o̵d̵u̵c̵t̵]̵\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean:219:6: This simp argument is unused:\n  Nat.add_sub_cancel\n\nHint: Omit it from the simp argument list.\n  simp [single_dotProduct, M.leading_block, Tmat, N̵a̵t̵.̵a̵d̵d̵_̵s̵u̵b̵_̵c̵a̵n̵c̵e̵l̵,̵ ̵e1]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean:219:26: This simp argument is unused:\n  e1\n\nHint: Omit it from the simp argument list.\n  simp [single_dotProduct, M.leading_block, Tmat,\n  ̵  ̵ ̵ ̵ ̵ ̵Nat.add_sub_cancel,̵ ̵e̵1̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean:237:36: This simp argument is unused:\n  Nat.add_sub_cancel\n\nHint: Omit it from the simp argument list.\n  simp only [Tmat, Fin.ext_iff,̵ ̵N̵a̵t̵.̵a̵d̵d̵_̵s̵u̵b̵_̵c̵a̵n̵c̵e̵l̵]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean:238:29: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice\n\nNote: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Lanczos.Greenbaum.Reproduction:deps",
+   [["deps",
+     [["FinitePrecisionLanczos/FinitePrecisionLanczos:extraDep",
+       [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Lanczos.Greenbaum.Model transitive imports (legacy)",
+         "9935fe7745124517"],
+        ["FinitePrecisionLanczos.Lanczos.Greenbaum.Model:importAllArts",
+         "794985b2abf16c90"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Reproduction.lean",
+   "12b59351d8300962"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Lanczos.Greenbaum.Reproduction",
+   "8472a3de3b61c7cb"],
+  ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "3b84472108558c32"}

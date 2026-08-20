@@ -1,0 +1,38 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["c55c4b22c9115aed.olean"],
+  "m": false,
+  "i": "df1b3aca7df353ab.ilean",
+  "c": "380b4887940e48f5.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/Bounds.lean -o /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Bounds.olean -i /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Bounds.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/Bounds.c --setup /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/Bounds.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Bounds.lean:124:38: Variable name `hj` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Bounds:deps",
+   [["deps",
+     [["Paige/FinitePrecisionLanczos:extraDep",
+       [["@Paige:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Run transitive imports (legacy)",
+         "0993f5bde354c508"],
+        ["FinitePrecisionLanczos.Run:importAllArts", "4b61ff34a5346333"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/Bounds.lean",
+   "7d761471c76dfeac"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Bounds", "30fc66f608774c7c"],
+  ["Package.id?: (some Paige)", "51d68ade68902554"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "b61b866afcfa3ae8"}

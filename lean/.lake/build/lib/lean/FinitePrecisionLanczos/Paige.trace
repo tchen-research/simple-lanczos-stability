@@ -1,0 +1,43 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["d8839e6f0764f9c3.olean"],
+  "m": false,
+  "i": "d9e2d77969d4191d.ilean",
+  "c": "88d057fdef0728f0.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/Paige.lean -o /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Paige.olean -i /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Paige.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/Paige.c --setup /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/Paige.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Paige.lean:292:9: Variable name `hi` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Paige.lean:323:20: Variable name `hi` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Paige:deps",
+   [["deps",
+     [["Paige/FinitePrecisionLanczos:extraDep",
+       [["@Paige:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Assembly transitive imports (legacy)",
+         "2e3a226b7b714dde"],
+        ["FinitePrecisionLanczos.Assembly:importAllArts", "b8e6f34f26bb68e1"],
+        ["Paige.Commutator transitive imports (legacy)", "5d940cc419efc6aa"],
+        ["Paige.Commutator:importAllArts", "2df1cfe7dd06779d"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/Paige.lean",
+   "72732b7498f87215"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Paige", "d1509032d2a7d186"],
+  ["Package.id?: (some Paige)", "51d68ade68902554"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "7f58d12c0fcd1567"}

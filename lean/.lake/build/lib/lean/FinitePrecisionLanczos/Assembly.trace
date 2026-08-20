@@ -1,0 +1,41 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["4c918b0b780a644e.olean"],
+  "m": false,
+  "i": "ba0c1d0d59298d6c.ilean",
+  "c": "88f8cb68843cf575.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/Assembly.lean -o /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Assembly.olean -i /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Assembly.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/Assembly.c --setup /home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/.lake/build/ir/FinitePrecisionLanczos/Assembly.setup.json --json",
+   "level": "trace"},
+  {"message":
+   "FinitePrecisionLanczos/Assembly.lean:205:6: this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`",
+   "level": "warning"},
+  {"message":
+   "FinitePrecisionLanczos/Assembly.lean:205:6: 'abel' tactic does nothing\n\nNote: This linter can be disabled with `set_option linter.unusedTactic false`",
+   "level": "warning"}],
+ "inputs":
+ [["FinitePrecisionLanczos.Assembly:deps",
+   [["deps",
+     [["Paige/FinitePrecisionLanczos:extraDep",
+       [["@Paige:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["FinitePrecisionLanczos.Bounds transitive imports (legacy)",
+         "a0a8d7ff898bb821"],
+        ["FinitePrecisionLanczos.Bounds:importAllArts", "8f5151ad257b0304"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
+   "7508232886a2752a"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/simpler Paige/lean/FinitePrecisionLanczos/Assembly.lean",
+   "eb2a23f22f8cf32f"],
+  ["options", "00000000000006bb"],
+  ["isModule: false", "feefd2a0d3a1847e"],
+  ["Module.name: FinitePrecisionLanczos.Assembly", "2b2edfb0cc0cc5ef"],
+  ["Package.id?: (some Paige)", "51d68ade68902554"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "7651bbe3bf4f8672"}

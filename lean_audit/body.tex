@@ -1,0 +1,1267 @@
+% Title, abstract, and body of the paper.  This file is shared by the two
+% presentations: finite_precision_lanczos.tex (the default article style) and
+% finite_precision_lanczos_laa.tex (an imitation of the late-1980s Linear
+% Algebra and its Applications style).  It contains no preamble and no
+% \begin{document}; each wrapper supplies those.
+
+
+\title{A simple stability analysis of Lanczos in finite precision}
+\author{Tyler Chen}
+\date{}
+
+\maketitle
+
+\begin{abstract}
+We give a self-contained finite-precision analysis of the symmetric Lanczos algorithm without reorthogonalization.
+In particular, we derive the perturbed three-term recurrence, Paige's loss-of-orthogonality identity, containment of all computed Ritz values, and localization of stabilized Ritz values.
+We then give a Greenbaum-type backward stability result, exhibiting a nearby problem on which exact Lanczos produces the computed tridiagonal matrix.
+Our proofs simplify those of Paige and Greenbaum, at the cost of hiding polynomial factors in the iteration count.
+\end{abstract}
+
+
+\section{Introduction}
+
+Let \(\vec A=\vec A^\T\in\R^{n\times n}\) and let $\vec{v}\in\R^n$ be nonzero.
+In exact arithmetic, \(k\) steps of the Lanczos algorithm (\cref{alg:lanczos}) applied to \((\vec A,\vec v)\) produce a matrix \(\vec V_k = [\vec{v}_1, \ldots, \vec{v}_k]\) with orthonormal columns, \(\vec v_1=\vec v/\norm{\vec v}\), and a symmetric tridiagonal matrix \(\vec T_k\in\R^{k\times k}\) satisfying
+\[
+ \vec A\vec V_k=\vec V_k\vec T_k+\beta_k\vec v_{k+1}\vec e_k^\T.
+\]
+Hence, for $j\leq k+1$, the vectors $\{\vec{v}_1, \ldots, \vec{v}_{j}\}$ form an orthonormal basis for the Krylov subspace
+\[
+\operatorname{span}\{\vec{v},\vec{A}\vec{v}, \ldots, \vec{A}^{j-1}\vec{v}\}.
+\]
+The matrices $\vec{V}_k$ and $\vec{T}_k$ can then be used for downstream tasks such as estimating eigenvalues, solving linear systems of equations, and problems involving matrix functions \cite{meurant2006,greenbaum1997,tropp_webber2023,chen2024}.
+
+It was known since the introduction of the Lanczos algorithm that the behavior of the algorithm in finite precision arithmetic can be drastically different \cite{lanczos1950}.
+Indeed, the columns of \(\vec V_k\) need not remain mutually orthogonal (and in fact can eventually become nearly linearly dependent), and the computed tridiagonal matrix may differ greatly from what would have been produced in exact arithmetic.
+\Cref{fig:backward-experiment} illustrates this on a small example; the same run is revisited in \cref{sec:numerical}, where the backward model is built for it explicitly.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{experiments/backward_stability}
+\caption{\Cref{alg:lanczos} run for \(k=30\) iterations on a \(64\times64\) Strako\v{s} matrix \(\vec A\), in IEEE single precision, for which the unit roundoff is \(\approx10^{-7}\); see \cref{sec:numerical} for details.
+Left and center: stepwise deviation of the computed coefficients \(\alpha_j\) and \(\beta_j\) from the coefficients \(\alpha_j^{\textup{exact}}\) and \(\beta_j^{\textup{exact}}\) produced by exact Lanczos (double precision with full reorthogonalization) applied to \(\vec A\).
+Right: loss of orthogonality of the computed Lanczos vectors.
+The deviations grow in lockstep with the loss of orthogonality: once orthogonality is gone, the computed run no longer tracks exact Lanczos on \(\vec A\), and the deviations are many orders of magnitude larger than the single-precision unit roundoff.}
+\label{fig:backward-experiment}
+\end{figure}
+
+
+Remarkably, this instability does not render the algorithm useless.
+Lanczos without reorthogonalization is used widely and successfully: Ritz values continue to converge to eigenvalues of \(\vec A\) (although possibly with spurious copies), and approximations built from the computed \(\vec T_k\), such as those to quadratic forms and matrix functions, are often nearly as accurate as their exact-arithmetic counterparts.
+Explaining this apparent paradox has occupied numerical analysts for decades.
+Much of our current understanding of the algorithm's behavior in finite precision arithmetic is due to Chris Paige and Anne Greenbaum.
+
+Paige  showed that the algorithm is well-behaved locally, even in the presence of rounding errors \cite{paige1971,paige1972,paige1976}.
+In particular, he proved that the computed Lanczos vectors nearly satisfy a symmetric three-term recurrence, are nearly unit length, and that consecutive vectors are nearly orthogonal.
+He also proved that loss of orthogonality of the Lanczos vectors goes hand-in-hand with the convergence of a Ritz value (eigenvalue of $\vec{T}_k$) to an eigenvalue of $\vec{A}$ \cite{paige1980}; this result is often referred to as ``Paige's theorem''.
+Finally, it is commonly attributed to Paige that every computed Ritz value lies nearly within the interval containing the eigenvalues of $\vec{A}$, although an explicit proof does not appear in \cite{paige1971,paige1972,paige1976,paige1980}.
+
+Greenbaum later proved a backward-stability-type result for Lanczos \cite{greenbaum1989}.
+Building on the work of Paige, she showed that the computed tridiagonal matrix can also be obtained as the output of Lanczos run in exact arithmetic on a nearby problem instance.
+The nearby problem instance is of a larger dimension than $n$, but is close in the sense that its eigenvalues lie within small intervals about the eigenvalues of $\vec{A}$, and the spectral weights of its starting vector on each such interval are close to those of the original starting vector \cite{greenbaum1989,greenbaum_strakos1992}.
+
+Several resources exist for learning about these results.
+The original papers are rigorous and complete, but they are not an easy read: the analysis is spread across multiple works, the bounds are assembled through careful elementwise rounding-error bookkeeping, and Greenbaum herself describes the theorems and proofs of \cite{greenbaum1989} as ``gory''.
+The survey of Meurant and Strako\v{s} \cite{meurant_strakos2006} is an accessible guide to the results, their history, and their consequences, but it states the central theorems without proof, deferring to the original papers.
+Meurant's book \cite{meurant2006} collects these results and describes many aspects of their proofs carefully, but it likewise stops short of complete proofs of some key theorems.
+Parlett \cite{parlett1998} distills a proof of Paige's Theorem to its essential mechanism, but makes use of heuristic arguments to do so.
+In fact, in none of these resources do we find a proof of the Ritz value containment.
+
+The aim of this note is to present a simplified, rigorous, self-contained analysis that captures the \emph{essence} of the results of Paige and Greenbaum.
+Our main tools in this quest are two \emph{design choices}:
+\begin{enumerate}[label=(\roman*)]
+  \item suppress polynomial dependencies on the iteration count $k$ and avoid mucking around optimizing this dependence, and
+  \item assume linear-algebra kernels, rather than individual arithmetic operations, are performed accurately.
+\end{enumerate}
+While the resulting bounds are weaker than existing ones, we believe the tradeoff with simplicity is a good one.
+First, re-deriving standard floating-point bounds for linear-algebra primitives from the standard model of floating point arithmetic sheds little light on the behavior of Lanczos itself.
+Second, existing bounds for Lanczos are already numerically vacuous for even relatively small iteration counts $k$ and dimensions $n$ in double precision arithmetic, so their value is in the intuition they provide rather than as a usable bound.
+Third, polynomial dependencies on $k$ do not significantly impact the theoretical number of bits of precision needed, which grows only logarithmically with the target accuracy.
+
+\begin{definition}[Polynomial convention]
+For nonnegative quantities \(x\) and \(y\),
+\[
+ x\lesssim_k y
+\]
+is shorthand for \(x\le c k^dy\), where \(c>0\) and \(d\in\R\) are absolute constants.
+The constant and exponent may change from one occurrence to the next.
+\end{definition}
+
+\begin{remark}
+This notation does not hide things that shouldn't be hidden such as the dimension, spectral quantities of $\vec{A}$, etc.
+In the companion Lean~4 proof, available at \url{https://github.com/tchen-research/simple-lanczos-stability}, we provide explicit constants and exponents.
+\end{remark}
+
+The remainder of this note is organized as follows.
+\Cref{sec:model} states the arithmetic model and the computed recurrence.
+\Cref{sec:paige} derives our versions of Paige's results: local error bounds, the loss-of-orthogonality theorem, and containment and localization of the computed Ritz values.
+\Cref{sec:greenbaum} constructs the Greenbaum-type backward model.
+\Cref{sec:numerical} illustrates the construction numerically.
+\Cref{app:correspondence} tabulates how the results of this note line up with the existing literature.
+
+\section{Setup}
+\label{sec:model}
+
+\subsection{Arithmetic and normalization}
+
+We assume linear-algebra kernels can be performed to relative accuracy quantified by the accuracy parameter $\varepsilon$.
+The precise form of our assumptions is based on the bounds one obtains from the standard model of floating point arithmetic \cite{higham2002}. 
+As such, these assumptions can be ensured by setting the machine precision sufficiently small relative to the ambient dimension $n$.
+
+\begin{assumption}[Arithmetic kernels]
+For compatible vectors and scalars, the computed kernels satisfy
+\begin{align*}
+ \fl(\vec x^\T\vec y)
+ &=\vec x^\T\vec y+e,
+ &\abs e&\le\eps\norm{\vec x}\norm{\vec y},
+ \\
+ \fl(\vec x\pm\alpha\vec y)
+ &=\vec x\pm\alpha\vec y+\vec e,
+ &\norm{\vec e}&\le\eps
+   \bigl(\norm{\vec x}+\abs\alpha\norm{\vec y}\bigr),
+ \\
+ \fl(\vec A\vec v)
+ &=\vec A\vec v+\vec e,
+ &\norm{\vec e}&\le\eps\norm{\vec A}\norm{\vec v}.
+\end{align*}
+Copying and transposition are exact.
+\end{assumption}
+
+\begin{assumption}[Normalization]
+\label{ass:normalization}
+For \(\vec y\ne\vec0\), the call \((\beta,\vec v)=\textnormal{\textsc{normalize}}(\vec y)\) returns \(\beta>0\) and \(\vec v\) such that
+\begin{align*}
+ \beta\vec v&=\vec y+\vec\Delta,
+ &\norm{\vec\Delta}&\le\eps\norm{\vec y},
+ \\
+ \vec v^\T\vec v &= 1+\delta & |\delta|&\le\eps.
+\end{align*}
+If the vector to be normalized is zero, the algorithm terminates before making the call.
+\end{assumption}
+
+Finally, we assume the accuracy parameter $\varepsilon$ is bounded.
+\begin{assumption}[Small \(\eps\)]
+\label{ass:small-eps}
+The kernel accuracy satisfies \(\eps\ge0\), and every iteration count \(k\) considered below satisfies
+\[
+ \eps\lesssim_k 1.
+\]
+\end{assumption}
+
+\subsection{The computed recurrence}
+
+We analyze Paige's computational variant A1 \cite{paige1976}, stated explicitly below. 
+This is the now-standard implementation of Lanczos.
+
+\begin{algorithm}[htb]
+\caption{Finite-precision symmetric Lanczos without reorthogonalization}
+\label{alg:lanczos}
+\small
+\begin{algorithmic}[1]
+\Require a symmetric matrix \(\vec A\); a nonzero starting vector
+  \(\vec v\); a maximum iteration count
+  \(k_{\max}\).  The calls \(\fl\) and \textsc{normalize} obey the
+  assumptions of \cref{sec:model}.
+\State \((\,\cdot\,,\vec v_1)\gets\textsc{normalize}(\vec v)\)
+  \Comment{the scalar output is discarded}
+\State \(\vec v_0\gets\vec0\), \(\beta_0\gets0\)
+\For{\(j=1,2,\ldots,k_{\max}\)}
+  \State \(\vec u_j\gets\fl(\vec A\vec v_j)\)
+  \State \(\vec w_j\gets\fl(\vec u_j-\beta_{j-1}\vec v_{j-1})\)
+  \State \(\alpha_j\gets\fl(\vec v_j^\T\vec w_j)\)
+  \State \(\vec z_j\gets\fl(\vec w_j-\alpha_j\vec v_j)\)
+  \If{\(\vec z_j=\vec0\)}
+    \State \(\beta_j\gets0\); \textbf{terminate}
+  \Else
+    \State \((\beta_j,\vec v_{j+1})\gets\textsc{normalize}(\vec z_j)\)
+  \EndIf
+\EndFor
+\Ensure with \(k\le k_{\max}\) the number of completed iterations:
+  \(\vec V_k=[\vec v_1,\ldots,\vec v_k]\) and the tridiagonal \(\vec T_k\)
+  formed from \(\alpha_1,\ldots,\alpha_k\) and
+  \(\beta_1,\ldots,\beta_{k-1}\).
+\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+The initial call returns \(\vec v_1\) proportional to \(\vec v+\vec\Delta_0\) with \(\norm{\vec\Delta_0}\le\eps\norm{\vec v}\), by the first equation in \cref{ass:normalization}.
+In particular \(\vec v_1\) satisfies the second equation in \cref{ass:normalization}, like every later Lanczos vector, and this is the only property of \(\vec v_1\) the analysis of \cref{sec:paige} uses.
+\end{remark}
+
+Fix a run of \(k\) completed iterations for which \(\beta_1,\ldots,\beta_{k-1}>0\); the last step may be nonterminal (\(\beta_k>0\)) or terminal (\(\beta_k=0\)).
+Let
+\[
+ \vec V_k=[\vec v_1,\ldots,\vec v_k],
+ \qquad
+ \vec T_k=
+ \begin{bmatrix}
+  \alpha_1&\beta_1&&\\
+  \beta_1&\alpha_2&\ddots&\\
+  &\ddots&\ddots&\beta_{k-1}\\
+  &&\beta_{k-1}&\alpha_k
+ \end{bmatrix}.
+\]
+Thus \(\vec T_k=\vec T_k^\T\), and its internal subdiagonals are positive.
+If the run terminates at step \(k\), then \(\vec z_k=\vec0\) and \(\beta_k=0\).
+In that case we adopt the conventions \(\vec\Delta_k=\vec0\) and \(\beta_k\vec v_{k+1}=\vec0\), even though \(\vec v_{k+1}\) is not formed.
+
+Define the exact errors of the five kernel calls and record their bounds in one panel; the normalization call carries two guarantees, so it contributes the final two lines:
+\begin{align}
+ \vec u_j
+ &=\vec A\vec v_j+\vec e^u_j,
+ &\norm{\vec e^u_j}
+ &\le\eps\norm{\vec A}\norm{\vec v_j},
+ \label{eq:local-u}\\
+ \vec w_j
+ &=\vec u_j-\beta_{j-1}\vec v_{j-1}+\vec e^w_j,
+ &\norm{\vec e^w_j}
+ &\le\eps\bigl(\norm{\vec u_j}
+       +\beta_{j-1}\norm{\vec v_{j-1}}\bigr),
+ \label{eq:local-w}\\
+ \alpha_j
+ &=\vec v_j^\T\vec w_j+e^\alpha_j,
+ &\abs{e^\alpha_j}
+ &\le\eps\norm{\vec v_j}\norm{\vec w_j},
+ \label{eq:local-alpha}\\
+ \vec z_j
+ &=\vec w_j-\alpha_j\vec v_j+\vec e^z_j,
+ &\norm{\vec e^z_j}
+ &\le\eps\bigl(\norm{\vec w_j}
+       +\abs{\alpha_j}\norm{\vec v_j}\bigr),
+ \label{eq:local-z}\\
+ \beta_j\vec v_{j+1}
+ &=\vec z_j+\vec\Delta_j,
+ &\norm{\vec\Delta_j}
+ &\le\eps\norm{\vec z_j},
+ \label{eq:local-normalize}\\
+ \vec v_{j+1}^\T\vec v_{j+1}
+ &=1+\delta_{j+1},
+ &\abs{\delta_{j+1}}
+ &\le\eps.
+ \label{eq:local-unit}
+\end{align}
+These are identities together with their consequences from the arithmetic model.
+At a terminal final step, \cref{eq:local-normalize} holds by the convention above rather than by a normalization call, and \cref{eq:local-unit} does not apply since \(\vec v_{k+1}\) is not formed.
+
+\section{Paige's theory}
+\label{sec:paige}
+
+\subsection{Local errors}
+
+We begin by showing that the Lanczos algorithm behaves well locally; i.e. the computed Lanczos vectors nearly satisfy a symmetric three-term recurrence, are nearly unit length, and that consecutive vectors are nearly orthogonal.
+Specifically, we bound the following quantities:
+\begin{equation}
+  \begin{aligned}
+     \vec f_j&:=\vec A\vec v_j-\beta_{j-1}\vec v_{j-1}-\alpha_j\vec v_j-\beta_j\vec v_{j+1},
+ \\
+ g_j&:=\vec v_j^\T\vec v_j-1,
+ \\
+ p_j&:=\vec v_j^\T(\beta_j\vec v_{j+1}).
+  \end{aligned}
+ \label{eq:derived-quantities}
+\end{equation}
+
+\begin{theorem}[Local error bounds]
+\label{thm:local-errors}
+For \(1\le j\le k\),
+\[
+ \norm{\vec f_j}\lesssim_k\eps\norm{\vec A},
+ \qquad
+ \abs{g_j}\le\eps,
+ \qquad
+ \abs{p_j}\lesssim_k\eps\norm{\vec A}.
+\]
+In particular, the matrix--vector error \(\vec e^u_j\) cancels exactly and does not enter \(p_j\).
+\end{theorem}
+
+The bound on \(g_j\) is immediate from \cref{ass:normalization}.
+The other two are not: \(\vec f_j\) aggregates the kernel errors of step \(j\), while \(p_j\) couples the vectors \(\vec v_j\) and \(\vec v_{j+1}\), which come from different normalization calls, scaled by \(\beta_j\), which can be as large as \(\norm{\vec A}\).
+Both bounds rest on an a priori envelope for the computed quantities; we establish the envelope first and prove \cref{thm:local-errors} after it.
+
+\begin{lemma}[A priori coefficient bounds]
+\label{lem:coefficients}
+For \(1\le j\le k\),
+\[
+ \max\{\norm{\vec u_j},\norm{\vec w_j},\abs{\alpha_j},
+          \norm{\vec z_j},\beta_j\}
+ \lesssim_k\norm{\vec A}.
+\]
+\end{lemma}
+
+\begin{proof}
+The two computed projection equations in the local-error panel give
+\[
+ \vec z_j=
+ \underbrace{\vec w_j-\vec v_j(\vec v_j^\T\vec w_j)}_
+             {\text{exact-arithmetic update}}
+ -e_j^\alpha\vec v_j+\vec e_j^z.
+\]
+The bracketed rank-one update does not increase the norm, even though \(\vec v_j\) is only nearly normalized.
+By \cref{ass:normalization}, \(\norm{\vec v_j}^2\le1+\eps<2\).
+Therefore, direct expansion gives
+\[
+ \norm{\vec w_j-\vec v_j(\vec v_j^\T\vec w_j)}^2
+ =\norm{\vec w_j}^2
+  -\bigl(2-\vec v_j^\T\vec v_j\bigr)
+   (\vec v_j^\T\vec w_j)^2
+ \le\norm{\vec w_j}^2.
+\]
+The inner-product model and Cauchy--Schwarz give
+\[
+ \abs{\alpha_j}
+ \le(1+\eps)\norm{\vec v_j}\norm{\vec w_j},
+ \qquad
+ \abs{e_j^\alpha}\norm{\vec v_j}
+ \le\eps(1+\eps)\norm{\vec w_j}.
+\]
+The update error therefore satisfies
+\[
+ \norm{\vec e_j^z}
+ \le\eps\bigl(\norm{\vec w_j}+\abs{\alpha_j}\norm{\vec v_j}\bigr)
+ \le\eps\bigl(1+(1+\eps)^2\bigr)\norm{\vec w_j}.
+\]
+Combining these three bounds gives
+\[
+ \norm{\vec z_j}
+ \le\bigl[1+\eps(1+\eps)
+              +\eps\bigl(1+(1+\eps)^2\bigr)\bigr]\norm{\vec w_j}
+ \le(1+5\eps)\norm{\vec w_j},
+\]
+where the last inequality holds for \(\eps\le0.3903\).
+
+It remains to control the size of \(\vec w_j\).
+The first two rows of the local-error panel and \(\norm{\vec v_i}\le\sqrt{1+\eps}\) give
+\[
+ \norm{\vec u_j}
+ \le(1+\eps)\norm{\vec A}\norm{\vec v_j}
+ \le(1+\eps)^{3/2}\norm{\vec A}
+\]
+and
+\[
+ \norm{\vec w_j}
+ \le(1+\eps)\bigl(\norm{\vec u_j}
+                    +\beta_{j-1}\norm{\vec v_{j-1}}\bigr)
+ \le(1+\eps)^{5/2}\norm{\vec A}+(1+\eps)^{3/2}\beta_{j-1}.
+\]
+At a nonterminal step, \cref{eq:local-normalize} and \(\norm{\vec v_{j+1}}\ge\sqrt{1-\eps}\), from \cref{eq:local-unit}, give
+\[
+ \beta_j
+ =\frac{\norm{\vec z_j+\vec\Delta_j}}{\norm{\vec v_{j+1}}}
+ \le\frac{1+\eps}{\sqrt{1-\eps}}\norm{\vec z_j}
+ \le(1+2\eps)\norm{\vec z_j},
+\]
+again using \(\eps\le0.3903\).
+With the bound on \(\vec z_j\), this yields the scalar recurrence
+\[
+ \begin{aligned}
+  \beta_j
+  &\le(1+2\eps)\norm{\vec z_j}\\
+  &\le(1+2\eps)(1+5\eps)
+       \bigl((1+\eps)^{5/2}\norm{\vec A}
+             +(1+\eps)^{3/2}\beta_{j-1}\bigr)\\
+  &\le(1+c\eps)\beta_{j-1}+c\norm{\vec A}.
+ \end{aligned}
+\]
+The inverse-polynomial smallness in \cref{ass:small-eps} is chosen so that \(2ck\eps\le1\).
+Starting from \(\beta_0=0\), induction on \(j\) then gives \(\beta_j\le2cj\norm{\vec A}\): assuming the bound at \(j-1\),
+\[
+ \beta_j
+ \le2c(j-1)\norm{\vec A}
+  +2c^2(j-1)\eps\norm{\vec A}
+  +c\norm{\vec A}
+ \le2cj\norm{\vec A},
+\]
+because \(2c^2(j-1)\eps\le c\).
+Each step adds at most a fixed multiple of \(\norm{\vec A}\), and the multiplicative drift \(1+c\eps\) is absorbed by the smallness assumption before it can compound.
+Substitution into the displayed bounds gives \(\norm{\vec w_j},\abs{\alpha_j},\norm{\vec z_j} \lesssim_k\norm{\vec A}\); the bound on \(\vec u_j\) was already obtained.
+This proves the claimed bounds.
+At a terminal final step \(\beta_k=0\), and the same bounds apply using the already controlled \(\beta_{k-1}\).
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:local-errors}]
+The bound on \(g_j\) is the unit-norm guarantee of the normalization calls: \(g_j=\delta_j\) in \cref{eq:local-unit} for \(j\ge2\), and the initial call gives the same bound for \(g_1\).
+
+For \(\vec f_j\), eliminate the intermediate vectors: substitute \cref{eq:local-u} into \cref{eq:local-w}, the result into \cref{eq:local-z}, and that into \cref{eq:local-normalize}.
+Rearranging the result against the definition of \(\vec f_j\) in \cref{eq:derived-quantities} gives
+\[
+ \vec f_j=-(\vec e^u_j+\vec e^w_j+\vec e^z_j+\vec\Delta_j).
+\]
+Apply the triangle inequality and insert the four error bounds from the local-error panel:
+\[
+ \norm{\vec f_j}
+ \le\norm{\vec e^u_j}+\norm{\vec e^w_j}
+   +\norm{\vec e^z_j}+\norm{\vec\Delta_j}
+ \le\eps\bigl(\norm{\vec A}\norm{\vec v_j}
+   +\norm{\vec u_j}+\beta_{j-1}\norm{\vec v_{j-1}}
+   +\norm{\vec w_j}+\abs{\alpha_j}\norm{\vec v_j}
+   +\norm{\vec z_j}\bigr).
+\]
+By \cref{ass:normalization} each \(\norm{\vec v_i}\) is at most \(\sqrt{1+\eps}\), and by \cref{lem:coefficients} each of \(\norm{\vec u_j}\), \(\norm{\vec w_j}\), \(\abs{\alpha_j}\), \(\norm{\vec z_j}\), and \(\beta_{j-1}\) is \(\lesssim_k\norm{\vec A}\).
+The bracket is therefore \(\lesssim_k\norm{\vec A}\), which proves the bound on \(\vec f_j\).
+
+For \(p_j\), \crefrange{eq:local-alpha}{eq:local-normalize} give
+\[
+ p_j
+ =\vec v_j^\T\vec z_j+\vec v_j^\T\vec\Delta_j
+ =\vec v_j^\T\vec w_j-\alpha_j(1+g_j)
+   +\vec v_j^\T\vec e^z_j+\vec v_j^\T\vec\Delta_j.
+\]
+Since \(\vec v_j^\T\vec w_j=\alpha_j-e^\alpha_j\), the two exact copies of \(\alpha_j\) cancel, leaving
+\[
+ p_j=-e^\alpha_j-g_j\alpha_j
+      +\vec v_j^\T\vec e^z_j+\vec v_j^\T\vec\Delta_j.
+\]
+Apply \cref{ass:normalization}, \cref{eq:local-alpha,eq:local-z,eq:local-normalize}, and \cref{lem:coefficients} to obtain the bound on \(p_j\).
+The matrix--vector error has already disappeared in the exact cancellation.
+\end{proof}
+
+\subsection{The Gram commutator}
+
+
+Stack the recurrence errors into \(\vec F_k:=[\vec f_1,\ldots,\vec f_k]\) and expresses the run as a perturbed block recurrence,
+\begin{equation}
+ \vec A\vec V_k=\vec V_k\vec T_k+\beta_k\vec v_{k+1}\vec e_k^\T+\vec F_k.
+ \label{eq:governing}
+\end{equation}
+Define the Gram defect and its triangular decomposition by
+\begin{equation}
+ \vec\Omega_k:=\vec V_k^\T \vec V_k-\vec I
+ =\vec R_k^\T+\vec D_k+\vec R_k,
+ \qquad
+ \vec R_k:=\up(\vec\Omega_k),
+ \qquad
+ \vec D_k:=\diag(g_1,\ldots,g_k),
+ \label{eq:gram-split}
+\end{equation}
+where \(\up\) retains the strict upper triangle.
+No smallness is assumed for \(\vec R_k\) or \(\vec\Omega_k\).
+Set
+\begin{equation}
+ \vec C_k:=\vec V_k^\T(\beta_k\vec v_{k+1})\vec e_k^\T,
+ \qquad
+ \vec G_k:=\vec V_k^\T \vec F_k-\vec F_k^\T \vec V_k.
+ \label{eq:CG-def}
+\end{equation}
+
+\begin{lemma}[Gram commutator]
+\label{lem:gram-commutator}
+The governing relation implies the exact identity
+\[
+ \vec T_k\vec\Omega_k-\vec\Omega_k\vec T_k=\vec C_k-\vec C_k^\T+\vec G_k.
+\]
+Every entry of \(\vec G_k\) has magnitude \(\lesssim_k\eps\norm{\vec A}\).
+Moreover, with \(p_0=0\) and
+\[
+ \vec N_k:=\diag(p_0-p_1,p_1-p_2,\ldots,p_{k-1}-p_k),
+\]
+the corresponding upper-triangular identity is
+\[
+ \vec T_k\vec R_k-\vec R_k\vec T_k
+ =\vec C_k+\vec N_k+\up(\vec G_k)-\up(\vec T_k\vec D_k-\vec D_k\vec T_k).
+\]
+The last term is supported only on the first superdiagonal, and every entry of it also has magnitude \(\lesssim_k\eps\norm{\vec A}\).
+\end{lemma}
+
+\begin{proof}
+Premultiplying \cref{eq:governing} by \(\vec V_k^\T\) gives
+\[
+ \vec V_k^\T \vec A\vec V_k=(\vec I+\vec\Omega_k)\vec T_k+\vec C_k+\vec V_k^\T \vec F_k.
+\]
+The left side is symmetric.
+Equating the right side with its transpose proves the first identity.
+The entry bound follows from \((\vec G_k)_{rs}=\vec v_r^\T\vec f_s-\vec f_r^\T\vec v_s\), Cauchy--Schwarz, and \cref{thm:local-errors}, which controls both factors: \(\norm{\vec v_r}\le\sqrt{1+\eps}\) through the bound on \(g_r\), and \(\norm{\vec f_s}\lesssim_k\eps\norm{\vec A}\).
+
+Insert \cref{eq:gram-split} in the first identity and retain the strict upper triangle.
+Tridiagonality of \(\vec T_k\) and strict upper triangularity of \(\vec R_k\) imply that \(\vec T_k\vec R_k^\T-\vec R_k^\T \vec T_k\) is lower triangular.
+The same two properties pin each diagonal entry of \(\vec T_k\vec R_k\) and \(\vec R_k\vec T_k\) to a single product:
+\[
+ (\vec T_k\vec R_k)_{jj}
+ =\beta_{j-1}\vec v_{j-1}^\T\vec v_j
+ =p_{j-1},
+ \qquad
+ (\vec R_k\vec T_k)_{jj}
+ =\beta_j\vec v_j^\T\vec v_{j+1}
+ =p_j,
+\]
+where the first is zero for \(j=1\) and the second is absent for \(j=k\), because \(\vec R_k\) has no column \(k+1\).
+Thus the diagonal of \(\vec T_k\vec R_k-\vec R_k\vec T_k\) is \(p_{j-1}-p_j\), except that its last entry is \(p_{k-1}\); the right side of the second identity agrees, because \(\vec N_k\) contributes \(p_{j-1}-p_j\) and \((\vec C_k)_{kk}=p_k\) restores the missing \(-p_k\).
+This gives the second identity.
+Finally, \((\vec T_k\vec D_k-\vec D_k\vec T_k)_{j,j+1}=\beta_j(g_{j+1}-g_j)\), whose magnitude is at most \(2\eps\beta_j\lesssim_k\eps\norm{\vec A}\), by \cref{thm:local-errors,lem:coefficients}.
+\end{proof}
+
+\subsection{Loss of orthogonality}
+
+Let \((\theta,\vec y)\) be a unit eigenpair of \(\vec T_k\), and define the corresponding Ritz vector \(\vec x:=\vec V_k\vec y\).
+Because \(\vec T_k\vec y=\theta\vec y\), the governing relation \cref{eq:governing} gives the exact residual formula
+\begin{equation}
+ (\vec A-\theta\vec I)\vec x
+ =(\beta_k\vec v_{k+1})(\vec e_k^\T\vec y)+\vec F_k\vec y,
+ \label{eq:ritz-residual-identity}
+\end{equation}
+and therefore
+\begin{equation}
+ \norm{(\vec A-\theta\vec I)\vec x}
+ \le\sqrt{1+\eps}\,\beta_k\abs{\vec e_k^\T\vec y}
+      +\norm{\vec F_k}.
+ \label{eq:ritz-residual-bound}
+\end{equation}
+In exact arithmetic \(\vec F_k=\vec0\) and \(\norm{\vec v_{k+1}}=1\), so \(\beta_k\abs{\vec e_k^\T\vec y}\) is exactly the residual norm of the pair \((\theta,\vec x)\); in finite precision it determines the residual norm up to \(\lesssim_k\eps\norm{\vec A}\), while remaining computable from \(\vec T_k\) alone.
+We therefore call \(\beta_k\abs{\vec e_k^\T\vec y}\) the scalar residual estimate of the pair.
+When the residual estimate is small, the Ritz pair is nearly an eigenpair: since \(\vec A\) is symmetric, \cref{eq:ritz-residual-bound} gives
+\[
+ \dist\bigl(\theta,\spec(\vec A)\bigr)
+ \le\frac{\norm{(\vec A-\theta\vec I)\vec x}}{\norm{\vec x}}
+ \le\frac{\sqrt{1+\eps}\,\beta_k\abs{\vec e_k^\T\vec y}+\norm{\vec F_k}}{\norm{\vec x}},
+\]
+so \(\theta\) is then nearly an eigenvalue of \(\vec A\), and \(\vec x/\norm{\vec x}\) is nearly a corresponding eigenvector whenever that eigenvalue is well separated from the rest of the spectrum.
+The caveat is the denominator: loss of orthogonality can make \(\norm{\vec x}\) small, and removing this caveat is the purpose of the next subsection.
+The next theorem is the central loss-of-orthogonality bound in Paige's finite-precision analysis \cite{paige1980}.
+
+\begin{theorem}[Paige loss-of-orthogonality bound]
+\label{thm:paige}
+For every unit eigenpair \((\theta,\vec y)\) of \(\vec T_k\), the Ritz vector \(\vec x=\vec V_k\vec y\) satisfies
+\[
+ \abs{\vec x^\T\vec{v}_{k+1}}\cdot\beta_k\abs{\vec e_k^\T\vec y}
+ \lesssim_k\eps\norm{\vec A}.
+\]
+\end{theorem}
+
+At a nonterminal step, \cref{thm:paige} gives the usual convergence--orthogonality dichotomy:
+\begin{equation}
+ \abs{\vec x^\T\vec v_{k+1}}
+ \lesssim_k\frac{\eps\norm{\vec A}}{\beta_k\abs{\vec e_k^\T\vec y}}.
+ \label{eq:dichotomy}
+\end{equation}
+Thus appreciable loss of orthogonality against a Ritz direction can occur only when its scalar residual estimate is small, that is, by \cref{eq:ritz-residual-bound}, only when the Ritz pair has nearly converged.
+The same tradeoff is visible numerically in \cref{fig:paige-dichotomy}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{experiments/paige_lambda1}
+\caption{Convergence and loss of orthogonality for the Ritz approximation to the largest eigenvalue \(\lambda_1=1\), in the same single-precision Lanczos run as \cref{fig:backward-experiment}.
+At iteration \(t\), let \((\theta_1^{(t)},\vec y_1^{(t)})\) be the largest unit eigenpair of \(\vec T_t\).
+Left: the normalized Ritz-value error \(\abs{\theta_1^{(t)}-\lambda_1}/\norm{\vec A}\).
+  Center: the corresponding orthogonality defect \(\abs{(\vec V_t\vec y_1^{(t)})^\T\vec v_{t+1}}\).
+  Right: the global loss of orthogonality \(\norm{\vec V_t^\T\vec V_t-\vec I}\).
+  The Ritz value reaches the rounding-error floor around iteration 13, after which both measures of lost orthogonality grow to order one, consistent with the convergence--orthogonality dichotomy of \cref{thm:paige}.}
+\label{fig:paige-dichotomy}
+\end{figure}
+
+
+\begin{proof}
+Fix a unit eigenpair \((\theta,\vec y)\) and sandwich the second identity in \cref{lem:gram-commutator} between \(\vec y^\T\) and \(\vec y\).
+The left side vanishes because \(\vec T_k\vec y=\theta\vec y\).
+The \(\vec C_k\) term is the boundary product,
+\[
+ \vec y^\T \vec C_k\vec y
+ =\bigl(\vec x^\T(\beta_k\vec v_{k+1})\bigr)(\vec e_k^\T\vec y),
+\]
+so the sandwiched identity rearranges to the exact expression
+\[
+ \bigl(\vec x^\T(\beta_k\vec v_{k+1})\bigr)(\vec e_k^\T\vec y)
+ =-\vec y^\T\vec N_k\vec y
+  -\vec y^\T\up(\vec G_k)\vec y
+  +\vec y^\T\up(\vec T_k\vec D_k-\vec D_k\vec T_k)\vec y.
+\]
+Because \(\vec y\) is a unit vector, each quadratic form on the right is bounded by the operator norm, and hence by the Frobenius norm, of its matrix.
+All three matrices are \(k\times k\) with entries of magnitude \(\lesssim_k\eps\norm{\vec A}\): the entries of \(\vec N_k\) are differences of the local products \(p_j\), which \cref{thm:local-errors} controls, and the other two are covered by \cref{lem:gram-commutator}.
+Each Frobenius norm is therefore \(\lesssim_k\eps\norm{\vec A}\), and the theorem follows.
+\end{proof}
+
+
+\subsection{Descent, containment, and stabilized Ritz values}
+
+For every \(1\le t\le k\), the tridiagonal \(\vec T_t\) produced after the first \(t\) iterations satisfies the preceding identities and bounds; in particular, \cref{thm:paige} applies to the unit eigenpairs of every \(\vec T_t\).
+
+\begin{lemma}[Paige descent]
+\label{lem:descent}
+Let \((\theta,\vec y)\) be a unit eigenpair of \(\vec T_t\).
+If \(\abs{\vec y^\T \vec R_t\vec y}>3/8\), then there are \(1\le r\le s<t\) and a unit eigenpair \((\theta_r^{(s)},\vec y_r^{(s)})\) of \(\vec T_s\) such that
+\[
+ \abs{\theta-\theta_r^{(s)}}\lesssim_k\eps\norm{\vec A},
+ \qquad
+ \beta_s\abs{\vec e_s^\T\vec y_r^{(s)}}\lesssim_k\eps\norm{\vec A}.
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(\rho:=\vec y^\T \vec R_t\vec y\).
+For \(s<t\), write \(\vec y^{[s]}\) for the first \(s\) entries of \(\vec y\), and expand it in an orthonormal eigenbasis \(\vec y_1^{(s)},\ldots,\vec y_s^{(s)}\) of \(\vec T_s\): \(\vec y^{[s]}=\sum_{r=1}^{s} c_r^{(s)}\vec y_r^{(s)}\).
+The leading principal \(s\times s\) block of \(\vec T_t\) is \(\vec T_s\), and, by tridiagonality, the only entry of the first \(s\) rows of \(\vec T_t\) outside this block is \(\beta_s\), in position \((s,s+1)\).
+The first \(s\) rows of \(\vec T_t\vec y=\theta\vec y\) therefore read
+\[
+ \vec T_s\vec y^{[s]}+\beta_s(\vec e_{s+1}^\T\vec y)\vec e_s=\theta\vec y^{[s]}.
+\]
+Multiplying on the left by \((\vec y_r^{(s)})^\T\), and using \((\vec y_r^{(s)})^\T\vec T_s=\theta_r^{(s)}(\vec y_r^{(s)})^\T\) together with \((\vec y_r^{(s)})^\T\vec y^{[s]}=c_r^{(s)}\), gives the division-free identity
+\begin{equation}
+ (\theta-\theta_r^{(s)})c_r^{(s)}
+ =\beta_s(\vec e_s^\T\vec y_r^{(s)})(\vec e_{s+1}^\T\vec y).
+ \label{eq:leading-coefficient}
+\end{equation}
+Since \(\vec R_t\) is the strict upper triangle of \(\vec V_t^\T\vec V_t-\vec I\), its entries are \((\vec R_t)_{ij}=\vec v_i^\T\vec v_j\) for \(i<j\).
+Grouping the quadratic form \(\rho\) by the column index \(j\) gives
+\begin{align*}
+   \rho
+ =\sum_{j=2}^{t}\sum_{i=1}^{j-1}(\vec e_i^\T\vec y)(\vec e_j^\T\vec y)\,\vec v_i^\T\vec v_j
+ &=\sum_{j=2}^{t}\biggl(\,\sum_{i=1}^{j-1}(\vec e_i^\T\vec y)\vec v_i\biggr)^{\!\T}
+   \vec v_j\,(\vec e_j^\T\vec y)
+ \\&=\sum_{s=1}^{t-1}\bigl(\vec V_s\vec y^{[s]}\bigr)^\T\vec v_{s+1}\,(\vec e_{s+1}^\T\vec y),
+\end{align*}
+where the last equality reindexes by \(s=j-1\) and uses \(\sum_{i\le s}(\vec e_i^\T\vec y)\vec v_i=\vec V_s\vec y^{[s]}\).
+Substituting the eigenbasis expansion of \(\vec y^{[s]}\) splits each term over the level-\(s\) Ritz vectors \(\vec V_s\vec y_r^{(s)}\):
+\begin{equation}
+ \rho=\sum_{s=1}^{t-1}\sum_{r=1}^s
+ \tau_{rs},
+ \qquad
+ \tau_{rs}:=
+ c_r^{(s)}\bigl((\vec V_s\vec y_r^{(s)})^\T\vec v_{s+1}\bigr)(\vec e_{s+1}^\T\vec y).
+ \label{eq:rho-expansion}
+\end{equation}
+Each factor \((\vec V_s\vec y_r^{(s)})^\T\vec v_{s+1}\) is the orthogonality defect of the Lanczos vector \(\vec v_{s+1}\) against a Ritz vector of an earlier iteration---precisely the quantity that \cref{thm:paige} couples to the corresponding residual estimate.
+Introduce the Paige products and their maximum
+\begin{equation}
+ P_{rs}:=\beta_s
+ \bigl((\vec V_s\vec y_r^{(s)})^\T\vec v_{s+1}\bigr)
+ (\vec e_s^\T\vec y_r^{(s)}),
+ \qquad
+ \mathcal E_*:=\max_{1\le s<t}\,\max_{1\le r\le s}\abs{P_{rs}}.
+ \label{eq:leading-paige-product}
+\end{equation}
+Each \(P_{rs}\) is the boundary product of the unit eigenpair \((\theta_r^{(s)},\vec y_r^{(s)})\) of \(\vec T_s\), so \cref{thm:paige} applied to the first \(s\) iterations gives \(\mathcal E_*\lesssim_k\eps\norm{\vec A}\).
+The products \(\tau_{rs}\) and \(P_{rs}\) share the factor \((\vec V_s\vec y_r^{(s)})^\T\vec v_{s+1}\): multiplying \(\tau_{rs}\) by \(\theta-\theta_r^{(s)}\) and applying \cref{eq:leading-coefficient}, or multiplying by \(\beta_s(\vec e_s^\T\vec y_r^{(s)})\) and rearranging factors, gives the exact relations
+\begin{equation}
+ (\theta-\theta_r^{(s)})\,\tau_{rs}
+ =P_{rs}(\vec e_{s+1}^\T\vec y)^2,
+ \qquad
+ \beta_s(\vec e_s^\T\vec y_r^{(s)})\,\tau_{rs}
+ =P_{rs}\,c_r^{(s)}(\vec e_{s+1}^\T\vec y).
+ \label{eq:tau-P}
+\end{equation}
+Set \(\Psi:=8t\,\mathcal E_*\lesssim_k\eps\norm{\vec A}\).
+We prove the conclusion of the lemma, with both right sides replaced by \(\Psi\), in contrapositive form: assuming that every pair \((r,s)\) satisfies
+\[
+ \abs{\theta-\theta_r^{(s)}}>\Psi
+ \qquad\text{or}\qquad
+ \beta_s\abs{\vec e_s^\T\vec y_r^{(s)}}>\Psi,
+\]
+we show \(\abs{\rho}<3/8\), so that the hypothesis of the lemma fails.
+
+If \(\mathcal E_*=0\), then \(\Psi=0\) and every \(P_{rs}\) vanishes; for each pair, dividing the relation in \cref{eq:tau-P} that corresponds to the assumed strict inequality by its nonzero left factor gives \(\tau_{rs}=0\), so \(\rho=0\) by \cref{eq:rho-expansion}.
+We may therefore assume \(\mathcal E_*>0\).
+For each summand in \cref{eq:rho-expansion}, either \(\abs{\theta-\theta_r^{(s)}}>\Psi\), in which case the first relation in \cref{eq:tau-P} gives
+\[
+ \abs{\tau_{rs}}
+ =\frac{\abs{P_{rs}}}{\abs{\theta-\theta_r^{(s)}}}(\vec e_{s+1}^\T\vec y)^2
+ \le\frac{\mathcal E_*}{\Psi}(\vec e_{s+1}^\T\vec y)^2,
+\]
+or \(\beta_s\abs{\vec e_s^\T\vec y_r^{(s)}}>\Psi\), in which case the second relation in \cref{eq:tau-P} gives
+\[
+ \abs{\tau_{rs}}
+ =
+ \frac{\abs{P_{rs}}}
+ {\beta_s\abs{\vec e_s^\T\vec y_r^{(s)}}}
+ \abs{c_r^{(s)}}\abs{\vec e_{s+1}^\T\vec y}
+ \le\frac{\mathcal E_*}{\Psi}\abs{c_r^{(s)}}\abs{\vec e_{s+1}^\T\vec y}.
+\]
+Therefore
+\[
+ \abs\rho
+ \le\frac{\mathcal E_*}{\Psi}
+ \sum_{s=1}^{t-1}\sum_{r=1}^s
+ \bigl((\vec e_{s+1}^\T\vec y)^2+\abs{c_r^{(s)}}\abs{\vec e_{s+1}^\T\vec y}\bigr).
+\]
+The two sums are bounded separately, freely using \(s\le t\) and \(\norm{\vec y^{[s]}}\le\norm{\vec y}=1\).
+First,
+\[
+ \sum_{s=1}^{t-1}\sum_{r=1}^s (\vec e_{s+1}^\T\vec y)^2
+ =\sum_{s=1}^{t-1}s\,(\vec e_{s+1}^\T\vec y)^2
+ \le t.
+\]
+Second, by Cauchy--Schwarz over \(r\) and orthonormality of the eigenbasis,
+\[
+ \sum_{r=1}^s\abs{c_r^{(s)}}
+ \le\sqrt{s}\,\biggl(\sum_{r=1}^s\bigl(c_r^{(s)}\bigr)^2\biggr)^{1/2}
+ =\sqrt{s}\,\norm{\vec y^{[s]}}
+ \le\sqrt{t},
+\]
+so Cauchy--Schwarz over \(s\) gives
+\[
+ \sum_{s=1}^{t-1}\sum_{r=1}^s\abs{c_r^{(s)}}\abs{\vec e_{s+1}^\T\vec y}
+ \le\sqrt{t}\sum_{s=1}^{t-1}\abs{\vec e_{s+1}^\T\vec y}
+ \le\sqrt{t}\cdot\sqrt{t}
+   \biggl(\sum_{s=1}^{t-1}(\vec e_{s+1}^\T\vec y)^2\biggr)^{1/2}
+ \le t.
+\]
+Since \(\mathcal E_*/\Psi=1/(8t)\),
+\[
+ \abs\rho
+ \le\frac{t+t}{8t}
+ =\frac14
+ <\frac38.
+\]
+In both cases \(\abs\rho<3/8\), which completes the contrapositive.
+\end{proof}
+
+The next theorem states that every computed Ritz value lies in a slightly enlarged spectral interval of \(\vec A\).
+This fact is essential to the analysis of Lanczos-based methods for matrix functions \cite{druskin_knizhnerman1991,knizhnerman1996,musco_musco_sidford2018}; see \cite{chen2024}.
+
+\begin{theorem}[Containment of every computed Ritz value]
+\label{thm:containment}
+Every \(\theta\in\spec(\vec T_k)\) satisfies
+\[
+ \dist\bigl(\theta,[\lambda_{\min}(\vec A),\lambda_{\max}(\vec A)]\bigr)
+ \lesssim_k\eps\norm{\vec A}.
+\]
+\end{theorem}
+
+
+\begin{remark}
+  Paige writes this bound \cite[Eq. 3.48]{paige1980}, but does not include a proof. 
+  Many papers and books reference \cite[Eq. 3.48]{paige1980} but also do not provide the proof.
+  In fact, the only proof of this result of which we are aware of is \cite[Theorem A.1]{paige2019} via an entirely different argument.
+\end{remark}
+
+\begin{proof}
+Let \(\vec T_k\vec y=\theta\vec y\), \(\norm{\vec y}=1\), put \(\vec x=\vec V_k\vec y\), and set \(\rho=\vec y^\T \vec R_k\vec y\).
+Suppose first that \(\abs\rho\le3/8\); we show the Ritz vector cannot then be too short.
+Expanding \(\vec V_k^\T\vec V_k\) via the Gram splitting \cref{eq:gram-split}, and using \(\vec y^\T\vec R_k^\T\vec y=\vec y^\T\vec R_k\vec y=\rho\),
+\[
+ \norm{\vec x}^2
+ =\vec y^\T\vec V_k^\T\vec V_k\vec y
+ =\vec y^\T\bigl(\vec I+\vec R_k^\T+\vec D_k+\vec R_k\bigr)\vec y
+ =1+2\rho+\vec y^\T \vec D_k\vec y.
+\]
+The diagonal term satisfies \(\abs{\vec y^\T\vec D_k\vec y}\le\max_{j\le k}\abs{g_j}\le\eps\) by \cref{thm:local-errors}, so
+\[
+ \norm{\vec x}^2
+ \ge1-\tfrac34-\eps
+ \ge\tfrac15,
+\]
+using \(\eps\le1/20\), as ensured by \cref{ass:small-eps}.
+Premultiply \cref{eq:ritz-residual-identity} by \(\vec x^\T\).
+The Rayleigh quotient \(\vec x^\T \vec A\vec x/\norm{\vec x}^2\) lies in the spectral interval of \(\vec A\), so
+\[
+ \begin{aligned}
+ \dist\bigl(\theta,[\lambda_{\min}(\vec A),\lambda_{\max}(\vec A)]\bigr)
+ &\le
+ \frac{\abs{\vec x^\T(\beta_k\vec v_{k+1})
+                   (\vec e_k^\T\vec y)}}{\norm{\vec x}^2}
+ +\frac{\abs{\vec x^\T\vec F_k\vec y}}{\norm{\vec x}^2}\\
+ &\le5\,\abs{\bigl(\vec x^\T(\beta_k\vec v_{k+1})\bigr)(\vec e_k^\T\vec y)}
+ +\sqrt5\norm{\vec F_k}
+ \lesssim_k\eps\norm{\vec A},
+ \end{aligned}
+\]
+by \cref{thm:paige} and \(\norm{\vec F_k}\le\sqrt{k}\,\max_{j\le k}\norm{\vec f_j}\lesssim_k\eps\norm{\vec A}\) from \cref{thm:local-errors}.
+
+If \(\abs\rho>3/8\), we descend to an earlier iteration at which the first branch applies.
+Set \(t_0:=k\) and \((\theta^{(t_0)},\vec y^{(t_0)}):=(\theta,\vec y)\), and iterate the following step.
+Given a unit eigenpair \((\theta^{(t_i)},\vec y^{(t_i)})\) of \(\vec T_{t_i}\) with \(\abs{(\vec y^{(t_i)})^\T\vec R_{t_i}\vec y^{(t_i)}}>3/8\), \cref{lem:descent} applied to \(\vec T_{t_i}\) produces an index \(t_{i+1}<t_i\) and a unit eigenpair \((\theta^{(t_{i+1})},\vec y^{(t_{i+1})})\) of \(\vec T_{t_{i+1}}\) with
+\[
+ \abs{\theta^{(t_i)}-\theta^{(t_{i+1})}}
+ \lesssim_k\eps\norm{\vec A}.
+\]
+The process stops at the first index \(m\) with \(\abs{(\vec y^{(t_m)})^\T\vec R_{t_m}\vec y^{(t_m)}}\le3/8\).
+It must stop: the indices \(k=t_0>t_1>\cdots\ge1\) strictly decrease, and \(\vec R_1\), the strict upper triangle of a \(1\times1\) matrix, is zero, so the stopping condition holds at \(t=1\) at the latest; in particular, \(m\le k-1\).
+
+Every displacement above is an instance of the same bound in \cref{lem:descent}, so all carry the same absolute constants \(c\) and \(d\): each step satisfies \(\abs{\theta^{(t_i)}-\theta^{(t_{i+1})}}\le ck^d\eps\norm{\vec A}\).
+The triangle inequality over the at most \(k-1\) steps therefore gives
+\[
+ \abs{\theta-\theta^{(t_m)}}
+ \le\sum_{i=0}^{m-1}\abs{\theta^{(t_i)}-\theta^{(t_{i+1})}}
+ \le(k-1)\,ck^d\eps\norm{\vec A}
+ \lesssim_k\eps\norm{\vec A}.
+\]
+The stopping pair satisfies the hypothesis of the first branch, applied to the first \(t_m\) iterations, so \(\dist(\theta^{(t_m)}, [\lambda_{\min}(\vec A),\lambda_{\max}(\vec A)]) \lesssim_k\eps\norm{\vec A}\).
+Adding the two displacements proves the theorem.
+\end{proof}
+
+\Cref{thm:containment} places every computed Ritz value near the spectral \emph{interval} of \(\vec A\).
+The final theorem of this section sharpens this to the spectrum itself for Ritz values whose scalar residual estimate \(\beta_k\abs{\vec e_k^\T\vec y}\) is small (in Paige's terminology, Ritz values that have \emph{stabilized}) \cite{paige1980}.
+In exact arithmetic such a bound would follow at once from \cref{eq:ritz-residual-bound}; in finite precision that route divides by \(\norm{\vec x}\), which loss of orthogonality can make small.
+
+\begin{theorem}[Localization of stabilized Ritz values]
+\label{thm:stabilized}
+Let \((\theta,\vec y)\) be a unit eigenpair of \(\vec T_k\).
+Then
+\[
+ \dist(\theta,\spec(\vec A))
+ \lesssim_k \beta_k\abs{\vec e_k^\T\vec y}+\eps\norm{\vec A}.
+\]
+In particular, if the recurrence terminates at step \(k\), so \(\beta_k=0\), every eigenvalue of \(\vec T_k\) satisfies \(\dist(\theta,\spec(\vec A))\lesssim_k\eps\norm{\vec A}\).
+\end{theorem}
+
+\begin{proof}
+Put \(r:=\beta_k\abs{\vec e_k^\T\vec y}\).
+Starting from \((\theta,\vec y)\), apply \cref{lem:descent} whenever \(\abs{\vec y^\T \vec R_t\vec y}>3/8\).
+The iteration number strictly decreases, so after at most \(k-1\) steps the process reaches an eigenpair \((\widehat\theta,\widehat{\vec y})\) of some \(\vec T_t\) whose Ritz vector \(\widehat{\vec x}=\vec V_t\widehat{\vec y}\) has \(\norm{\widehat{\vec x}}^2\ge1/5\).
+As in the proof of \cref{thm:containment}, the accumulated displacement satisfies \(\abs{\theta-\widehat\theta}\lesssim_k\eps\norm{\vec A}\).
+The residual estimate of the final pair is \(r\) if no descent occurred, and otherwise is \(\lesssim_k\eps\norm{\vec A}\) by \cref{lem:descent}; in either case it is \(\lesssim_k r+\eps\norm{\vec A}\).
+Since \(\vec F_t\) consists of the first \(t\) columns of \(\vec F_k\),
+\(\norm{\vec F_t}\le\norm{\vec F_k}\le\sqrt{k}\,\max_{j\le k}\norm{\vec f_j}\lesssim_k\eps\norm{\vec A}\).
+Applying \cref{eq:ritz-residual-bound} to the final pair gives
+\[
+ \dist(\widehat\theta,\spec(\vec A))
+ \le\frac{\norm{(\vec A-\widehat\theta \vec I)\widehat{\vec x}}}
+          {\norm{\widehat{\vec x}}}
+ \lesssim_k r+\eps\norm{\vec A}.
+\]
+Adding the accumulated displacement proves the theorem; at termination \(r=0\).
+\end{proof}
+
+\section{Greenbaum's theory}
+\label{sec:greenbaum}
+
+The Paige analysis above already supplies the deterministic information needed for a backward model.
+In this section we show that the computed \(\vec T_k\) is the exact output of \(k\) steps of Lanczos applied to a symmetric matrix that is close to an orthogonal copy of \(\vec I_k\otimes\vec A\), a backward interpretation of the kind introduced by Greenbaum \cite{greenbaum1989}.
+The conclusion is Greenbaum's, but the construction is not: Greenbaum builds the model by extending the computed tridiagonal matrix, continuing the recurrence in exact arithmetic and tracking where the extended eigenvalues fall; we instead orthogonalize the computed Lanczos vectors exactly, by a dilation into \(k\) stacked copies of \(\R^n\), and then complete the dilated block to a symmetric matrix.
+The dilation has three payoffs: the model is built in closed form, in dimension exactly \(nk\), with no recurrence to continue; its perturbation is of the same order \(\eps\norm{\vec A}\) as the local error bounds (Greenbaum's bound depends on the fourth-root of the accuracy parameter); and the starting spectral weights are preserved exactly, so that all error is concentrated in a single perturbation bound.
+Moreover, the construction does not assume that \(\vec V_k\) is well-conditioned, that \(k\) precedes exact breakdown for \((\vec A,\vec v_1)\), or that the spectral measure is regular.
+
+\subsection{Exact orthogonalization by a nilpotent dilation}
+
+The construction takes as input the governing recurrence in \cref{eq:governing} together with the local error bounds of \cref{thm:local-errors}; nothing else about the run is used.
+It proceeds in three steps that mirror the structure of \cref{sec:paige}.
+First, we rescale the computed Lanczos vectors to have exactly unit norm and check that the local error bounds survive, in parallel with \cref{thm:local-errors}.
+Second, we bound a commutator built from the strict upper triangle of the normalized Gram matrix, in parallel with \cref{lem:gram-commutator}.
+Third, we orthogonalize exactly: the normalized vectors and the Gram triangle assemble into an isometry into a space of \(k\) stacked copies of \(\R^n\), on which the recurrence is reproduced up to a residual of size \(\lesssim_k\eps\norm{\vec A}\).
+
+Throughout this subsection, suppose \cref{alg:lanczos} completes \(k\) iterations under the assumptions of \cref{sec:model}.
+Let \(d_j:=\norm{\vec v_j}\), \(\vec D:=\diag(d_1,\ldots,d_k)\), and \(\bar{\vec V}:=\vec V_k\vec D^{-1}\), so the columns \(\bar{\vec v}_j=\vec v_j/d_j\) of \(\bar{\vec V}\) are exactly unit vectors.
+Write \(\beta_k\vec v_{k+1}/d_k=\bar\beta_k\bar{\vec v}_{k+1}\), where \(\bar\beta_k\ge0\) and \(\bar{\vec v}_{k+1}\) is a unit vector, chosen arbitrarily if \(\beta_k\vec v_{k+1}=\vec0\).
+In this basis the governing recurrence in \cref{eq:governing} reads
+\begin{equation}
+ \vec A\bar{\vec V}=\bar{\vec V}\vec T_k+\bar\beta_k\bar{\vec v}_{k+1}\vec e_k^\T+\vec E,
+ \label{eq:normalized-interface}
+\end{equation}
+which defines the normalized residual \(\vec E\).
+Finally, in parallel with \cref{eq:gram-split}, decompose the normalized Gram matrix as
+\begin{equation}
+ \vec G:=\bar{\vec V}^\T \bar{\vec V}=\vec I+\vec U+\vec U^\T,
+ \qquad
+ \vec a:=\bar{\vec V}^\T\bar{\vec v}_{k+1},
+ \label{eq:normalized-gram}
+\end{equation}
+where \(\vec U\) is strictly upper triangular; the diagonal is exactly the identity because the columns are exactly unit.
+
+The first step is the analogue of \cref{thm:local-errors} for the normalized quantities.
+
+\begin{lemma}[Normalized local errors]
+\label{lem:normalized-errors}
+The normalized residual satisfies \(\norm{\vec E}\lesssim_k\eps\norm{\vec A}\), and the normalized weighted adjacent products satisfy
+\[
+ \beta_j\abs{\bar{\vec v}_j^\T\bar{\vec v}_{j+1}}\lesssim_k\eps\norm{\vec A}
+ \quad(1\le j<k),
+ \qquad
+ \bar\beta_k\abs{\bar{\vec v}_k^\T\bar{\vec v}_{k+1}}\lesssim_k\eps\norm{\vec A}.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(d_j^2=1+g_j\), the bound \(\abs{g_j}\le\eps\) of \cref{thm:local-errors} gives \(\norm{\vec D-\vec I}\le\eps\); moreover, \(\eps\le3/4\) by \cref{ass:small-eps}, so \(d_j^2\ge1-\eps\ge1/4\) and \(\norm{\vec D^{-1}}\le2\).
+Combining the two, \(\norm{\vec D^{-1}-\vec I}=\norm{\vec D^{-1}(\vec I-\vec D)}\le2\eps\).
+Substituting \(\vec V_k=\bar{\vec V}\vec D\) into \cref{eq:governing} and right multiplying by \(\vec D^{-1}\) identifies the residual in \cref{eq:normalized-interface} as
+\[
+ \vec E=\bar{\vec V}(\vec D\vec T_k\vec D^{-1}-\vec T_k)
+       +\vec F_k\vec D^{-1}.
+\]
+Since \(\norm{\vec T_k}\lesssim_k\norm{\vec A}\) by \cref{lem:coefficients},
+\[
+ \norm{\vec D\vec T_k\vec D^{-1}-\vec T_k}
+ \le\norm{(\vec D-\vec I)\vec T_k\vec D^{-1}}
+ +\norm{\vec T_k(\vec D^{-1}-\vec I)}
+ \lesssim_k\eps\norm{\vec A},
+\]
+while \(\norm{\vec F_k\vec D^{-1}}\le2\sqrt{k}\,\max_{1\le j\le k}\norm{\vec f_j}\lesssim_k\eps\norm{\vec A}\) by \cref{thm:local-errors}.
+Since \(\bar{\vec V}\) has unit columns, \(\norm{\bar{\vec V}}\le\sqrt{k}\), and hence, combined with the two preceding bounds, \(\norm{\vec E}\lesssim_k\eps\norm{\vec A}\).
+
+Up to the normalization scalars, each adjacent product is a weighted adjacent product from \cref{eq:derived-quantities},
+\[
+ \beta_j\bar{\vec v}_j^\T\bar{\vec v}_{j+1}
+ =\frac{p_j}{d_jd_{j+1}},
+ \qquad
+ \bar\beta_k\,\bar{\vec v}_k^\T\bar{\vec v}_{k+1}
+ =\frac{p_k}{d_k^2},
+\]
+and \(d_j\ge1/2\), so both are \(\lesssim_k\eps\norm{\vec A}\) by \cref{thm:local-errors}.
+\end{proof}
+
+The second step bounds a commutator built from \(\vec U\), in parallel with the upper-triangular identity in \cref{lem:gram-commutator}: there the strict upper triangle \(\vec R_k\) of the Gram defect satisfied a commutator relation driven by the local errors, and here \(\vec U\) plays the role of \(\vec R_k\).
+
+\begin{lemma}[Normalized Gram commutator]
+\label{lem:normalized-commutator}
+The matrix \(\vec T_k\vec U-\vec U\vec T_k-\bar\beta_k\vec a\vec e_k^\T\) is upper triangular, and its norm is \(\lesssim_k\eps\norm{\vec A}\).
+\end{lemma}
+
+\begin{proof}
+Put \(\vec M:=\vec T_k\vec U-\vec U\vec T_k-\bar\beta_k\vec a\vec e_k^\T\).
+Tridiagonality of \(\vec T_k\) and strict upper triangularity of \(\vec U\) make \(\vec M\) upper triangular.
+Left multiplication of \cref{eq:normalized-interface} by \(\bar{\vec V}^\T\) gives
+\[
+ \bar{\vec V}^\T\vec A\bar{\vec V}
+ =\vec G\vec T_k+\bar\beta_k\vec a\vec e_k^\T+\bar{\vec V}^\T\vec E.
+\]
+The left side is symmetric, so the right side equals its own transpose:
+\[
+ \vec G\vec T_k+\bar\beta_k\vec a\vec e_k^\T+\bar{\vec V}^\T\vec E
+ =\vec T_k\vec G+\bar\beta_k\vec e_k\vec a^\T+\vec E^\T\bar{\vec V}.
+\]
+Substituting \(\vec G=\vec I+\vec U+\vec U^\T\), cancelling the \(\vec T_k\) terms coming from the identity, and collecting the remaining terms into \(\vec M\) and \(\vec M^\T\) gives
+\begin{equation}
+ \vec M-\vec M^\T=\bar{\vec V}^\T \vec E-\vec E^\T \bar{\vec V},
+ \label{eq:normalized-commutator}
+\end{equation}
+which controls the strict upper triangle of \(\vec M\).
+Its diagonal entries are
+\[
+ \beta_{i-1}\bar{\vec v}_{i-1}^\T\bar{\vec v}_i
+ -\beta_i\bar{\vec v}_i^\T\bar{\vec v}_{i+1}\quad(i<k),
+ \qquad
+ \beta_{k-1}\bar{\vec v}_{k-1}^\T\bar{\vec v}_k
+ -\bar\beta_k\bar{\vec v}_k^\T\bar{\vec v}_{k+1},
+\]
+with absent endpoint terms omitted; each is \(\lesssim_k\eps\norm{\vec A}\) by the adjacent-product bounds of \cref{lem:normalized-errors}.
+Since \(\vec M^\T\) is lower triangular, every strict upper entry of \(\vec M\) equals the corresponding entry of \(\vec M-\vec M^\T\), and reading that entry off \cref{eq:normalized-commutator} gives, for \(i<j\),
+\[
+ \abs{(\vec M)_{ij}}
+ =\abs{\bar{\vec v}_i^\T(\vec E\vec e_j)-(\vec E\vec e_i)^\T\bar{\vec v}_j}
+ \le2\norm{\vec E}
+ \lesssim_k\eps\norm{\vec A},
+\]
+because \(\bar{\vec v}_i\) and \(\vec e_j\) are unit vectors, and \(\norm{\vec E}\lesssim_k\eps\norm{\vec A}\) by \cref{lem:normalized-errors}.
+Since \(\vec M\) is \(k\times k\) and upper triangular, these entrywise bounds give \(\norm{\vec M}\lesssim_k\eps\norm{\vec A}\).
+\end{proof}
+
+The third step contains no error analysis at all; it is exact linear algebra, using only that \(\bar{\vec V}\) has unit columns and \(\bar{\vec v}_{k+1}\) is a unit vector.
+Where Paige used the triangle \(\vec R_k\) of the Gram defect to track the loss of orthogonality, we use the triangle \(\vec U\) to undo it: setting
+\begin{equation}
+ \vec C:=(\vec I+\vec U)^{-1},
+ \qquad
+ \vec K:=\vec I-\vec C,
+ \qquad
+ \vec s:=\vec C\vec a,
+ \qquad
+ \vec y:=\bar{\vec v}_{k+1}-\bar{\vec V}\vec s,
+ \label{eq:CKsy}
+\end{equation}
+the recombination \(\bar{\vec V}\vec C\) of the columns of \(\bar{\vec V}\) fails to be an isometry only by the auxiliary block \(\vec K\).
+
+\begin{lemma}[Nilpotent isometry]
+\label{lem:isometry}
+The matrix \(\vec K\) is strictly upper triangular, so \(\vec K^k=\vec0\); moreover \(\norm{\vec K}\le1\) and \(\norm{\vec C}\le2\).
+In addition,
+\[
+ (\bar{\vec V}\vec C)^\T(\bar{\vec V}\vec C)=\vec I-\vec K^\T\vec K,
+ \qquad
+ (\bar{\vec V}\vec C)^\T\vec y=-\vec K^\T\vec s,
+ \qquad
+ \norm{\vec s}^2+\norm{\vec y}^2=1.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(\vec K=\vec U\vec C=\vec C\vec U\), it is strictly upper triangular, and hence \(\vec K^k=\vec0\).
+Since \(\vec U=\vec C^{-1}-\vec I\), the Gram decomposition in \cref{eq:normalized-gram} reads
+\[
+ \vec G=\vec I+\vec U+\vec U^\T=\vec C^{-1}+\vec C^{-\T}-\vec I.
+\]
+Multiplying by \(\vec C^\T\) on the left and \(\vec C\) on the right, the inverses cancel term by term:
+\[
+ \vec C^\T\vec G\vec C
+ =\vec C^\T+\vec C-\vec C^\T\vec C.
+\]
+Expanding \(\vec K^\T\vec K=(\vec I-\vec C)^\T(\vec I-\vec C)=\vec I-\vec C-\vec C^\T+\vec C^\T\vec C\) identifies the right side, so
+\begin{equation}
+ \vec C^\T\vec G\vec C
+ =\vec I-\vec K^\T\vec K.
+ \label{eq:CGC-identity}
+\end{equation}
+Since \((\bar{\vec V}\vec C)^\T(\bar{\vec V}\vec C)=\vec C^\T\vec G\vec C\), this is the first identity of the lemma.
+Since the Gram matrix \(\vec G\) is positive semidefinite, \(\vec K^\T\vec K=\vec I-\vec C^\T\vec G\vec C\preceq\vec I\), so \(\norm{\vec K}\le1\) and \(\norm{\vec C}=\norm{\vec I-\vec K}\le2\); no such a priori bound holds for \(\vec U\) itself.
+
+For the second identity,
+\[
+ \vec K^\T\vec s+\vec C^\T \bar{\vec V}^\T\vec y
+ =\vec K^\T\vec s+\vec C^\T\vec a-\vec C^\T \vec G \vec C\vec a=\vec0,
+\]
+where the last equality uses \cref{eq:CGC-identity} and \(\vec C+\vec K=\vec I\).
+Finally,
+\[
+ \norm{\vec y}^2+\norm{\vec s}^2
+ =1-2\vec a^\T\vec C\vec a
+   +\vec a^\T\vec C^\T(\vec G+\vec I)\vec C\vec a
+ =1
+\]
+because \(\vec C^\T(\vec G+\vec I)\vec C=\vec C+\vec C^\T\).
+\end{proof}
+
+With the three steps in place, the dilation is assembled by stacking powers of \(\vec K\).
+
+\begin{lemma}[Physical dilation]
+\label{lem:dilation}
+On \(k\) copies of \(\R^n\), let \(\widehat{\vec A}=\vec I_k\otimes \vec A\), and write \(\col(\cdots)\) for the map that stacks its arguments into a block column.
+There exist \(\widehat{\vec V}\in\R^{nk\times k}\), \(\widehat{\vec v}\in\R^{nk}\), and \(\widehat{\vec E}\in\R^{nk\times k}\) such that, with \(\bar\beta_k\ge0\) as above,
+\begin{align*}
+ \widehat{\vec V}^\T \widehat{\vec V}&=\vec I,
+ &\widehat{\vec V}^\T\widehat{\vec v}&=\vec0,
+ &\norm{\widehat{\vec v}}&\le1,
+ \\
+ \widehat{\vec V}\vec e_1
+ &=\col\bigl(\vec v_1/\norm{\vec v_1},\vec0,\ldots,\vec0\bigr),
+ \\
+ \widehat{\vec A}\widehat{\vec V}
+ &=\widehat{\vec V}\vec T_k+\bar\beta_k\widehat{\vec v}\vec e_k^\T+\widehat{\vec E},
+ &\norm{\widehat{\vec E}}&\lesssim_k\eps\norm{\vec A}.
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+Define
+\begin{align*}
+ \widehat{\vec V}&=\col(\bar{\vec V}\vec C,\bar{\vec V}\vec C\vec K,\ldots,
+                    \bar{\vec V}\vec C\vec K^{k-1}),
+ \\
+ \widehat{\vec v}&=\col(\vec y,\bar{\vec V}\vec C\vec s,
+                  \bar{\vec V}\vec C\vec K\vec s,\ldots,
+                  \bar{\vec V}\vec C\vec K^{k-2}\vec s),
+\end{align*}
+with \(\widehat{\vec v}=\vec y\) when \(k=1\).
+Since block columns multiply block by block, the identities of \cref{lem:isometry} turn every inner product involving \(\widehat{\vec V}\) and \(\widehat{\vec v}\) into a telescoping sum.
+First,
+\[
+ \widehat{\vec V}^\T\widehat{\vec V}
+ =\sum_{r=0}^{k-1}(\vec K^r)^\T(\vec I-\vec K^\T\vec K)\vec K^r
+ =\sum_{r=0}^{k-1}\Bigl((\vec K^r)^\T\vec K^r-(\vec K^{r+1})^\T\vec K^{r+1}\Bigr)
+ =\vec I-(\vec K^k)^\T\vec K^k
+ =\vec I,
+\]
+using \(\vec K^k=\vec0\) in the last step.
+Similarly,
+\[
+ \widehat{\vec V}^\T\widehat{\vec v}
+ =(\bar{\vec V}\vec C)^\T\vec y
+ +\sum_{r=1}^{k-1}(\vec K^r)^\T(\vec I-\vec K^\T\vec K)\vec K^{r-1}\vec s
+ =-\vec K^\T\vec s
+ +\bigl(\vec K^\T\vec s-(\vec K^k)^\T\vec K^{k-1}\vec s\bigr)
+ =\vec0,
+\]
+and
+\[
+ \norm{\widehat{\vec v}}^2
+ =\norm{\vec y}^2
+ +\sum_{r=0}^{k-2}\Bigl(\norm{\vec K^r\vec s}^2-\norm{\vec K^{r+1}\vec s}^2\Bigr)
+ =\norm{\vec y}^2+\norm{\vec s}^2-\norm{\vec K^{k-1}\vec s}^2
+ =1-\norm{\vec K^{k-1}\vec s}^2
+ \le1.
+\]
+Also \(\vec C\vec e_1=\vec e_1\) and \(\vec K\vec e_1=\vec0\), so \(\widehat{\vec V}\vec e_1=\col(\bar{\vec v}_1,\vec0,\ldots,\vec0)\), proving the second equation of the lemma.
+
+It remains to propagate the recurrence.
+Write \(\widehat{\vec V}_r:=\bar{\vec V}\vec C\vec K^r\) and \(\widehat{\vec v}_r\) for the \(r\)th blocks of \(\widehat{\vec V}\) and \(\widehat{\vec v}\), indexed from \(r=0\), so that \(\widehat{\vec v}_0=\vec y\) and \(\widehat{\vec v}_r=\widehat{\vec V}_{r-1}\vec s\) for \(r\ge1\).
+Put \(\vec M:=\vec T_k\vec U-\vec U\vec T_k-\bar\beta_k\vec a\vec e_k^\T\) and
+\begin{equation}
+ \vec L:=\vec C\vec M\vec C
+ =\vec T_k\vec K-\vec K\vec T_k-\bar\beta_k\vec s\vec e_k^\T,
+ \qquad
+ \norm{\vec L}\lesssim_k\eps\norm{\vec A},
+ \label{eq:L-commutator}
+\end{equation}
+where the norm bound combines \(\norm{\vec M}\lesssim_k\eps\norm{\vec A}\) from \cref{lem:normalized-commutator} with \(\norm{\vec C}\le2\) from \cref{lem:isometry}.
+Rearranged, \cref{eq:L-commutator} is an exchange rule: moving \(\vec K\) leftward past \(\vec T_k\) costs a boundary term and a small residual,
+\[
+ \vec T_k\vec K=\vec K\vec T_k+\bar\beta_k\vec s\vec e_k^\T+\vec L.
+\]
+This is the only commuting we need.
+We claim that, for \(0\le r<k\),
+\begin{equation}
+ \vec A\widehat{\vec V}_r
+ =\widehat{\vec V}_r\vec T_k+\bar\beta_k\,\widehat{\vec v}_r\vec e_k^\T+\vec E_r,
+ \qquad
+ \norm{\vec E_r}\lesssim_k\eps\norm{\vec A};
+ \label{eq:block-recurrence}
+\end{equation}
+stacking these \(k\) block rows gives the third equation of the lemma, with \(\norm{\widehat{\vec E}}\le\sqrt{k}\,\max_r\norm{\vec E_r}\lesssim_k\eps\norm{\vec A}\).
+
+The claim follows by induction on \(r\).
+For \(r=0\), right multiply \cref{eq:normalized-interface} by \(\vec C\): since \(\vec e_k^\T\vec C=\vec e_k^\T\), and \(\vec T_k\vec C=\vec C\vec T_k-\bar\beta_k\vec s\vec e_k^\T-\vec L\) by the exchange rule and \(\vec C=\vec I-\vec K\),
+\[
+ \vec A\bar{\vec V}\vec C
+ =\bar{\vec V}\vec C\vec T_k+\bar\beta_k(\bar{\vec v}_{k+1}-\bar{\vec V}\vec s)\vec e_k^\T+\vec E_0,
+ \qquad
+ \vec E_0=\vec E\vec C-\bar{\vec V}\vec L,
+\]
+and \(\bar{\vec v}_{k+1}-\bar{\vec V}\vec s=\vec y=\widehat{\vec v}_0\), while \(\norm{\vec E_0}\le2\norm{\vec E}+\sqrt{k}\,\norm{\vec L}\lesssim_k\eps\norm{\vec A}\) by \cref{lem:normalized-errors}.
+For the step from \(r\) to \(r+1\), right multiply \cref{eq:block-recurrence} by \(\vec K\).
+The boundary term dies because \(\vec e_k^\T\vec K=\vec0\) (the last row of a strictly upper triangular matrix is zero), and the exchange rule moves the trailing \(\vec K\) past \(\vec T_k\), recreating the next boundary:
+\[
+ \vec A\widehat{\vec V}_{r+1}
+ =\widehat{\vec V}_r\vec T_k\vec K+\vec E_r\vec K
+ =\widehat{\vec V}_{r+1}\vec T_k
+ +\bar\beta_k\,(\widehat{\vec V}_r\vec s)\vec e_k^\T
+ +\vec E_r\vec K+\widehat{\vec V}_r\vec L,
+\]
+which is \cref{eq:block-recurrence} for \(r+1\), with \(\widehat{\vec V}_r\vec s=\widehat{\vec v}_{r+1}\) and \(\vec E_{r+1}=\vec E_r\vec K+\widehat{\vec V}_r\vec L\).
+Since \(\norm{\vec K}\le1\) and \(\norm{\widehat{\vec V}_r}\le\norm{\bar{\vec V}}\norm{\vec C}\norm{\vec K}^r\le2\sqrt{k}\), each step grows the residual by at most \(2\sqrt{k}\,\norm{\vec L}\), so \(\norm{\vec E_r}\le\norm{\vec E_0}+2r\sqrt{k}\,\norm{\vec L}\lesssim_k\eps\norm{\vec A}\).
+\end{proof}
+
+\subsection{Symmetric completion and the backward theorem}
+
+\begin{lemma}[Completion of an approximate initial Lanczos block]
+\label{lem:completion}
+Let \(\widehat{\vec V}\), \(\widehat{\vec v}\), and \(\widehat{\vec E}\) be as in \cref{lem:dilation}, and put \(N=nk\).
+There are an orthogonal matrix \(\widehat{\vec U}\in\R^{N\times N}\) whose first \(k\) columns are the columns of \(\widehat{\vec V}\), and a symmetric tridiagonal matrix \(\widetilde{\vec T}\in\R^{N\times N}\), such that
+\[
+ (\widetilde{\vec T})_{1:k,1:k}=\vec T_k,
+ \qquad
+ \norm{\widehat{\vec U}^\T \widehat{\vec A}\widehat{\vec U}-\widetilde{\vec T}}\le3\norm{\widehat{\vec E}}.
+\]
+The matrix \(\widetilde{\vec T}\) may be reducible only after its leading \(k\times k\) block.
+\end{lemma}
+
+\begin{proof}
+From the first and third equations of \cref{lem:dilation}, \(\widehat{\vec V}^\T\widehat{\vec E}=\widehat{\vec V}^\T\widehat{\vec A}\widehat{\vec V}-\vec T_k\), which is symmetric.
+Hence
+\begin{equation}
+ \vec\Delta=-\widehat{\vec E}\widehat{\vec V}^\T-\widehat{\vec V}\widehat{\vec E}^\T
+ +\widehat{\vec V}(\widehat{\vec V}^\T\widehat{\vec E})\widehat{\vec V}^\T
+ \label{eq:symmetric-correction}
+\end{equation}
+is symmetric, satisfies \(\vec\Delta\widehat{\vec V}=-\widehat{\vec E}\), and obeys \(\norm{\vec\Delta}\le3\norm{\widehat{\vec E}}\).
+Thus \(\vec B=\widehat{\vec A}+\vec\Delta\) satisfies the exact recurrence
+\[
+ \vec B\widehat{\vec V}=\widehat{\vec V}\vec T_k+\bar\beta_k\widehat{\vec v}\vec e_k^\T.
+\]
+If \(\bar\beta_k\norm{\widehat{\vec v}}>0\), normalize \(\widehat{\vec v}\) and absorb its norm into the next subdiagonal; if \(\bar\beta_k\norm{\widehat{\vec v}}=0\), \(\range(\widehat{\vec V})\) is invariant.
+Continue exact Lanczos for \(\vec B\).
+At any later breakdown, symmetry makes the orthogonal complement of the generated invariant subspace invariant, so tridiagonalize that complement independently.
+This gives an orthogonal \(\widehat{\vec U}\), with first \(k\) columns \(\widehat{\vec V}\), for which \(\widetilde{\vec T}=\widehat{\vec U}^\T \vec B\widehat{\vec U}\) is tridiagonal and has leading block \(\vec T_k\).
+Finally,
+\[
+ \norm{\widehat{\vec U}^\T \widehat{\vec A}\widehat{\vec U}-\widetilde{\vec T}}
+ =\norm{\vec\Delta}\le3\norm{\widehat{\vec E}}.\qedhere
+\]
+\end{proof}
+
+\begin{theorem}[Greenbaum-type backward model]
+\label{thm:greenbaum}
+Suppose \cref{alg:lanczos} completes \(k\) iterations under the assumptions of \cref{sec:model}.
+Put \(N=nk\).
+There exist symmetric \(N\times N\) matrices \(\vec S\) and \(\widetilde{\vec T}\) such that
+\begin{enumerate}[label=\textup{(\roman*)}]
+ \item \(\widetilde{\vec T}\) is tridiagonal and its leading \(k\times k\)
+       principal block is exactly the computed \(\vec T_k\);
+ \item \(\vec S=\widehat{\vec U}^\T(\vec I_k\otimes \vec A)\widehat{\vec U}\) for an orthogonal matrix \(\widehat{\vec U}\) satisfying \(\widehat{\vec U}\vec e_1=\col\bigl(\vec v_1/\norm{\vec v_1},\vec0,\ldots,\vec0\bigr)\);
+ \item \(\norm{\vec S-\widetilde{\vec T}}\lesssim_k\eps\norm{\vec A}\).
+\end{enumerate}
+Consequently, exact \(k\)-step Lanczos applied to \((\widetilde{\vec T},\vec e_1)\) returns the computed matrix \(\vec T_k\) exactly.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{lem:dilation} and then \cref{lem:completion}.
+Let \(\widehat{\vec U}\) be the resulting orthogonal matrix and set
+\[
+ \vec S=\widehat{\vec U}^\T\widehat{\vec A}\widehat{\vec U}.
+\]
+The completion bound and the residual bound in \cref{lem:dilation} prove (iii).
+Moreover, \(\widehat{\vec U}\vec e_1=\widehat{\vec V}\vec e_1 =\col(\bar{\vec v}_1,\vec0,\ldots,\vec0)\) by the second equation in \cref{lem:dilation}, proving (ii).
+Since the run completed \(k\) iterations, the internal subdiagonals \(\beta_1,\ldots,\beta_{k-1}\) of \(\vec T_k\) are positive, so exact Lanczos from \(\vec e_1\) reads the leading block of \(\widetilde{\vec T}\) through step \(k\).
+\end{proof}
+
+This is a backward interpretation at the level of the starting spectral measure.
+It does not assert componentwise spectral-weight comparison for every computed Lanczos vector.
+Its advantages are that the perturbation is of the same order \(\eps\norm{\vec A}\) as the local errors and that no inverse subdiagonal, starting weight, or spectral gap enters the construction.
+The enlarged dimension \(nk\) is not optimized.
+
+\section{A numerical illustration}
+\label{sec:numerical}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{experiments/spectral_measure}
+\caption{Starting-vector weights of the backward model.
+Left: the weight of \(\bar{\vec v}_1\) on each eigenvalue of \(\vec A\) (stems) and the total weight of \(\widehat{\vec V}\vec e_1\) on the corresponding cluster of eigenvalues of \(\vec B\) (crosses); the two agree to within \(4\cdot10^{-6}\).
+Right: zooms on the three largest eigenvalues, with the original eigenvalue and its weight repeated as a heavier stem: around each, the model spectrum contains a cluster of \(k=30\) eigenvalues within \(\norm{\vec\Delta}\approx3\cdot10^{-7}\) (tick marks at the bottom), over which the original weight is distributed; only a few cluster members carry weight above the plotted floor.}
+\label{fig:spectral-measure}
+\end{figure}
+
+We illustrate the backward model of \cref{sec:greenbaum} on the run shown in \cref{fig:backward-experiment}.
+The matrix \(\vec A\) is the \(n=64\) Strako\v{s} matrix \cite{strakos1991}: diagonal, with eigenvalues (in decreasing order) \(\lambda_i=\lambda_n+\frac{n-i}{n-1}(\lambda_1-\lambda_n)\rho^{i-1}\), where \(\lambda_1=1\), \(\lambda_n=10^{-3}\), and \(\rho=0.9\).
+\Cref{alg:lanczos} is run for \(k=30\) iterations in IEEE single precision (\(\eps\approx10^{-7}\)) from a random starting vector, and the backward model is then assembled in double precision, following the construction of \cref{sec:greenbaum} verbatim.
+The run loses orthogonality completely, \(\norm{\vec V_k^\T\vec V_k-\vec I}\approx1.1\).
+Nevertheless, the dilated residual satisfies \(\norm{\widehat{\vec E}}\approx2\cdot10^{-7}\,\norm{\vec A}\), the correction satisfies \(\norm{\vec\Delta}\le3\norm{\widehat{\vec E}}\), the completed recurrence \(\vec B\widehat{\vec V}=\widehat{\vec V}\vec T_k+\bar\beta_k\widehat{\vec v}\vec e_k^\T\) holds to working double precision, and every eigenvalue of \(\vec B=\widehat{\vec A}+\vec\Delta\) lies within \(\norm{\vec\Delta}\approx3\cdot10^{-7}\) of \(\spec(\vec A)\).
+Lanczos in exact arithmetic (double precision with full reorthogonalization) applied to \(\vec B\) reproduces every computed coefficient \(\alpha_j\) and \(\beta_j\), while applied to \(\vec A\) it departs from the computed run at order \(\norm{\vec A}\) as orthogonality is lost.
+
+\Cref{fig:spectral-measure} compares \(\vec B\) with \(\vec A\) through their starting vectors.
+By item (ii) of \cref{thm:greenbaum}, the weights of \(\widehat{\vec V}\vec e_1\) in an eigenbasis of \(\widehat{\vec A}\) agree exactly with those of \(\bar{\vec v}_1\) in an eigenbasis of \(\vec A\); the figure shows the corresponding comparison for the perturbed matrix \(\vec B\).
+Each eigenvalue of \(\vec A\) is matched in \(\vec B\) by a cluster of \(k\) eigenvalues within \(\norm{\vec\Delta}\), and the total weight of \(\widehat{\vec V}\vec e_1\) on each cluster reproduces the weight of \(\bar{\vec v}_1\) on the corresponding eigenvalue of \(\vec A\), here to within \(4\cdot10^{-6}\).
+
+
+
+\section{Conclusion}
+
+The kernel and normalization model yields the perturbed recurrence, near-normalization, and local products.
+These feed both the Paige Ritz conclusions and the physical-dilation proof of the Greenbaum model.
+All dependence on implementation accuracy is expressed through \(\eps\); all discarded factors are polynomial only in the iteration count.
+The backward construction uses only the local Paige package, while the global Paige theorems independently explain when and how orthogonality is lost and why every computed Ritz value remains meaningful.
+
+\printbibliography
+
+\appendix
+
+\input{AI}
+\input{style}
+
+
+\section{Correspondence with the literature}
+\label{app:correspondence}
+
+\Cref{tab:correspondence} matches the results of this note with their closest counterparts in the work of Paige and Greenbaum.
+The correspondence is at the level of content rather than of exact statements: the cited results carry explicit constants and factors polynomial in the iteration count that our convention suppresses, and they are proved from the elementwise standard model of floating point arithmetic rather than from the kernel interface of \cref{sec:model}.
+Conversely, several intermediate statements of this note, in particular the dilation of \cref{sec:greenbaum}, replace rather than reproduce the original arguments and have no direct counterpart.
+Equation, lemma, and theorem numbers in the middle column refer to the internal numbering of the cited works.
+Textbook and survey treatments of many of these results can be found in \cite{parlett1998,meurant2006,meurant_strakos2006}.
+
+\begin{table}[htb]
+\centering
+\small
+\begin{tabular}{@{}
+  >{\raggedright\arraybackslash}p{0.25\linewidth}
+  >{\raggedright\arraybackslash}p{0.23\linewidth}
+  >{\raggedright\arraybackslash}p{0.44\linewidth}@{}}
+\toprule
+This note & Literature & Comments \\
+\midrule
+\cref{thm:local-errors} (local error bounds)
+ & \cite[Secs.~2--3]{paige1976}
+ & Paige propagates the elementwise model through every arithmetic operation, with explicit constants; here the bounds are read off the kernel interface. \\
+\addlinespace
+\cref{lem:gram-commutator} (Gram commutator)
+ & implicit in \cite[Sec.~3]{paige1980}
+ & Paige tracks the entries of \(\vec V_k^\T\vec V_k\) through elementwise recurrences; the commutator identity collects the same information in matrix form. \\
+\addlinespace
+\cref{thm:paige} and \cref{eq:dichotomy} (loss of orthogonality)
+ & \cite[eqs.~(3.11)--(3.13)]{paige1980}
+ & ``Paige's theorem'': the same product of orthogonality defect and residual estimate is bounded, there with explicit constants. \\
+\addlinespace
+\cref{lem:descent} (descent)
+ & \cite[Lem.~3.1]{paige1980}
+ & Paige's descent step is controlled by the ratio of a coefficient to an eigenvalue gap; the division-free identity \cref{eq:tau-P} avoids forming the ratio, so the case \(\theta\in\spec(\vec T_s)\) needs no separate treatment. \\
+\addlinespace
+\cref{thm:containment} (containment)
+ & \cite[eq.~(3.48)]{paige1980}; \cite[Thm.~A.1]{paige2019}
+ & Stated by Paige with the justification ``an argument like that used in Theorem 3.1'' but without proof; the only complete proof we are aware of is \cite[Thm.~A.1]{paige2019}, by a different argument. \\
+\addlinespace
+\cref{thm:stabilized} (stabilized Ritz values)
+ & \cite[Thm.~3.1]{paige1980}
+ & Localization of stabilized Ritz values; the terminal case \(\beta_k=0\) localizes every eigenvalue of \(\vec T_k\). \\
+\addlinespace
+\cref{thm:greenbaum} (backward model)
+ & \cite{greenbaum1989}
+ & Both say the computed \(\vec T_k\) is the exact output of Lanczos on a matrix whose spectrum clusters near \(\spec(\vec A)\).
+   Greenbaum bounds the interval widths and starting-weight discrepancies explicitly; the model here has fixed dimension \(nk\), is built in closed form, preserves the starting weights exactly, and assumes nothing about the conditioning of \(\vec V_k\) or spectral gaps. \\
+\bottomrule
+\end{tabular}
+\caption{Results of this note and their closest counterparts in the literature.
+Statement numbers in the middle column refer to the numbering internal to the cited works.}
+\label{tab:correspondence}
+\end{table}
