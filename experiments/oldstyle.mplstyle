@@ -5,26 +5,20 @@
 #   plt.style.use(Path(__file__).with_name("oldstyle.mplstyle"))
 #
 # The reference figures use a complete black frame, ticks pointing into the
-# plotting area on every side, fine black curves, and monoline plotter
-# lettering.  Routed Gothic supplies the Latin letters, numerals, and common
-# operators; STIX Sans is retained only as a fallback for Greek and any other
-# mathematical glyphs absent from Routed Gothic.  Keep the PDF itself clean
-# and vector-based; any scan texture should be added only to a reproduction
-# copy, never to the publication master.
+# plotting area on every side, fine black curves, and compact typeset
+# lettering.  Matplotlib's LaTeX renderer uses newtxtext and newtxmath for a
+# unified Times-style treatment.  Keep the PDF itself clean and vector-based;
+# any scan texture should be added only to a reproduction copy, never to the
+# publication master.
 
 # Typography
-font.family: sans-serif
-font.sans-serif: Routed Gothic, Nimbus Sans, Helvetica, Arial, Liberation Sans, DejaVu Sans
+font.family: serif
+font.serif: TeX Gyre Termes, Nimbus Roman, Times New Roman, Times, DejaVu Serif
 font.size: 9
 font.weight: normal
 text.color: black
-text.usetex: False
-mathtext.fontset: custom
-mathtext.rm: Routed Gothic
-mathtext.it: Routed Gothic
-mathtext.bf: Routed Gothic
-mathtext.sf: Routed Gothic
-mathtext.fallback: stixsans
+text.usetex: True
+text.latex.preamble: \usepackage[T1]{fontenc}\usepackage{newtxtext}\usepackage{newtxmath}
 
 # Figure and axes
 figure.facecolor: white

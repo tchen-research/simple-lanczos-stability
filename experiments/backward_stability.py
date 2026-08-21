@@ -12,37 +12,22 @@ verify each claim of the backward theorem:
     B = H_hat + Delta satisfies the exact recurrence B V_hat = V_hat T_k
     + beta_bar v_hat e_k^T;
   * every eigenvalue of B is within ||Delta|| of spec(H)  (Weyl);
-  * exact Lanczos on (B, V_hat e_1) reproduces the computed T_k, while
+  * completing the basis gives an orthogonal U_hat, with first k columns
+    V_hat, for which Ttilde = U_hat' B U_hat is tridiagonal with leading
+    block exactly T_k;
+  * exact Lanczos on (Ttilde, e_1) reproduces the computed T_k, while
     exact Lanczos on (H, v_1) does not.
 
-"Exact" Lanczos means float64 with full reorthogonalization.
-
-Saves four figures for inclusion in the paper.  In particular,
-paige_theorem.pdf evaluates Paige's product on every Ritz pair of every prefix
-of the same finite-precision run used by the backward-stability figures, while
-paige_lambda1.pdf follows only the Ritz approximation to the largest eigenvalue.
+"Exact" Lanczos means float64 with full reorthogonalization.  The run and all
+derived plotting data are saved to backward_stability_run.npz.  Run
+plot_backward_stability.py separately to generate the four paper figures.
 """
 
-import os
-import sys
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import font_manager
 
-here = os.path.dirname(os.path.abspath(__file__))
-
-# A newly installed user font may not yet appear in Matplotlib's cached font
-# list.  Register Routed Gothic explicitly so the style never falls back.
-for font_path in font_manager.findSystemFonts():
-    if Path(font_path).name.casefold() == "routed-gothic.ttf":
-        font_manager.fontManager.addfont(font_path)
-        break
-else:
-    raise RuntimeError("Routed Gothic is required by oldstyle.mplstyle")
-
-plt.style.use(os.path.join(here, "oldstyle.mplstyle"))
+here = Path(__file__).resolve().parent
 
 rng = np.random.default_rng(0)
 
@@ -152,64 +137,12 @@ paige_residual = np.asarray(paige_residual)
 paige_overlap = np.asarray(paige_overlap)
 paige_iteration = np.asarray(paige_iteration)
 paige_product = paige_residual * paige_overlap
+lambda1_error = np.asarray(lambda1_error)
+lambda1_overlap = np.asarray(lambda1_overlap)
+lambda1_global_loss = np.asarray(lambda1_global_loss)
 print(f"Paige products: max o*s/(eps32*||H||) = "
       f"{np.max(paige_product) / eps32:.3f} over "
       f"{paige_product.size} Ritz pairs")
-
-figp, axp = plt.subplots(figsize=(4.7, 2.8))
-axp.set_xscale("log")
-axp.set_yscale("log")
-sc = axp.scatter(paige_residual, paige_overlap,
-                 c=paige_iteration, cmap="Greys", vmin=-8, vmax=k,
-                 s=11, edgecolors="black", linewidths=0.25, zorder=3)
-
-paige_x = np.logspace(-10, 0, 300)
-axp.plot(paige_x, eps32 / paige_x, "--", color="black", lw=0.9,
-         label=r"$o\,s=\varepsilon$")
-axp.set_xlim(3e-10, 1)
-axp.set_ylim(1e-9, 2)
-axp.set_xlabel(
-    r"normalized scalar residual $s=\beta_t|\mathbf{e}_t^\mathsf{T}\mathbf{y}|/||\mathbf{A}||$")
-axp.set_ylabel(
-    r"orthogonality defect $o=|(\mathbf{V}_t\mathbf{y})^\mathsf{T}\mathbf{v}_{t+1}|$")
-axp.legend(loc="lower left")
-axp.text(0.98, 0.96,
-         rf"$\max\;o\,s/\varepsilon={np.max(paige_product) / eps32:.2f}$",
-         ha="right", va="top", transform=axp.transAxes)
-
-cbar = figp.colorbar(sc, ax=axp, pad=0.025, aspect=24)
-cbar.set_label(r"iteration $t$")
-cbar.set_ticks([2, 10, 20, 30])
-
-figp.tight_layout()
-figp.savefig(os.path.join(here, "paige_theorem.pdf"),
-             bbox_inches="tight")
-
-# A simpler trajectory for just the largest Ritz pair, which approximates
-# lambda_1 = 1 throughout this run.
-lambda1_steps = np.arange(2, k + 1)
-figl, lambda_axes = plt.subplots(1, 3, figsize=(6.2, 2.2), sharey=True)
-for ax, values, title in [
-        (lambda_axes[0], lambda1_error,
-         r"$|\theta_1^{(t)}-\lambda_1|/||\mathbf{A}||$"),
-        (lambda_axes[1], lambda1_overlap,
-         r"$|(\mathbf{V}_t\mathbf{y}_1^{(t)})^\mathsf{T}\mathbf{v}_{t+1}|$"),
-        (lambda_axes[2], lambda1_global_loss,
-         r"$||\mathbf{V}_t^\mathsf{T}\mathbf{V}_t-\mathbf{I}||$")]:
-    ax.semilogy(lambda1_steps, values, "o-",
-                markerfacecolor="white", markeredgecolor="black")
-    ax.set_xlim(2, k)
-    ax.set_ylim(1e-9, 2)
-    ax.set_xlabel(r"iteration $t$")
-    ax.set_title(title, fontsize=9)
-lambda_axes[0].set_ylabel(r"magnitude")
-figl.tight_layout()
-figl.savefig(os.path.join(here, "paige_lambda1.pdf"),
-             bbox_inches="tight")
-
-if "--paige-only" in sys.argv:
-    print("figures saved to paige_theorem.pdf, paige_lambda1.pdf")
-    raise SystemExit(0)
 
 # ------------------------------------------------------- backward model
 
@@ -244,6 +177,53 @@ VtE = Vhat.T @ Ehat
 Delta = -Ehat @ Vhat.T - Vhat @ Ehat.T + Vhat @ VtE @ Vhat.T
 B = Hhat + Delta
 
+# Complete the basis as in the proof of lem:completion.  The recurrence already
+# gives the first k Lanczos vectors and coefficients analytically, so preserve
+# Vhat and T exactly and run the numerical completion only beyond that prefix.
+N = n * k
+Uhat = np.zeros((N, N))
+Uhat[:, :k] = Vhat
+diag_t = np.zeros(N)
+off_t = np.zeros(N - 1)
+diag_t[:k] = alpha
+off_t[: k - 1] = beta[: k - 1]
+
+# B Vhat[:, -1] has the known residual beta_bar * vhat orthogonal to Vhat.
+# Normalize it to obtain the first vector beyond the prescribed prefix.
+boundary_residual = beta_bar * vhat
+boundary_norm = np.linalg.norm(boundary_residual)
+breakdown_tol = 1e-14
+if boundary_norm <= breakdown_tol:
+    raise RuntimeError("breakdown at the boundary of the prescribed prefix")
+off_t[k - 1] = boundary_norm
+Uhat[:, k] = boundary_residual / boundary_norm
+
+breakdown_events = []
+for j in range(k, N):
+    w = B @ Uhat[:, j]
+    diag_t[j] = w @ Uhat[:, j]
+    if j + 1 == N:
+        break
+    # full reorthogonalization against all previous columns, twice
+    for _ in range(2):
+        w -= Uhat[:, : j + 1] @ (Uhat[:, : j + 1].T @ w)
+    nw = np.linalg.norm(w)
+    if nw <= breakdown_tol:
+        breakdown_events.append((j + 1, nw))
+        # breakdown: restart from any direction orthogonal to what we have
+        for cand in np.eye(N):
+            r = cand - Uhat[:, : j + 1] @ (Uhat[:, : j + 1].T @ cand)
+            r -= Uhat[:, : j + 1] @ (Uhat[:, : j + 1].T @ r)
+            if np.linalg.norm(r) > 1e-8:
+                w, nw = r, np.linalg.norm(r)
+                break
+        off_t[j] = 0.0
+    else:
+        off_t[j] = nw
+    Uhat[:, j + 1] = w / nw
+Ttilde = np.diag(diag_t) + np.diag(off_t, 1) + np.diag(off_t, -1)
+assert np.array_equal(Ttilde[:k, :k], T)
+
 # ------------------------------------------------------- verification
 
 nrm = lambda A: np.linalg.norm(A, 2)
@@ -261,34 +241,52 @@ checks = [
     ("model: ||Delta|| / (3 ||Ehat||)", nrm(Delta) / (3 * nrm(Ehat)), "<= 1"),
     ("model: exact recurrence ||B Vhat - Vhat T - beta_bar vhat ek'||", nrm(B @ Vhat - Vhat @ T - beta_bar * np.outer(vhat, ek)), "float64 roundoff"),
     ("model: max dist(eig(B), spec(H))", np.max(np.abs(np.linalg.eigvalsh(B)[:, None] - lam[None, :]).min(axis=1)), f"<= ||Delta|| = {nrm(Delta):.2e}"),
+    ("model: ||Uhat' Uhat - I||", nrm(Uhat.T @ Uhat - np.eye(N)), "float64 roundoff"),
+    ("model: ||Uhat[:, :k] - Vhat||", nrm(Uhat[:, :k] - Vhat), "0: first k columns are Vhat"),
+    ("model: ||Ttilde - Uhat' B Uhat||", nrm(Ttilde - Uhat.T @ B @ Uhat), "float64 roundoff"),
+    ("model: Ttilde[:k, :k] bitwise equals T_k", float(np.array_equal(Ttilde[:k, :k], T)), "1: constructed analytically"),
+    ("model: ||Uhat' Hhat Uhat - Ttilde||", nrm(Uhat.T @ Hhat @ Uhat - Ttilde), f"<= 3||Ehat|| = {3 * nrm(Ehat):.2e}"),
 ]
 
 print(f"Strakos matrix, n = {n}, k = {k}, ||H|| = {normH:g}, float32 run "
       f"(eps32 = {eps32:.2e})\n")
+if breakdown_events:
+    print("  continuation restarts (step, residual norm): "
+          + ", ".join(f"({j}, {nw:.2e})" for j, nw in breakdown_events)
+          + "\n")
+else:
+    print("  continuation restarts: none\n")
 for label, val, expect in checks:
     val = ", ".join(f"{x:9.2e}" for x in np.atleast_1d(val))
     print(f"  {label:<62s} {val:>22s}   [{expect}]")
 
 # --------------------------------------- the theorem's "Consequently" clause
 
-alpha_B, beta_B = lanczos_exact(B, Vhat[:, 0], k)
+alpha_T, beta_T = lanczos_exact(Ttilde, np.eye(N)[:, 0], k)
 alpha_H, beta_H = lanczos_exact(H, Vbar[:, 0], k)
 
-dev_B = max(np.max(np.abs(alpha - alpha_B)), np.max(np.abs(beta - beta_B)))
-dev_H = max(np.max(np.abs(alpha - alpha_H)), np.max(np.abs(beta - beta_H)))
+# T_k contains alpha_1,...,alpha_k and beta_1,...,beta_{k-1}.  The final
+# beta_k is the boundary coefficient and is not part of the prescribed block.
+dev_T = max(np.max(np.abs(alpha - alpha_T)),
+            np.max(np.abs(beta[: k - 1] - beta_T[: k - 1])))
+dev_H = max(np.max(np.abs(alpha - alpha_H)),
+            np.max(np.abs(beta[: k - 1] - beta_H[: k - 1])))
+coeffs_match_bits = (np.array_equal(alpha_T, alpha)
+                     and np.array_equal(beta_T[: k - 1], beta[: k - 1]))
 
 print(f"""
-Exact Lanczos versus the computed T_k (max deviation over all alpha_j, beta_j):
+Exact Lanczos versus the computed T_k (max deviation over its coefficients):
 
   on (H, v1):        {dev_H:9.2e}   (forward instability: the computed run does
                                   NOT track exact Lanczos on H)
-  on (B, Vhat e1):   {dev_B:9.2e}   (backward stability: the computed T_k IS the
-                                  exact output for the nearby matrix B)
+  on (Ttilde, e1):   {dev_T:9.2e}   (backward stability: the computed T_k IS the
+                                  exact output for the nearby problem;
+                                  bitwise coefficient match: {coeffs_match_bits})
 
 with ||B - Hhat|| = ||Delta|| = {nrm(Delta):.2e} <= 3 ||Ehat|| ~ eps32 ||H|| = {eps32 * normH:.2e}.
 """)
 
-# ------------------------------------------------------- figure 1
+# ------------------------------------------------------- plotting data
 
 steps = np.arange(1, k + 1)
 dev_a = np.abs(alpha - alpha_H)
@@ -296,82 +294,44 @@ dev_b = np.abs(beta - beta_H)
 loss_j = np.array([np.linalg.norm(Vk[:, :j].T @ Vk[:, :j] - np.eye(j), 2)
                    for j in steps])
 
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(6.2, 2.2), sharey=True)
-ylim = (1e-10, 1e1)
-
-for ax, data, title in [
-        (ax1, dev_a,
-         r"$|\alpha_j-\alpha_j^{\mathrm{exact}}|$"),
-        (ax2, dev_b,
-         r"$|\beta_j-\beta_j^{\mathrm{exact}}|$"),
-        (ax3, loss_j,
-         r"$||\mathbf{V}_j^\mathsf{T}\mathbf{V}_j-\mathbf{I}||$")]:
-    ax.semilogy(steps, data, "o-", markerfacecolor="white",
-                markeredgecolor="black")
-    ax.set_title(title, fontsize=9)
-    ax.set_xlabel(r"iteration $j$")
-    ax.set_ylim(ylim)
-
-fig.tight_layout()
-fig.savefig(os.path.join(here, "backward_stability.pdf"),
-            bbox_inches="tight")
-
-# ------------------------------------------------------- spectral figure
-
-evals_B, evecs_B = np.linalg.eigh(B)
-q = Vhat[:, 0]                       # = V_hat e_1, the model starting vector
-wts_B = (evecs_B.T @ q) ** 2
+evals_T, evecs_T = np.linalg.eigh(Ttilde)
+q = np.eye(N)[:, 0]                  # e_1, the starting vector of the model
+wts_T = (evecs_T.T @ q) ** 2
 wts_H = Vbar[:, 0] ** 2              # H is diagonal: eigenvectors are e_i
 
-cluster = np.argmin(np.abs(evals_B[:, None] - lam[None, :]), axis=1)
-mass = np.zeros(n)
-np.add.at(mass, cluster, wts_B)
-print(f"cluster masses: max |mass_B - weight_H| = "
-      f"{np.max(np.abs(mass - wts_H)):.2e}")
+cluster = np.argmin(np.abs(evals_T[:, None] - lam[None, :]), axis=1)
+cluster_wt = np.zeros(n)
+np.add.at(cluster_wt, cluster, wts_T)
+print(f"cluster weights: max |weight_Ttilde - weight_A| = "
+      f"{np.max(np.abs(cluster_wt - wts_H)):.2e}")
 
-fig2, axes = plt.subplots(1, 4, figsize=(6.2, 2.4), sharey=True,
-                          gridspec_kw={"width_ratios": [2.4, 1, 1, 1]})
-bx1 = axes[0]
-ylo = 1e-16
-
-bx1.vlines(lam, ylo, wts_H, color="black", lw=0.8,
-           label=r"weight of $\bar{\mathbf{v}}_1$ on $\lambda_i(\mathbf{A})$")
-bx1.plot(lam, mass, "x", color="black", ms=4, mew=0.9,
-         label=r"cluster mass of $\widehat{\mathbf{V}}\mathbf{e}_1$ on $\mathbf{B}$")
-bx1.set_xscale("log")
-bx1.set_yscale("log")
-bx1.set_ylim(ylo, 3e0)
-bx1.set_xlabel(r"eigenvalue")
-bx1.set_ylabel(r"weight")
-legend = bx1.legend(loc="lower left", frameon=True, fancybox=False,
-                    framealpha=1.0, facecolor="white", edgecolor="black")
-legend.get_frame().set_linewidth(0.6)
-
-half = 1e-7
-for ax, i0 in zip(axes[1:], [0, 1, 2]):
-    mem = cluster == i0
-    th = evals_B[mem]
-    ax.vlines(th, ylo, np.maximum(wts_B[mem], ylo), color="black", lw=0.8)
-    ax.plot(th, np.maximum(wts_B[mem], ylo), "x", color="black", ms=4,
-            mew=0.9)
-    ax.plot(th, np.full(th.shape, 3 * ylo), "|", color="black", ms=6)
-    ax.vlines(lam[i0], ylo, wts_H[i0], color="black", lw=1.3)
-    ax.set_yscale("log")
-    ax.set_xlim(lam[i0] - 1.4 * half, lam[i0] + 1.4 * half)
-    lbl = i0 + 1
-    ax.set_xticks([lam[i0] - half, lam[i0], lam[i0] + half])
-    ax.set_xticklabels([rf"$\lambda_{{{lbl}}}{{-}}10^{{-7}}$",
-                        rf"$\lambda_{{{lbl}}}$",
-                        rf"$\lambda_{{{lbl}}}{{+}}10^{{-7}}$"], fontsize=6)
-    # Matplotlib normally aligns tick labels by the tops of their bounding
-    # boxes.  Superscripts make the side labels taller than the center label,
-    # so align all three on their mathematical baselines instead.
-    for tick_label in ax.get_xticklabels():
-        tick_label.set_verticalalignment("baseline")
-        tick_label.set_y(-0.08)
-
-fig2.tight_layout()
-fig2.savefig(os.path.join(here, "spectral_measure.pdf"),
-             bbox_inches="tight")
-print("figures saved to backward_stability.pdf, paige_theorem.pdf, "
-      "paige_lambda1.pdf, spectral_measure.pdf")
+run_path = here / "backward_stability_run.npz"
+np.savez_compressed(
+    run_path,
+    format_version=np.int64(1),
+    seed=np.int64(0),
+    n=np.int64(n),
+    k=np.int64(k),
+    eps32=np.float64(eps32),
+    normH=np.float64(normH),
+    lam=lam,
+    V=V,
+    alpha=alpha,
+    beta=beta,
+    paige_residual=paige_residual,
+    paige_overlap=paige_overlap,
+    paige_iteration=paige_iteration,
+    lambda1_error=lambda1_error,
+    lambda1_overlap=lambda1_overlap,
+    lambda1_global_loss=lambda1_global_loss,
+    steps=steps,
+    dev_a=dev_a,
+    dev_b=dev_b,
+    loss_j=loss_j,
+    evals_T=evals_T,
+    wts_T=wts_T,
+    wts_H=wts_H,
+    cluster=cluster,
+    cluster_wt=cluster_wt,
+)
+print(f"saved run and plotting data to {run_path.name}")
