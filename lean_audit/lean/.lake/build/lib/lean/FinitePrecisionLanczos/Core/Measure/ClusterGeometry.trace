@@ -1,13 +1,13 @@
 {"synthetic": false,
  "schemaVersion": "2025-09-10",
  "outputs":
- {"o": ["205ba8a067da038c.olean"],
+ {"o": ["f9e16a510635dba3.olean"],
   "m": false,
-  "i": "309ccafe0e2ed026.ilean",
+  "i": "48d2e87523631305.ilean",
   "c": "cb09abf3baad1c46.c"},
  "log":
  [{"message":
-   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/scratch/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.lean -o /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.olean -i /home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.ilean -c /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.c --setup /home/tyler/Documents/scratch/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.setup.json --json",
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.lean -o /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.olean -i /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.c --setup /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.setup.json --json",
    "level": "trace"}],
  "inputs":
  [["FinitePrecisionLanczos.Core.Measure.ClusterGeometry:deps",
@@ -16,9 +16,9 @@
        [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
       ["imports",
        [["FinitePrecisionLanczos.Core.Measure.Cutoff transitive imports (legacy)",
-         "dec46a0c6757d225"],
+         "764790f6c6eb4b34"],
         ["FinitePrecisionLanczos.Core.Measure.Cutoff:importAllArts",
-         "f84457d58971024f"]]]]],
+         "320a4a12b950fb4a"]]]]],
     ["libs",
      [["import dynlibs", "00000000000006bb"],
       ["package external libraries", "00000000000006bb"],
@@ -26,12 +26,12 @@
       ["module plugins", "00000000000006bb"]]]]],
   ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
    "7508232886a2752a"],
-  ["/home/tyler/Documents/scratch/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.lean",
-   "0db4c4d30a92b2e9"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Core/Measure/ClusterGeometry.lean",
+   "5f5c0394de3c4047"],
   ["options", "00000000000006bb"],
   ["isModule: false", "feefd2a0d3a1847e"],
   ["Module.name: FinitePrecisionLanczos.Core.Measure.ClusterGeometry",
    "05c8d397efc4f2b2"],
   ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
   ["Module.leanArgs: #[]", "00000000000006bb"]],
- "depHash": "a42c5086152fec82"}
+ "depHash": "28ab4c173f80d76f"}

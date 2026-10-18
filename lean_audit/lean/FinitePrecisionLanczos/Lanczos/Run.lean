@@ -1,24 +1,10 @@
 import FinitePrecisionLanczos.Core.Matrix
 
 
-
-
-
-
-
-
-
-
-
-
 namespace FinitePrecisionLanczos
 
 open Matrix
 open scoped Matrix.Norms.L2Operator
-
-
-
-
 
 structure LanczosRun (n k : ℕ) where
   H : Mat n n
@@ -68,21 +54,13 @@ namespace LanczosRun
 
 variable {n k : ℕ} (L : LanczosRun n k)
 
-
-
-
 def f (j : ℕ) : Vec n :=
   L.H *ᵥ L.v j - L.β (j - 1) • L.v (j - 1) - L.α j • L.v j -
     L.β j • L.v (j + 1)
 
-
 def g (j : ℕ) : ℝ := vdot (L.v j) (L.v j) - 1
 
-
 def p (j : ℕ) : ℝ := vdot (L.v j) (L.β j • L.v (j + 1))
-
-@[simp] lemma p_zero : L.p 0 = 0 := by simp [p, vdot, L.hβ_zero]
-
 
 theorem governing_column (j : ℕ) (_hj : j < k) :
     L.H *ᵥ L.v (j + 1)
@@ -90,8 +68,6 @@ theorem governing_column (j : ℕ) (_hj : j < k) :
         + L.β (j + 1) • L.v (j + 2) + L.f (j + 1) := by
   simp only [f, Nat.add_sub_cancel]
   abel
-
-
 
 theorem recurrence_error_identity (j : ℕ) (hj : j < k) :
     L.f (j + 1) =
@@ -113,11 +89,6 @@ theorem recurrence_error_identity (j : ℕ) (hj : j < k) :
   simp only [f, Nat.add_sub_cancel]
   rw [h1, h2, h3, h4]
   abel
-
-
-
-
-
 
 theorem local_product_identity (j : ℕ) (hj : j < k) :
     L.p (j + 1)

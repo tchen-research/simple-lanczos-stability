@@ -1,12 +1,5 @@
 import FinitePrecisionLanczos.Core.Measure.FiniteAtomic
-import FinitePrecisionLanczos.Lanczos.Greenbaum.Measure
-
-
-
-
-
-
-
+import FinitePrecisionLanczos.Core.BlockSpectral
 
 
 namespace FinitePrecisionLanczos
@@ -14,12 +7,10 @@ namespace FinitePrecisionLanczos
 open Matrix
 open scoped InnerProductSpace Matrix.Norms.L2Operator
 
-
 noncomputable def spectralMass {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (q : I → ℝ) : AtomicMass :=
   ∑ i : I, Finsupp.single (hA.eigenvalues i)
     ((⇑(hA.eigenvectorBasis i) ⬝ᵥ q) ^ 2)
-
 
 lemma atomicMoment_spectralMass_expansion
     {I : Type*} [Fintype I] [DecidableEq I]
@@ -40,7 +31,6 @@ lemma atomicMoment_spectralMass_expansion
   | empty => simp
   | insert i s hi ih => simp [hi, ih, g, a]
 
-
 lemma mulVec_pow_eigenvectorBasis
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (i : I) (m : ℕ) :
@@ -52,7 +42,6 @@ lemma mulVec_pow_eigenvectorBasis
       rw [pow_succ, ← Matrix.mulVec_mulVec,
         hA.mulVec_eigenvectorBasis, Matrix.mulVec_smul, ih]
       simp [smul_smul, pow_succ, mul_comm]
-
 
 lemma sum_eigenvector_coefficients
     {I : Type*} [Fintype I] [DecidableEq I]
@@ -75,7 +64,6 @@ lemma sum_eigenvector_coefficients
     ext r
     simp [hcoef]]
   rw [hsum]
-
 
 theorem atomicMoment_spectralMass
     {I : Type*} [Fintype I] [DecidableEq I]

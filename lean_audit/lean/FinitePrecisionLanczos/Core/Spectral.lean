@@ -1,13 +1,6 @@
-import FinitePrecisionLanczos.Lanczos.Paige.Descent
+import FinitePrecisionLanczos.Core.Matrix
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.LinearAlgebra.Matrix.PosDef
-
-
-
-
-
-
-
 
 
 namespace FinitePrecisionLanczos
@@ -17,8 +10,6 @@ open scoped Matrix.Norms.L2Operator
 
 variable {n : ℕ}
 
-
-
 noncomputable def spectralMin (H : Mat n n) : ℝ :=
   letI := Classical.propDecidable (H.IsHermitian ∧ 0 < n)
   if h : H.IsHermitian ∧ 0 < n then
@@ -26,16 +17,12 @@ noncomputable def spectralMin (H : Mat n n) : ℝ :=
       h.1.eigenvalues
   else 0
 
-
 noncomputable def spectralMax (H : Mat n n) : ℝ :=
   letI := Classical.propDecidable (H.IsHermitian ∧ 0 < n)
   if h : H.IsHermitian ∧ 0 < n then
     Finset.univ.sup' (Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp h.2))
       h.1.eigenvalues
   else 0
-
-
-
 
 noncomputable def spectralDistance (H : Mat n n) (theta : ℝ) : ℝ :=
   letI := Classical.propDecidable (H.IsHermitian ∧ 0 < n)
@@ -71,62 +58,16 @@ lemma spectralDistance_le (hn : 0 < n) {H : Mat n n} (hH : H.IsHermitian)
   rw [dif_pos ⟨hH, hn⟩]
   exact Finset.inf'_le _ (Finset.mem_univ i)
 
-
-lemma exists_eigenvalue_abs_eq_spectralDistance (hn : 0 < n)
-    {H : Mat n n} (hH : H.IsHermitian) (theta : ℝ) :
+/-- A finite spectral distance is attained by an actual eigenvalue. -/
+theorem exists_eigenvalue_eq_spectralDistance (hn : 0 < n) {H : Mat n n}
+    (hH : H.IsHermitian) (theta : ℝ) :
     ∃ i : Fin n, |theta - hH.eigenvalues i| = spectralDistance H theta := by
-  let S : Finset (Fin n) := Finset.univ
-  have hS : S.Nonempty :=
-    Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp hn)
-  let f : Fin n → ℝ := fun i => |theta - hH.eigenvalues i|
-  have hmem : S.inf' hS f ∈ Set.range f := by
-    apply Finset.inf'_mem (Set.range f)
-    · intro a ha b hb
-      obtain ⟨i, rfl⟩ := ha
-      obtain ⟨j, rfl⟩ := hb
-      by_cases hij : f i ≤ f j
-      · exact ⟨i, (inf_eq_left.mpr hij).symm⟩
-      · exact ⟨j, (inf_eq_right.mpr (le_of_not_ge hij)).symm⟩
-    · intro i _hi
-      exact ⟨i, rfl⟩
-  obtain ⟨i, hi⟩ := hmem
-  refine ⟨i, ?_⟩
   unfold spectralDistance
   rw [dif_pos ⟨hH, hn⟩]
-  simpa [S, f] using hi
-
-
-
-lemma spectralDistance_triangle (hn : 0 < n) {H : Mat n n}
-    (hH : H.IsHermitian) (theta theta' : ℝ) :
-    spectralDistance H theta ≤ |theta - theta'| + spectralDistance H theta' := by
-  let S : Finset (Fin n) := Finset.univ
-  have hS : S.Nonempty := Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp hn)
-  let f : Fin n → ℝ := fun i => |theta' - hH.eigenvalues i|
-  have hmem : S.inf' hS f ∈ Set.range f := by
-    apply Finset.inf'_mem (Set.range f)
-    · intro a ha b hb
-      obtain ⟨i, rfl⟩ := ha
-      obtain ⟨j, rfl⟩ := hb
-      by_cases hij : f i ≤ f j
-      · exact ⟨i, (inf_eq_left.mpr hij).symm⟩
-      · exact ⟨j, (inf_eq_right.mpr (le_of_not_ge hij)).symm⟩
-    · intro i _hi
-      exact ⟨i, rfl⟩
-  obtain ⟨i, hi⟩ := hmem
-  have hnearest : spectralDistance H theta' = |theta' - hH.eigenvalues i| := by
-    unfold spectralDistance
-    rw [dif_pos ⟨hH, hn⟩]
-    simpa [S, f] using hi.symm
-  calc
-    spectralDistance H theta ≤ |theta - hH.eigenvalues i| :=
-      spectralDistance_le hn hH theta i
-    _ ≤ |theta - theta'| + |theta' - hH.eigenvalues i| := by
-      calc
-        |theta - hH.eigenvalues i| =
-            |(theta - theta') + (theta' - hH.eigenvalues i)| := by ring_nf
-        _ ≤ _ := abs_add_le _ _
-    _ = |theta - theta'| + spectralDistance H theta' := by rw [hnearest]
+  obtain ⟨i, _, hi⟩ := Finset.exists_mem_eq_inf'
+    (Finset.univ_nonempty_iff.mpr (Fin.pos_iff_nonempty.mp hn))
+    (fun i => |theta - hH.eigenvalues i|)
+  exact ⟨i, hi.symm⟩
 
 lemma isHermitian_spectral_decomposition {H : Mat n n} (hH : H.IsHermitian) :
     H = (hH.eigenvectorUnitary : Mat n n) * Matrix.diagonal hH.eigenvalues *
@@ -168,7 +109,6 @@ lemma posSemidef_sub_smul_one {H : Mat n n} (hH : H.IsHermitian) {c : ℝ}
   exact (Matrix.posSemidef_diagonal_iff.mpr
     fun i => sub_nonneg.mpr (hc i)).mul_mul_conjTranspose_same U
 
-
 theorem vdot_mulVec_le_spectralMax (hn : 0 < n) {H : Mat n n} (hH : Hᵀ = H)
     (z : Vec n) : vdot z (H *ᵥ z) ≤ spectralMax H * vdot z z := by
   have hherm := isHermitian_of_transpose_eq hH
@@ -179,7 +119,6 @@ theorem vdot_mulVec_le_spectralMax (hn : 0 < n) {H : Mat n n} (hH : Hᵀ = H)
   change 0 ≤ spectralMax H * vdot z z - vdot z (H *ᵥ z) at h0
   linarith
 
-
 theorem spectralMin_mul_vdot_le (hn : 0 < n) {H : Mat n n} (hH : Hᵀ = H)
     (z : Vec n) : spectralMin H * vdot z z ≤ vdot z (H *ᵥ z) := by
   have hherm := isHermitian_of_transpose_eq hH
@@ -189,8 +128,6 @@ theorem spectralMin_mul_vdot_le (hn : 0 < n) {H : Mat n n} (hH : Hᵀ = H)
     dotProduct_sub, dotProduct_smul, smul_eq_mul] at h0
   change 0 ≤ vdot z (H *ᵥ z) - spectralMin H * vdot z z at h0
   linarith
-
-
 
 lemma vnorm_star_eigenvectorUnitary_mulVec (hn : 0 < n) {H : Mat n n}
     (hH : H.IsHermitian) (z : Vec n) :
@@ -220,8 +157,6 @@ lemma vnorm_star_eigenvectorUnitary_mulVec (hn : 0 < n) {H : Mat n n}
   have hleft := vnorm_nonneg (C *ᵥ z)
   have hright := vnorm_nonneg z
   simpa [C, U, Ugroup] using (sq_eq_sq₀ hleft hright).mp hsquares
-
-
 
 theorem spectralDistance_mul_vnorm_le_residual (hn : 0 < n)
     {H : Mat n n} (hHtranspose : Hᵀ = H) (theta : ℝ) (z : Vec n) :

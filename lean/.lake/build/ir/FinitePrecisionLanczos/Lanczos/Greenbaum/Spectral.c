@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: FinitePrecisionLanczos.Lanczos.Greenbaum.Spectral
-// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.Completion
+// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.Backward public import FinitePrecisionLanczos.Core.BlockSpectral
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -15,7 +15,8 @@ extern "C" {
 #endif
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_Init(uint8_t builtin);
-lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Completion(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Backward(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_BlockSpectral(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Spectral(uint8_t builtin) {
 lean_object * res;
@@ -27,7 +28,10 @@ lean_dec_ref(res);
 res = initialize_Init(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Completion(builtin);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Backward(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_BlockSpectral(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));

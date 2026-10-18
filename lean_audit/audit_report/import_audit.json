@@ -1,0 +1,32 @@
+{
+  "root_imports_all_project_modules": true,
+  "backward_imports_paige": false,
+  "paige_imports_normalized": false,
+  "backward_import_closure": [
+    "FinitePrecisionLanczos.Core.BackwardCorrection",
+    "FinitePrecisionLanczos.Core.Commutator",
+    "FinitePrecisionLanczos.Core.Dilation",
+    "FinitePrecisionLanczos.Core.DilationBounds",
+    "FinitePrecisionLanczos.Core.DilationRecurrence",
+    "FinitePrecisionLanczos.Core.DilationSaad",
+    "FinitePrecisionLanczos.Core.ExactLanczos",
+    "FinitePrecisionLanczos.Core.GramCommutator",
+    "FinitePrecisionLanczos.Core.Matrix",
+    "FinitePrecisionLanczos.Core.Nilpotent",
+    "FinitePrecisionLanczos.Core.SaadGramCommutator",
+    "FinitePrecisionLanczos.Core.Underline",
+    "FinitePrecisionLanczos.Lanczos.Assembly",
+    "FinitePrecisionLanczos.Lanczos.Bounds",
+    "FinitePrecisionLanczos.Lanczos.ComputedCommutator",
+    "FinitePrecisionLanczos.Lanczos.Greenbaum.Backward",
+    "FinitePrecisionLanczos.Lanczos.Greenbaum.Correction",
+    "FinitePrecisionLanczos.Lanczos.Greenbaum.Dilation",
+    "FinitePrecisionLanczos.Lanczos.Greenbaum.Statements",
+    "FinitePrecisionLanczos.Lanczos.Normalized.Commutator",
+    "FinitePrecisionLanczos.Lanczos.Normalized.LocalErrors",
+    "FinitePrecisionLanczos.Lanczos.Normalized.Normalization",
+    "FinitePrecisionLanczos.Lanczos.Normalized.Recurrence",
+    "FinitePrecisionLanczos.Lanczos.Ritz",
+    "FinitePrecisionLanczos.Lanczos.Run"
+  ]
+}

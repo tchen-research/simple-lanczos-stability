@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: FinitePrecisionLanczos.Core.Nilpotent
-// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.Interface public import Mathlib.Algebra.Ring.GeomSum
+// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Core.Matrix public import Mathlib.Algebra.Ring.GeomSum
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -26,7 +26,6 @@ lean_object* l_List_foldrTR___redArg(lean_object*, lean_object*, lean_object*);
 lean_object* lean_nat_shiftr(lean_object*, lean_object*);
 lean_object* lean_nat_land(lean_object*, lean_object*);
 lean_object* l_List_range(lean_object*);
-lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_LanczosRun_Omega_spec__0___redArg(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularC___lam__0(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0___lam__0(lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0___lam__0___boxed(lean_object*);
@@ -72,6 +71,9 @@ LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00npow
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0_spec__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Finset_sum___at___00FinitePrecisionLanczos_triangularC_spec__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Finset_sum___at___00dotProduct___at___00npowBinRec_go___at___00npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0_spec__1_spec__2_spec__5(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0___redArg(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0(lean_object*, lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularK(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularC___lam__0(lean_object* v_U_1_, lean_object* v___y_2_, lean_object* v___y_3_){
 _start:
@@ -458,26 +460,56 @@ v___x_186_ = lp_FinitePrecisionLanczos_Finset_sum___at___00dotProduct___at___00n
 return v___x_186_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularK(lean_object* v_k_187_, lean_object* v_U_188_, lean_object* v_a_189_, lean_object* v_a_190_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0___redArg(lean_object* v_d_187_, lean_object* v_a_188_, lean_object* v_a_189_){
 _start:
 {
-lean_object* v___f_191_; lean_object* v___x_192_; lean_object* v___x_193_; lean_object* v___f_194_; lean_object* v___f_195_; 
-v___f_191_ = ((lean_object*)(lp_FinitePrecisionLanczos_npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0___closed__0));
-lean_inc(v_a_190_);
-lean_inc(v_a_189_);
-v___x_192_ = lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_LanczosRun_Omega_spec__0___redArg(v___f_191_, v_a_189_, v_a_190_);
-v___x_193_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularC(v_k_187_, v_U_188_, v_a_189_, v_a_190_);
-v___f_194_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_2451848184____hygCtx___hyg_8_), 2, 1);
-lean_closure_set(v___f_194_, 0, v___x_193_);
-v___f_195_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_), 3, 2);
-lean_closure_set(v___f_195_, 0, v___x_192_);
-lean_closure_set(v___f_195_, 1, v___f_194_);
-return v___f_195_;
+lean_object* v___x_190_; lean_object* v_toFun_191_; lean_object* v___f_192_; lean_object* v___x_193_; 
+v___x_190_ = lean_obj_once(&lp_FinitePrecisionLanczos_Matrix_diagonal___at___00npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0_spec__0___redArg___closed__0, &lp_FinitePrecisionLanczos_Matrix_diagonal___at___00npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0_spec__0___redArg___closed__0_once, _init_lp_FinitePrecisionLanczos_Matrix_diagonal___at___00npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0_spec__0___redArg___closed__0);
+v_toFun_191_ = lean_ctor_get(v___x_190_, 0);
+v___f_192_ = lean_alloc_closure((void*)(lp_FinitePrecisionLanczos_Matrix_diagonal___at___00npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0_spec__0___redArg___lam__0___boxed), 3, 1);
+lean_closure_set(v___f_192_, 0, v_d_187_);
+lean_inc(v_toFun_191_);
+v___x_193_ = lean_apply_3(v_toFun_191_, v___f_192_, v_a_188_, v_a_189_);
+return v___x_193_;
+}
+}
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0(lean_object* v_k_194_, lean_object* v_d_195_, lean_object* v_a_196_, lean_object* v_a_197_){
+_start:
+{
+lean_object* v___x_198_; 
+v___x_198_ = lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0___redArg(v_d_195_, v_a_196_, v_a_197_);
+return v___x_198_;
+}
+}
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0___boxed(lean_object* v_k_199_, lean_object* v_d_200_, lean_object* v_a_201_, lean_object* v_a_202_){
+_start:
+{
+lean_object* v_res_203_; 
+v_res_203_ = lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0(v_k_199_, v_d_200_, v_a_201_, v_a_202_);
+lean_dec(v_k_199_);
+return v_res_203_;
+}
+}
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularK(lean_object* v_k_204_, lean_object* v_U_205_, lean_object* v_a_206_, lean_object* v_a_207_){
+_start:
+{
+lean_object* v___f_208_; lean_object* v___x_209_; lean_object* v___x_210_; lean_object* v___f_211_; lean_object* v___f_212_; 
+v___f_208_ = ((lean_object*)(lp_FinitePrecisionLanczos_npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0___closed__0));
+lean_inc(v_a_207_);
+lean_inc(v_a_206_);
+v___x_209_ = lp_FinitePrecisionLanczos_Matrix_diagonal___at___00FinitePrecisionLanczos_triangularK_spec__0___redArg(v___f_208_, v_a_206_, v_a_207_);
+v___x_210_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_triangularC(v_k_204_, v_U_205_, v_a_206_, v_a_207_);
+v___f_211_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_2451848184____hygCtx___hyg_8_), 2, 1);
+lean_closure_set(v___f_211_, 0, v___x_210_);
+v___f_212_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_), 3, 2);
+lean_closure_set(v___f_212_, 0, v___x_209_);
+lean_closure_set(v___f_212_, 1, v___f_211_);
+return v___f_212_;
 }
 }
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_Init(uint8_t builtin);
-lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Interface(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Matrix(uint8_t builtin);
 lean_object* initialize_mathlib_Mathlib_Algebra_Ring_GeomSum(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Nilpotent(uint8_t builtin) {
@@ -490,7 +522,7 @@ lean_dec_ref(res);
 res = initialize_Init(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Interface(builtin);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Matrix(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_mathlib_Mathlib_Algebra_Ring_GeomSum(builtin);

@@ -21,10 +21,12 @@ lean_object* lp_FinitePrecisionLanczos_Pi_single___at___00FinitePrecisionLanczos
 lean_object* lp_FinitePrecisionLanczos_npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 lean_object* l_List_finRange(lean_object*);
 lean_object* lp_FinitePrecisionLanczos_Finset_sum___at___00dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0_spec__0___redArg(lean_object*, lean_object*);
-lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalX_spec__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 extern lean_object* lp_mathlib_Real_definition_00___x40_Mathlib_Data_Real_Basic_1850581184____hygCtx___hyg_8_;
 lean_object* lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_(lean_object*, lean_object*, lean_object*);
+lean_object* lean_nat_add(lean_object*, lean_object*);
+lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_dilationStack_spec__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
+lean_object* lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_2451848184____hygCtx___hyg_8_(lean_object*, lean_object*);
 lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_stackBlocks___redArg(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_lastCoord___redArg(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_lastCoord___redArg___boxed(lean_object*, lean_object*);
@@ -44,18 +46,11 @@ LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePre
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_powerResidual_spec__0___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_powerResidual_spec__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_powerResidual___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___redArg(lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___redArg___boxed(lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter(lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___boxed(lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___redArg(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0___lam__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1___lam__0(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1___lam__0___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___boxed(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
@@ -276,286 +271,168 @@ lean_dec(v_x_119_);
 return v_res_122_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___redArg(lean_object* v_x_123_, lean_object* v_h__1_124_, lean_object* v_h__2_125_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___redArg(lean_object* v_A_123_, lean_object* v_ri_124_, lean_object* v_sj_125_){
 _start:
 {
-lean_object* v_zero_126_; uint8_t v_isZero_127_; 
-v_zero_126_ = lean_unsigned_to_nat(0u);
-v_isZero_127_ = lean_nat_dec_eq(v_x_123_, v_zero_126_);
-if (v_isZero_127_ == 1)
+lean_object* v_fst_126_; lean_object* v_snd_127_; lean_object* v_fst_128_; lean_object* v_snd_129_; uint8_t v___x_130_; 
+v_fst_126_ = lean_ctor_get(v_ri_124_, 0);
+lean_inc(v_fst_126_);
+v_snd_127_ = lean_ctor_get(v_ri_124_, 1);
+lean_inc(v_snd_127_);
+lean_dec_ref(v_ri_124_);
+v_fst_128_ = lean_ctor_get(v_sj_125_, 0);
+lean_inc(v_fst_128_);
+v_snd_129_ = lean_ctor_get(v_sj_125_, 1);
+lean_inc(v_snd_129_);
+lean_dec_ref(v_sj_125_);
+v___x_130_ = lean_nat_dec_eq(v_fst_126_, v_fst_128_);
+lean_dec(v_fst_128_);
+lean_dec(v_fst_126_);
+if (v___x_130_ == 0)
 {
-lean_object* v___x_128_; lean_object* v___x_129_; 
-lean_dec(v_h__2_125_);
-v___x_128_ = lean_box(0);
-v___x_129_ = lean_apply_1(v_h__1_124_, v___x_128_);
-return v___x_129_;
+lean_object* v___x_131_; 
+lean_dec(v_snd_129_);
+lean_dec(v_snd_127_);
+lean_dec(v_A_123_);
+v___x_131_ = lp_mathlib_Real_definition_00___x40_Mathlib_Data_Real_Basic_1850581184____hygCtx___hyg_8_;
+return v___x_131_;
 }
 else
 {
-lean_object* v_one_130_; lean_object* v_n_131_; lean_object* v___x_132_; 
-lean_dec(v_h__1_124_);
-v_one_130_ = lean_unsigned_to_nat(1u);
-v_n_131_ = lean_nat_sub(v_x_123_, v_one_130_);
-v___x_132_ = lean_apply_1(v_h__2_125_, v_n_131_);
+lean_object* v___x_132_; 
+v___x_132_ = lean_apply_2(v_A_123_, v_snd_127_, v_snd_129_);
 return v___x_132_;
 }
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___redArg___boxed(lean_object* v_x_133_, lean_object* v_h__1_134_, lean_object* v_h__2_135_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal(lean_object* v_n_133_, lean_object* v_p_134_, lean_object* v_A_135_, lean_object* v_ri_136_, lean_object* v_sj_137_){
 _start:
 {
-lean_object* v_res_136_; 
-v_res_136_ = lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___redArg(v_x_133_, v_h__1_134_, v_h__2_135_);
-lean_dec(v_x_133_);
-return v_res_136_;
+lean_object* v___x_138_; 
+v___x_138_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___redArg(v_A_135_, v_ri_136_, v_sj_137_);
+return v___x_138_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter(lean_object* v_motive_137_, lean_object* v_x_138_, lean_object* v_h__1_139_, lean_object* v_h__2_140_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___boxed(lean_object* v_n_139_, lean_object* v_p_140_, lean_object* v_A_141_, lean_object* v_ri_142_, lean_object* v_sj_143_){
 _start:
 {
-lean_object* v_zero_141_; uint8_t v_isZero_142_; 
-v_zero_141_ = lean_unsigned_to_nat(0u);
-v_isZero_142_ = lean_nat_dec_eq(v_x_138_, v_zero_141_);
-if (v_isZero_142_ == 1)
-{
-lean_object* v___x_143_; lean_object* v___x_144_; 
-lean_dec(v_h__2_140_);
-v___x_143_ = lean_box(0);
-v___x_144_ = lean_apply_1(v_h__1_139_, v___x_143_);
-return v___x_144_;
-}
-else
-{
-lean_object* v_one_145_; lean_object* v_n_146_; lean_object* v___x_147_; 
-lean_dec(v_h__1_139_);
-v_one_145_ = lean_unsigned_to_nat(1u);
-v_n_146_ = lean_nat_sub(v_x_138_, v_one_145_);
-v___x_147_ = lean_apply_1(v_h__2_140_, v_n_146_);
-return v___x_147_;
+lean_object* v_res_144_; 
+v_res_144_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal(v_n_139_, v_p_140_, v_A_141_, v_ri_142_, v_sj_143_);
+lean_dec(v_p_140_);
+lean_dec(v_n_139_);
+return v_res_144_;
 }
 }
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter___boxed(lean_object* v_motive_148_, lean_object* v_x_149_, lean_object* v_h__1_150_, lean_object* v_h__2_151_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0___lam__0(lean_object* v_V_145_, lean_object* v_a_146_, lean_object* v_D_147_, lean_object* v_r_148_, lean_object* v_a_149_, lean_object* v___x_150_, lean_object* v_i_151_){
 _start:
 {
-lean_object* v_res_152_; 
-v_res_152_ = lp_FinitePrecisionLanczos___private_FinitePrecisionLanczos_Core_DilationRecurrence_0__FinitePrecisionLanczos_powerResidual_match__1_splitter(v_motive_148_, v_x_149_, v_h__1_150_, v_h__2_151_);
-lean_dec(v_x_149_);
-return v_res_152_;
+lean_object* v___x_152_; lean_object* v___x_153_; lean_object* v___x_154_; lean_object* v___f_155_; lean_object* v___f_156_; lean_object* v___f_157_; 
+lean_inc_n(v_i_151_, 2);
+v___x_152_ = lean_apply_2(v_V_145_, v_a_146_, v_i_151_);
+lean_inc(v_D_147_);
+lean_inc(v_a_149_);
+v___x_153_ = lean_apply_3(v_D_147_, v_r_148_, v_i_151_, v_a_149_);
+v___x_154_ = lean_apply_3(v_D_147_, v___x_150_, v_i_151_, v_a_149_);
+v___f_155_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_2451848184____hygCtx___hyg_8_), 2, 1);
+lean_closure_set(v___f_155_, 0, v___x_154_);
+v___f_156_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_), 3, 2);
+lean_closure_set(v___f_156_, 0, v___x_153_);
+lean_closure_set(v___f_156_, 1, v___f_155_);
+v___f_157_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_4214226450____hygCtx___hyg_8_), 3, 2);
+lean_closure_set(v___f_157_, 0, v___x_152_);
+lean_closure_set(v___f_157_, 1, v___f_156_);
+return v___f_157_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___redArg(lean_object* v_A_153_, lean_object* v_ri_154_, lean_object* v_sj_155_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0(lean_object* v_V_158_, lean_object* v_a_159_, lean_object* v_D_160_, lean_object* v_r_161_, lean_object* v_a_162_, lean_object* v___x_163_, lean_object* v_n_164_){
 _start:
 {
-lean_object* v_fst_156_; lean_object* v_snd_157_; lean_object* v_fst_158_; lean_object* v_snd_159_; uint8_t v___x_160_; 
-v_fst_156_ = lean_ctor_get(v_ri_154_, 0);
-lean_inc(v_fst_156_);
-v_snd_157_ = lean_ctor_get(v_ri_154_, 1);
-lean_inc(v_snd_157_);
-lean_dec_ref(v_ri_154_);
-v_fst_158_ = lean_ctor_get(v_sj_155_, 0);
-lean_inc(v_fst_158_);
-v_snd_159_ = lean_ctor_get(v_sj_155_, 1);
-lean_inc(v_snd_159_);
-lean_dec_ref(v_sj_155_);
-v___x_160_ = lean_nat_dec_eq(v_fst_156_, v_fst_158_);
-lean_dec(v_fst_158_);
-lean_dec(v_fst_156_);
-if (v___x_160_ == 0)
-{
-lean_object* v___x_161_; 
-lean_dec(v_snd_159_);
-lean_dec(v_snd_157_);
-lean_dec(v_A_153_);
-v___x_161_ = lp_mathlib_Real_definition_00___x40_Mathlib_Data_Real_Basic_1850581184____hygCtx___hyg_8_;
-return v___x_161_;
-}
-else
-{
-lean_object* v___x_162_; 
-v___x_162_ = lean_apply_2(v_A_153_, v_snd_157_, v_snd_159_);
-return v___x_162_;
+lean_object* v___f_165_; lean_object* v___x_166_; lean_object* v___x_167_; 
+v___f_165_ = lean_alloc_closure((void*)(lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0___lam__0), 7, 6);
+lean_closure_set(v___f_165_, 0, v_V_158_);
+lean_closure_set(v___f_165_, 1, v_a_159_);
+lean_closure_set(v___f_165_, 2, v_D_160_);
+lean_closure_set(v___f_165_, 3, v_r_161_);
+lean_closure_set(v___f_165_, 4, v_a_162_);
+lean_closure_set(v___f_165_, 5, v___x_163_);
+v___x_166_ = l_List_finRange(v_n_164_);
+v___x_167_ = lp_FinitePrecisionLanczos_Finset_sum___at___00dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0_spec__0___redArg(v___x_166_, v___f_165_);
+return v___x_167_;
 }
 }
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal(lean_object* v_n_163_, lean_object* v_k_164_, lean_object* v_A_165_, lean_object* v_ri_166_, lean_object* v_sj_167_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(lean_object* v_k_168_, lean_object* v_V_169_, lean_object* v_F_170_, lean_object* v_C_171_, lean_object* v_K_172_, lean_object* v_D_173_, lean_object* v_r_174_, lean_object* v_a_175_, lean_object* v_a_176_){
 _start:
 {
-lean_object* v___x_168_; 
-v___x_168_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___redArg(v_A_165_, v_ri_166_, v_sj_167_);
-return v___x_168_;
+lean_object* v___x_177_; lean_object* v___x_178_; lean_object* v___x_179_; lean_object* v___x_180_; lean_object* v___f_181_; 
+v___x_177_ = lean_unsigned_to_nat(1u);
+v___x_178_ = lean_nat_add(v_r_174_, v___x_177_);
+lean_inc(v_a_176_);
+lean_inc(v_r_174_);
+lean_inc_n(v_k_168_, 2);
+lean_inc(v_a_175_);
+v___x_179_ = lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_dilationStack_spec__1(v_C_171_, v_F_170_, v_a_175_, v_k_168_, v_r_174_, v_K_172_, v_a_176_, v_k_168_);
+v___x_180_ = lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0(v_V_169_, v_a_175_, v_D_173_, v_r_174_, v_a_176_, v___x_178_, v_k_168_);
+v___f_181_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_), 3, 2);
+lean_closure_set(v___f_181_, 0, v___x_179_);
+lean_closure_set(v___f_181_, 1, v___x_180_);
+return v___f_181_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal___boxed(lean_object* v_n_169_, lean_object* v_k_170_, lean_object* v_A_171_, lean_object* v_ri_172_, lean_object* v_sj_173_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock(lean_object* v_n_182_, lean_object* v_k_183_, lean_object* v_V_184_, lean_object* v_F_185_, lean_object* v_C_186_, lean_object* v_K_187_, lean_object* v_D_188_, lean_object* v_r_189_, lean_object* v_a_190_, lean_object* v_a_191_){
 _start:
 {
-lean_object* v_res_174_; 
-v_res_174_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_blockDiagonal(v_n_169_, v_k_170_, v_A_171_, v_ri_172_, v_sj_173_);
-lean_dec(v_k_170_);
-lean_dec(v_n_169_);
-return v_res_174_;
+lean_object* v___x_192_; 
+v___x_192_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(v_k_183_, v_V_184_, v_F_185_, v_C_186_, v_K_187_, v_D_188_, v_r_189_, v_a_190_, v_a_191_);
+return v___x_192_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0___lam__0(lean_object* v_E0_175_, lean_object* v_a_176_, lean_object* v_k_177_, lean_object* v_r_178_, lean_object* v_K_179_, lean_object* v_a_180_, lean_object* v_i_181_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___boxed(lean_object* v_n_193_, lean_object* v_k_194_, lean_object* v_V_195_, lean_object* v_F_196_, lean_object* v_C_197_, lean_object* v_K_198_, lean_object* v_D_199_, lean_object* v_r_200_, lean_object* v_a_201_, lean_object* v_a_202_){
 _start:
 {
-lean_object* v___x_182_; lean_object* v___x_183_; lean_object* v___f_184_; 
-lean_inc(v_i_181_);
-v___x_182_ = lean_apply_2(v_E0_175_, v_a_176_, v_i_181_);
-v___x_183_ = lp_FinitePrecisionLanczos_npowBinRec___at___00FinitePrecisionLanczos_triangularC_spec__0(v_k_177_, v_r_178_, v_K_179_, v_i_181_, v_a_180_);
-v___f_184_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_4214226450____hygCtx___hyg_8_), 3, 2);
-lean_closure_set(v___f_184_, 0, v___x_182_);
-lean_closure_set(v___f_184_, 1, v___x_183_);
-return v___f_184_;
+lean_object* v_res_203_; 
+v_res_203_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock(v_n_193_, v_k_194_, v_V_195_, v_F_196_, v_C_197_, v_K_198_, v_D_199_, v_r_200_, v_a_201_, v_a_202_);
+lean_dec(v_n_193_);
+return v_res_203_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0(lean_object* v_E0_185_, lean_object* v_a_186_, lean_object* v_k_187_, lean_object* v_r_188_, lean_object* v_K_189_, lean_object* v_a_190_, lean_object* v_n_191_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg___lam__0(lean_object* v_k_204_, lean_object* v_V_205_, lean_object* v_F_206_, lean_object* v_C_207_, lean_object* v_K_208_, lean_object* v_D_209_, lean_object* v_r_210_, lean_object* v___y_211_, lean_object* v___y_212_){
 _start:
 {
-lean_object* v___f_192_; lean_object* v___x_193_; lean_object* v___x_194_; 
-v___f_192_ = lean_alloc_closure((void*)(lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0___lam__0), 7, 6);
-lean_closure_set(v___f_192_, 0, v_E0_185_);
-lean_closure_set(v___f_192_, 1, v_a_186_);
-lean_closure_set(v___f_192_, 2, v_k_187_);
-lean_closure_set(v___f_192_, 3, v_r_188_);
-lean_closure_set(v___f_192_, 4, v_K_189_);
-lean_closure_set(v___f_192_, 5, v_a_190_);
-v___x_193_ = l_List_finRange(v_n_191_);
-v___x_194_ = lp_FinitePrecisionLanczos_Finset_sum___at___00dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0_spec__0___redArg(v___x_193_, v___f_192_);
-return v___x_194_;
+lean_object* v___x_213_; 
+v___x_213_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(v_k_204_, v_V_205_, v_F_206_, v_C_207_, v_K_208_, v_D_209_, v_r_210_, v___y_211_, v___y_212_);
+return v___x_213_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1___lam__0(lean_object* v_V_195_, lean_object* v_a_196_, lean_object* v_C_197_, lean_object* v_k_198_, lean_object* v_K_199_, lean_object* v_L_200_, lean_object* v_r_201_, lean_object* v_a_202_, lean_object* v_i_203_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg(lean_object* v_k_214_, lean_object* v_V_215_, lean_object* v_F_216_, lean_object* v_C_217_, lean_object* v_K_218_, lean_object* v_D_219_, lean_object* v_a_220_, lean_object* v_a_221_){
 _start:
 {
-lean_object* v___x_204_; lean_object* v___x_205_; lean_object* v___f_206_; 
-lean_inc(v_k_198_);
-lean_inc(v_i_203_);
-v___x_204_ = lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalX_spec__0(v_V_195_, v_a_196_, v_C_197_, v_i_203_, v_k_198_);
-v___x_205_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_powerResidual(v_k_198_, v_K_199_, v_L_200_, v_r_201_, v_i_203_, v_a_202_);
-v___f_206_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_4214226450____hygCtx___hyg_8_), 3, 2);
-lean_closure_set(v___f_206_, 0, v___x_204_);
-lean_closure_set(v___f_206_, 1, v___x_205_);
-return v___f_206_;
+lean_object* v___f_222_; lean_object* v___x_223_; 
+v___f_222_ = lean_alloc_closure((void*)(lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg___lam__0), 9, 6);
+lean_closure_set(v___f_222_, 0, v_k_214_);
+lean_closure_set(v___f_222_, 1, v_V_215_);
+lean_closure_set(v___f_222_, 2, v_F_216_);
+lean_closure_set(v___f_222_, 3, v_C_217_);
+lean_closure_set(v___f_222_, 4, v_K_218_);
+lean_closure_set(v___f_222_, 5, v_D_219_);
+v___x_223_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_stackBlocks___redArg(v___f_222_, v_a_220_, v_a_221_);
+return v___x_223_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1___lam__0___boxed(lean_object* v_V_207_, lean_object* v_a_208_, lean_object* v_C_209_, lean_object* v_k_210_, lean_object* v_K_211_, lean_object* v_L_212_, lean_object* v_r_213_, lean_object* v_a_214_, lean_object* v_i_215_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError(lean_object* v_n_224_, lean_object* v_k_225_, lean_object* v_V_226_, lean_object* v_F_227_, lean_object* v_C_228_, lean_object* v_K_229_, lean_object* v_D_230_, lean_object* v_a_231_, lean_object* v_a_232_){
 _start:
 {
-lean_object* v_res_216_; 
-v_res_216_ = lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1___lam__0(v_V_207_, v_a_208_, v_C_209_, v_k_210_, v_K_211_, v_L_212_, v_r_213_, v_a_214_, v_i_215_);
-lean_dec(v_r_213_);
-return v_res_216_;
+lean_object* v___x_233_; 
+v___x_233_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg(v_k_225_, v_V_226_, v_F_227_, v_C_228_, v_K_229_, v_D_230_, v_a_231_, v_a_232_);
+return v___x_233_;
 }
 }
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1(lean_object* v_C_217_, lean_object* v_V_218_, lean_object* v_a_219_, lean_object* v_k_220_, lean_object* v_K_221_, lean_object* v_L_222_, lean_object* v_r_223_, lean_object* v_a_224_, lean_object* v_n_225_){
+LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___boxed(lean_object* v_n_234_, lean_object* v_k_235_, lean_object* v_V_236_, lean_object* v_F_237_, lean_object* v_C_238_, lean_object* v_K_239_, lean_object* v_D_240_, lean_object* v_a_241_, lean_object* v_a_242_){
 _start:
 {
-lean_object* v___f_226_; lean_object* v___x_227_; lean_object* v___x_228_; 
-v___f_226_ = lean_alloc_closure((void*)(lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1___lam__0___boxed), 9, 8);
-lean_closure_set(v___f_226_, 0, v_V_218_);
-lean_closure_set(v___f_226_, 1, v_a_219_);
-lean_closure_set(v___f_226_, 2, v_C_217_);
-lean_closure_set(v___f_226_, 3, v_k_220_);
-lean_closure_set(v___f_226_, 4, v_K_221_);
-lean_closure_set(v___f_226_, 5, v_L_222_);
-lean_closure_set(v___f_226_, 6, v_r_223_);
-lean_closure_set(v___f_226_, 7, v_a_224_);
-v___x_227_ = l_List_finRange(v_n_225_);
-v___x_228_ = lp_FinitePrecisionLanczos_Finset_sum___at___00dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0_spec__0___redArg(v___x_227_, v___f_226_);
-return v___x_228_;
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(lean_object* v_k_229_, lean_object* v_V_230_, lean_object* v_E0_231_, lean_object* v_C_232_, lean_object* v_K_233_, lean_object* v_L_234_, lean_object* v_r_235_, lean_object* v_a_236_, lean_object* v_a_237_){
-_start:
-{
-lean_object* v___x_238_; uint8_t v___x_239_; 
-v___x_238_ = lean_unsigned_to_nat(0u);
-v___x_239_ = lean_nat_dec_eq(v_r_235_, v___x_238_);
-if (v___x_239_ == 0)
-{
-lean_object* v___x_240_; lean_object* v___x_241_; lean_object* v___f_242_; 
-lean_inc(v_a_237_);
-lean_inc(v_K_233_);
-lean_inc(v_r_235_);
-lean_inc_n(v_k_229_, 3);
-lean_inc(v_a_236_);
-v___x_240_ = lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__0(v_E0_231_, v_a_236_, v_k_229_, v_r_235_, v_K_233_, v_a_237_, v_k_229_);
-v___x_241_ = lp_FinitePrecisionLanczos_dotProduct___at___00FinitePrecisionLanczos_vdot_spec__0___at___00FinitePrecisionLanczos_physicalErrorBlock_spec__1(v_C_232_, v_V_230_, v_a_236_, v_k_229_, v_K_233_, v_L_234_, v_r_235_, v_a_237_, v_k_229_);
-v___f_242_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_), 3, 2);
-lean_closure_set(v___f_242_, 0, v___x_240_);
-lean_closure_set(v___f_242_, 1, v___x_241_);
-return v___f_242_;
-}
-else
-{
-lean_object* v___x_243_; 
-lean_dec(v_r_235_);
-lean_dec(v_L_234_);
-lean_dec(v_K_233_);
-lean_dec(v_C_232_);
-lean_dec(v_V_230_);
-lean_dec(v_k_229_);
-v___x_243_ = lean_apply_2(v_E0_231_, v_a_236_, v_a_237_);
-return v___x_243_;
-}
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock(lean_object* v_n_244_, lean_object* v_k_245_, lean_object* v_V_246_, lean_object* v_E0_247_, lean_object* v_C_248_, lean_object* v_K_249_, lean_object* v_L_250_, lean_object* v_r_251_, lean_object* v_a_252_, lean_object* v_a_253_){
-_start:
-{
-lean_object* v___x_254_; 
-v___x_254_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(v_k_245_, v_V_246_, v_E0_247_, v_C_248_, v_K_249_, v_L_250_, v_r_251_, v_a_252_, v_a_253_);
-return v___x_254_;
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___boxed(lean_object* v_n_255_, lean_object* v_k_256_, lean_object* v_V_257_, lean_object* v_E0_258_, lean_object* v_C_259_, lean_object* v_K_260_, lean_object* v_L_261_, lean_object* v_r_262_, lean_object* v_a_263_, lean_object* v_a_264_){
-_start:
-{
-lean_object* v_res_265_; 
-v_res_265_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock(v_n_255_, v_k_256_, v_V_257_, v_E0_258_, v_C_259_, v_K_260_, v_L_261_, v_r_262_, v_a_263_, v_a_264_);
-lean_dec(v_n_255_);
-return v_res_265_;
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg___lam__0(lean_object* v_k_266_, lean_object* v_V_267_, lean_object* v_E0_268_, lean_object* v_C_269_, lean_object* v_K_270_, lean_object* v_L_271_, lean_object* v_r_272_, lean_object* v___y_273_, lean_object* v___y_274_){
-_start:
-{
-lean_object* v___x_275_; 
-v___x_275_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalErrorBlock___redArg(v_k_266_, v_V_267_, v_E0_268_, v_C_269_, v_K_270_, v_L_271_, v_r_272_, v___y_273_, v___y_274_);
-return v___x_275_;
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg(lean_object* v_k_276_, lean_object* v_V_277_, lean_object* v_E0_278_, lean_object* v_C_279_, lean_object* v_K_280_, lean_object* v_L_281_, lean_object* v_a_282_, lean_object* v_a_283_){
-_start:
-{
-lean_object* v___f_284_; lean_object* v___x_285_; 
-v___f_284_ = lean_alloc_closure((void*)(lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg___lam__0), 9, 6);
-lean_closure_set(v___f_284_, 0, v_k_276_);
-lean_closure_set(v___f_284_, 1, v_V_277_);
-lean_closure_set(v___f_284_, 2, v_E0_278_);
-lean_closure_set(v___f_284_, 3, v_C_279_);
-lean_closure_set(v___f_284_, 4, v_K_280_);
-lean_closure_set(v___f_284_, 5, v_L_281_);
-v___x_285_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_stackBlocks___redArg(v___f_284_, v_a_282_, v_a_283_);
-return v___x_285_;
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError(lean_object* v_n_286_, lean_object* v_k_287_, lean_object* v_V_288_, lean_object* v_E0_289_, lean_object* v_C_290_, lean_object* v_K_291_, lean_object* v_L_292_, lean_object* v_a_293_, lean_object* v_a_294_){
-_start:
-{
-lean_object* v___x_295_; 
-v___x_295_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___redArg(v_k_287_, v_V_288_, v_E0_289_, v_C_290_, v_K_291_, v_L_292_, v_a_293_, v_a_294_);
-return v___x_295_;
-}
-}
-LEAN_EXPORT lean_object* lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError___boxed(lean_object* v_n_296_, lean_object* v_k_297_, lean_object* v_V_298_, lean_object* v_E0_299_, lean_object* v_C_300_, lean_object* v_K_301_, lean_object* v_L_302_, lean_object* v_a_303_, lean_object* v_a_304_){
-_start:
-{
-lean_object* v_res_305_; 
-v_res_305_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError(v_n_296_, v_k_297_, v_V_298_, v_E0_299_, v_C_300_, v_K_301_, v_L_302_, v_a_303_, v_a_304_);
-lean_dec(v_n_296_);
-return v_res_305_;
+lean_object* v_res_243_; 
+v_res_243_ = lp_FinitePrecisionLanczos_FinitePrecisionLanczos_physicalError(v_n_234_, v_k_235_, v_V_236_, v_F_237_, v_C_238_, v_K_239_, v_D_240_, v_a_241_, v_a_242_);
+lean_dec(v_n_234_);
+return v_res_243_;
 }
 }
 lean_object* initialize_Init(uint8_t builtin);

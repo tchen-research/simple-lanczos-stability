@@ -11079,11 +11079,6 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/Projection/Basic.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/Projection/Basic.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/Projection/Basic.olean.private"],
-  "Mathlib.Analysis.InnerProductSpace.ProdL2":
-  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.olean",
-   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.ir",
-   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.olean.server",
-   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.olean.private"],
   "Mathlib.Analysis.InnerProductSpace.PiL2":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/PiL2.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/PiL2.ir",
@@ -14824,74 +14819,22 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.private"],
-  "FinitePrecisionLanczos.Lanczos.Run":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Run.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Stabilized":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Stabilized.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Ritz":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Ritz.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Prefix":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Prefix.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.LossBounds":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/LossBounds.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Loss":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Loss.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Descent":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Containment":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Containment.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Commutator":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Commutator.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Spectral":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Spectral.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.NormalizedRecurrence":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/NormalizedRecurrence.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.NormalizedCommutator":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/NormalizedCommutator.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Normalization":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Normalization.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Measure":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Interface":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Interface.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Dilation":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Dilation.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Correction":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Correction.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Completion":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Completion.olean"],
-  "FinitePrecisionLanczos.Lanczos.Bounds":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Bounds.olean"],
-  "FinitePrecisionLanczos.Lanczos.Assembly":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Assembly.olean"],
-  "FinitePrecisionLanczos.Core.Tridiagonalization":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Tridiagonalization.olean"],
   "FinitePrecisionLanczos.Core.Spectral":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Spectral.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Spectral.olean"],
   "FinitePrecisionLanczos.Core.Nilpotent":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Nilpotent.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Nilpotent.olean"],
   "FinitePrecisionLanczos.Core.Measure.SpectralMass":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralMass.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralMass.olean"],
   "FinitePrecisionLanczos.Core.Measure.FiniteAtomic":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.olean"],
   "FinitePrecisionLanczos.Core.Matrix":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
   "FinitePrecisionLanczos.Core.DilationRecurrence":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationRecurrence.olean"],
-  "FinitePrecisionLanczos.Core.DilationBounds":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationRecurrence.olean"],
   "FinitePrecisionLanczos.Core.Dilation":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Dilation.olean"],
-  "FinitePrecisionLanczos.Core.Descent":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Descent.olean"],
-  "FinitePrecisionLanczos.Core.CompletionCorrection":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/CompletionCorrection.olean"],
-  "FinitePrecisionLanczos.Core.CompletionBasis":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/CompletionBasis.olean"],
-  "FinitePrecisionLanczos.Core.Completion":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Completion.olean"],
-  "FinitePrecisionLanczos.Core.Commutator":
-  ["/home/tyler/Documents/scratch/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Commutator.olean"],
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Dilation.olean"],
+  "FinitePrecisionLanczos.Core.BlockSpectral":
+  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/BlockSpectral.olean"],
   "Batteries.Util.ProofWanted":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.ir",

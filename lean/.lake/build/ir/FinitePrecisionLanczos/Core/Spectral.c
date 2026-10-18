@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: FinitePrecisionLanczos.Core.Spectral
-// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Paige.Descent public import Mathlib.Algebra.Order.Star.Real public import Mathlib.LinearAlgebra.Matrix.PosDef
+// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Core.Matrix public import Mathlib.Algebra.Order.Star.Real public import Mathlib.LinearAlgebra.Matrix.PosDef
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -15,7 +15,7 @@ extern "C" {
 #endif
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_Init(uint8_t builtin);
-lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Paige_Descent(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Matrix(uint8_t builtin);
 lean_object* initialize_mathlib_Mathlib_Algebra_Order_Star_Real(uint8_t builtin);
 lean_object* initialize_mathlib_Mathlib_LinearAlgebra_Matrix_PosDef(uint8_t builtin);
 static bool _G_initialized = false;
@@ -29,7 +29,7 @@ lean_dec_ref(res);
 res = initialize_Init(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Paige_Descent(builtin);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Matrix(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_mathlib_Mathlib_Algebra_Order_Star_Real(builtin);

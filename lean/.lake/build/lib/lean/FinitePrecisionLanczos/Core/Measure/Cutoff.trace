@@ -22,7 +22,7 @@
        [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
       ["imports",
        [["FinitePrecisionLanczos.Core.Measure.Wasserstein transitive imports (legacy)",
-         "80894ce15ec4c01e"],
+         "4593da5652aa30df"],
         ["FinitePrecisionLanczos.Core.Measure.Wasserstein:importAllArts",
          "6a7eb4fd53fc6b2f"],
         ["Mathlib.Topology.MetricSpace.Lipschitz transitive imports (legacy)",
@@ -44,4 +44,4 @@
    "55ce7a3b7184ac86"],
   ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
   ["Module.leanArgs: #[]", "00000000000006bb"]],
- "depHash": "0b5732b5f8e70f41"}
+ "depHash": "ae54de0cd5b33cc3"}

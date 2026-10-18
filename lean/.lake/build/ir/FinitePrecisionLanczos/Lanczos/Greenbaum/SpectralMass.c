@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: FinitePrecisionLanczos.Lanczos.Greenbaum.SpectralMass
-// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.Model public import FinitePrecisionLanczos.Core.Measure.SpectralMass
+// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.Measure public import FinitePrecisionLanczos.Core.Measure.SpectralMass
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -15,7 +15,7 @@ extern "C" {
 #endif
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_Init(uint8_t builtin);
-lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Model(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Measure(uint8_t builtin);
 lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralMass(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_SpectralMass(uint8_t builtin) {
@@ -28,7 +28,7 @@ lean_dec_ref(res);
 res = initialize_Init(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Model(builtin);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Measure(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralMass(builtin);

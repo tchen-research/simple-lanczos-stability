@@ -1,13 +1,13 @@
 {"synthetic": false,
  "schemaVersion": "2025-09-10",
  "outputs":
- {"o": ["436250f24f0b3d87.olean"],
+ {"o": ["f899fdc9c77b2a6d.olean"],
   "m": false,
-  "i": "b322c6b8f84d138a.ilean",
-  "c": "dbe3e82136096f15.c"},
+  "i": "11274af27f08f53a.ilean",
+  "c": "64756ad410a5d7c3.c"},
  "log":
  [{"message":
-   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Core/DilationBounds.lean -o /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.olean -i /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Core/DilationBounds.c --setup /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Core/DilationBounds.setup.json --json",
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/FinitePrecisionLanczos/Core/DilationBounds.lean -o /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.olean -i /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.ilean -c /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/ir/FinitePrecisionLanczos/Core/DilationBounds.c --setup /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/ir/FinitePrecisionLanczos/Core/DilationBounds.setup.json --json",
    "level": "trace"}],
  "inputs":
  [["FinitePrecisionLanczos.Core.DilationBounds:deps",
@@ -16,9 +16,9 @@
        [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
       ["imports",
        [["FinitePrecisionLanczos.Core.DilationRecurrence transitive imports (legacy)",
-         "00c1e16ddec00b63"],
+         "3304bb397b99d057"],
         ["FinitePrecisionLanczos.Core.DilationRecurrence:importAllArts",
-         "f97a43de297f2f6d"]]]]],
+         "90789eeb7414f4f7"]]]]],
     ["libs",
      [["import dynlibs", "00000000000006bb"],
       ["package external libraries", "00000000000006bb"],
@@ -26,12 +26,12 @@
       ["module plugins", "00000000000006bb"]]]]],
   ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
    "7508232886a2752a"],
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Core/DilationBounds.lean",
-   "e8fb5ba73fc5d32e"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/FinitePrecisionLanczos/Core/DilationBounds.lean",
+   "6cf9b89efb6ce729"],
   ["options", "00000000000006bb"],
   ["isModule: false", "feefd2a0d3a1847e"],
   ["Module.name: FinitePrecisionLanczos.Core.DilationBounds",
    "9be2f566e55a5adf"],
   ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
   ["Module.leanArgs: #[]", "00000000000006bb"]],
- "depHash": "ac2e5a1eacc38e4a"}
+ "depHash": "4a1166d76760942f"}

@@ -1,15 +1,7 @@
-import FinitePrecisionLanczos.Core.Measure.Transport
-
-
-
-
-
-
-
+import FinitePrecisionLanczos.Core.Measure.SpectralMass
 
 
 namespace FinitePrecisionLanczos
-
 
 noncomputable def atomicIntegral (mu : AtomicMass) (f : ℝ → ℝ) : ℝ :=
   mu.sum fun x w => w * f x
@@ -28,17 +20,13 @@ noncomputable def atomicIntegral (mu : AtomicMass) (f : ℝ → ℝ) : ℝ :=
   classical
   simp [atomicIntegral]
 
-
 def OneLipschitz (f : ℝ → ℝ) : Prop :=
   ∀ x y, |f x - f y| ≤ |x - y|
-
 
 noncomputable def atomicWasserstein (mu nu : AtomicMass) : ℝ :=
   sSup {r : ℝ | ∃ f : ℝ → ℝ,
     OneLipschitz f ∧
       r = |atomicIntegral mu f - atomicIntegral nu f|}
-
-
 
 theorem atomicWasserstein_le (mu nu : AtomicMass) (C : ℝ)
     (hC : ∀ f : ℝ → ℝ, OneLipschitz f →
@@ -52,5 +40,16 @@ theorem atomicWasserstein_le (mu nu : AtomicMass) (C : ℝ)
   · intro r hr
     obtain ⟨f, hf, rfl⟩ := hr
     exact hC f hf
+
+lemma abs_double_sum_le_sum_abs {I J : Type*} [Fintype I] [Fintype J]
+    (a : I → J → ℝ) :
+    |∑ i, ∑ j, a i j| ≤ ∑ i, ∑ j, |a i j| := by
+  calc
+    |∑ i, ∑ j, a i j| ≤ ∑ i, |∑ j, a i j| :=
+      Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ i, ∑ j, |a i j| := by
+      apply Finset.sum_le_sum
+      intro i _hi
+      exact Finset.abs_sum_le_sum_abs _ _
 
 end FinitePrecisionLanczos

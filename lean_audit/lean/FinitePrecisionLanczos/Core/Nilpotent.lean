@@ -1,12 +1,5 @@
-import FinitePrecisionLanczos.Lanczos.Greenbaum.Interface
+import FinitePrecisionLanczos.Core.Matrix
 import Mathlib.Algebra.Ring.GeomSum
-
-
-
-
-
-
-
 
 
 namespace FinitePrecisionLanczos
@@ -15,14 +8,11 @@ open Matrix
 
 variable {k : ℕ}
 
-
 def StrictUpper (U : Mat k k) : Prop :=
   ∀ i j, ¬i.1 < j.1 → U i j = 0
 
-
 def Upper (U : Mat k k) : Prop :=
   ∀ i j, j.1 < i.1 → U i j = 0
-
 
 theorem StrictUpper.pow_entry_zero (U : Mat k k) (hU : StrictUpper U) :
     ∀ r : ℕ, ∀ i j : Fin k, j.1 < i.1 + r → (U ^ r) i j = 0 := by
@@ -41,7 +31,6 @@ theorem StrictUpper.pow_entry_zero (U : Mat k k) (hU : StrictUpper U) :
       · rw [ih i m him, zero_mul]
       · have hmj : ¬m.1 < j.1 := by omega
         rw [hU m j hmj, mul_zero]
-
 
 theorem StrictUpper.pow_card_eq_zero (U : Mat k k) (hU : StrictUpper U) :
     U ^ k = 0 := by
@@ -91,10 +80,8 @@ lemma StrictUpper.neg_pow_upper (U : Mat k k) (hU : StrictUpper U) (r : ℕ) :
     Upper ((-U) ^ r) := by
   exact StrictUpper.pow_upper (-U) (StrictUpper.neg U hU) r
 
-
 def triangularC (U : Mat k k) : Mat k k :=
   (Finset.range k).sum fun r => (-U) ^ r
-
 
 def triangularK (U : Mat k k) : Mat k k := 1 - triangularC U
 
@@ -108,20 +95,17 @@ lemma neg_pow_card_eq_zero (U : Mat k k) (hU : StrictUpper U) :
     (-U) ^ k = 0 := by
   exact StrictUpper.pow_card_eq_zero (-U) (StrictUpper.neg U hU)
 
-
 theorem add_one_mul_triangularC (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     (1 + U) * triangularC U = 1 := by
   have hgeom := mul_neg_geom_sum (-U) k
   rw [neg_pow_card_eq_zero U hU] at hgeom
   simpa [triangularC] using hgeom
 
-
 theorem triangularC_mul_add_one (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     triangularC U * (1 + U) = 1 := by
   have hgeom := geom_sum_mul_neg (-U) k
   rw [neg_pow_card_eq_zero U hU] at hgeom
   simpa [triangularC] using hgeom
-
 
 theorem triangularK_eq_mul (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     triangularK U = U * triangularC U := by
@@ -130,7 +114,6 @@ theorem triangularK_eq_mul (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
   calc
     1 - triangularC U = (1 + U) * triangularC U - triangularC U := by rw [hinv]
     _ = U * triangularC U := by noncomm_ring
-
 
 theorem triangularK_eq_mul' (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     triangularK U = triangularC U * U := by
@@ -159,7 +142,6 @@ lemma triangularK_strictUpper (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
 lemma triangularK_pow_card_eq_zero (hk : 0 < k) (U : Mat k k)
     (hU : StrictUpper U) : triangularK U ^ k = 0 :=
   StrictUpper.pow_card_eq_zero _ (triangularK_strictUpper hk U hU)
-
 
 theorem triangular_isometry_identity (hk : 0 < k)
     (G U : Mat k k) (hU : StrictUpper U)

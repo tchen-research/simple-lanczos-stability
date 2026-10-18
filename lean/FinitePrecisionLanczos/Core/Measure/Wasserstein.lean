@@ -1,16 +1,8 @@
-import FinitePrecisionLanczos.Core.Measure.Transport
+import FinitePrecisionLanczos.Core.Measure.SpectralMass
 
-/-!
-# One-Wasserstein distance for finite atomic masses
-
-This is a finite-sum version of one-Wasserstein distance.  It avoids
-measure-theoretic overhead because every spectral measure in the paper has
-finite support.
--/
 
 namespace FinitePrecisionLanczos
 
-/-- Integral of a scalar function against a finite atomic mass. -/
 noncomputable def atomicIntegral (mu : AtomicMass) (f : ℝ → ℝ) : ℝ :=
   mu.sum fun x w => w * f x
 
@@ -28,18 +20,14 @@ noncomputable def atomicIntegral (mu : AtomicMass) (f : ℝ → ℝ) : ℝ :=
   classical
   simp [atomicIntegral]
 
-/-- The scalar one-Lipschitz condition used below. -/
 def OneLipschitz (f : ℝ → ℝ) : Prop :=
   ∀ x y, |f x - f y| ≤ |x - y|
 
-/-- Kantorovich--Rubinstein definition of `W₁` for finite atomic masses. -/
 noncomputable def atomicWasserstein (mu nu : AtomicMass) : ℝ :=
   sSup {r : ℝ | ∃ f : ℝ → ℝ,
     OneLipschitz f ∧
       r = |atomicIntegral mu f - atomicIntegral nu f|}
 
-/-- To bound finite-atomic `W₁`, it suffices to bound every one-Lipschitz
-test function. -/
 theorem atomicWasserstein_le (mu nu : AtomicMass) (C : ℝ)
     (hC : ∀ f : ℝ → ℝ, OneLipschitz f →
       |atomicIntegral mu f - atomicIntegral nu f| ≤ C) :
@@ -52,5 +40,16 @@ theorem atomicWasserstein_le (mu nu : AtomicMass) (C : ℝ)
   · intro r hr
     obtain ⟨f, hf, rfl⟩ := hr
     exact hC f hf
+
+lemma abs_double_sum_le_sum_abs {I J : Type*} [Fintype I] [Fintype J]
+    (a : I → J → ℝ) :
+    |∑ i, ∑ j, a i j| ≤ ∑ i, ∑ j, |a i j| := by
+  calc
+    |∑ i, ∑ j, a i j| ≤ ∑ i, |∑ j, a i j| :=
+      Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ i, ∑ j, |a i j| := by
+      apply Finset.sum_le_sum
+      intro i _hi
+      exact Finset.abs_sum_le_sum_abs _ _
 
 end FinitePrecisionLanczos

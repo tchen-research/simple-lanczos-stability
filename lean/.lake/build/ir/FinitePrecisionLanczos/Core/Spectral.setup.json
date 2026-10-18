@@ -14819,30 +14819,8 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.private"],
-  "FinitePrecisionLanczos.Lanczos.Run":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Run.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Ritz":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Ritz.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Prefix":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Prefix.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.LossBounds":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/LossBounds.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Loss":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Loss.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Descent":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Commutator":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Commutator.olean"],
-  "FinitePrecisionLanczos.Lanczos.Bounds":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Bounds.olean"],
-  "FinitePrecisionLanczos.Lanczos.Assembly":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Assembly.olean"],
   "FinitePrecisionLanczos.Core.Matrix":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
-  "FinitePrecisionLanczos.Core.Descent":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Descent.olean"],
-  "FinitePrecisionLanczos.Core.Commutator":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Commutator.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
   "Batteries.Util.ProofWanted":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.ir",

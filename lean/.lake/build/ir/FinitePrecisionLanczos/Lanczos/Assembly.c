@@ -145,9 +145,9 @@ v___jp_51_:
 {
 lean_object* v___f_55_; lean_object* v___x_56_; uint8_t v___x_57_; 
 v___f_55_ = lean_alloc_closure((void*)(lp_mathlib_Real_definition___lam__0_00___x40_Mathlib_Data_Real_Basic_1138242547____hygCtx___hyg_8_), 3, 2);
-lean_closure_set(v___f_55_, 0, v___y_52_);
+lean_closure_set(v___f_55_, 0, v___y_53_);
 lean_closure_set(v___f_55_, 1, v___y_54_);
-v___x_56_ = lean_nat_add(v_j_50_, v___y_53_);
+v___x_56_ = lean_nat_add(v_j_50_, v___y_52_);
 v___x_57_ = lean_nat_dec_eq(v___x_56_, v_i_49_);
 if (v___x_57_ == 0)
 {
@@ -184,8 +184,8 @@ if (v___x_67_ == 0)
 lean_object* v___x_68_; 
 lean_dec(v___x_66_);
 v___x_68_ = lp_mathlib_Real_definition_00___x40_Mathlib_Data_Real_Basic_1850581184____hygCtx___hyg_8_;
-v___y_52_ = v___y_64_;
-v___y_53_ = v___x_65_;
+v___y_52_ = v___x_65_;
+v___y_53_ = v___y_64_;
 v___y_54_ = v___x_68_;
 goto v___jp_51_;
 }
@@ -195,8 +195,8 @@ lean_object* v_00_u03b2_69_; lean_object* v___x_70_;
 v_00_u03b2_69_ = lean_ctor_get(v_L_48_, 6);
 lean_inc(v_00_u03b2_69_);
 v___x_70_ = lean_apply_1(v_00_u03b2_69_, v___x_66_);
-v___y_52_ = v___y_64_;
-v___y_53_ = v___x_65_;
+v___y_52_ = v___x_65_;
+v___y_53_ = v___y_64_;
 v___y_54_ = v___x_70_;
 goto v___jp_51_;
 }

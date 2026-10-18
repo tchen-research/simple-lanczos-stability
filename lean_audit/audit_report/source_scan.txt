@@ -1,0 +1,3 @@
+Scanned 42 Lean source files, excluding .lake.
+Pattern: sorry|admit|axiom|unsafe|implemented_by|native_decide (word boundaries)
+No matches.

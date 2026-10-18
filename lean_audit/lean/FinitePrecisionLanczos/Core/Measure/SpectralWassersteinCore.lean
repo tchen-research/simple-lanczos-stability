@@ -2,20 +2,11 @@ import FinitePrecisionLanczos.Core.Measure.Wasserstein
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
 
-
-
-
-
-
-
-
 namespace FinitePrecisionLanczos
 
 open scoped InnerProductSpace RealInnerProductSpace
 
 variable {I : Type*} [Fintype I] [DecidableEq I]
-
-
 
 lemma spectralSum_sub_eq_crossSum
     (u v : OrthonormalBasis I ℝ (EuclideanSpace ℝ I))
@@ -59,9 +50,6 @@ lemma spectralSum_sub_eq_crossSum
         intro i
         ring
 
-
-
-
 theorem spectralSum_lipschitz_sub_le
     (u v : OrthonormalBasis I ℝ (EuclideanSpace ℝ I))
     (q : EuclideanSpace ℝ I) (hq : ‖q‖ = 1)
@@ -71,7 +59,7 @@ theorem spectralSum_lipschitz_sub_le
       (lambda i - mu j) * ⟪u i, v j⟫_ℝ = ⟪u i, D (v j)⟫_ℝ) :
     |(∑ i, ⟪u i, q⟫_ℝ ^ 2 * f (lambda i)) -
         (∑ j, ⟪v j, q⟫_ℝ ^ 2 * f (mu j))| ≤
-      Real.sqrt (Fintype.card I) * ‖D‖ := by
+      Real.sqrt (∑ j, ‖D (v j)‖ ^ 2) := by
   let a : I → ℝ := fun i => ⟪u i, q⟫_ℝ
   let b : I → ℝ := fun j => ⟪v j, q⟫_ℝ
   let e : I × I → ℝ := fun ij => ⟪u ij.1, D (v ij.2)⟫_ℝ
@@ -125,24 +113,14 @@ theorem spectralSum_lipschitz_sub_le
     rw [show ∑ j, b j ^ 2 = ‖q‖ ^ 2 by
       simpa [b] using v.sum_sq_inner_right q]
     simp [hq]
-  have hsecond : ∑ ij ∈ s, |e ij| ^ 2 ≤ Fintype.card I * ‖D‖ ^ 2 := by
+  have hsecond : ∑ ij ∈ s, |e ij| ^ 2 = ∑ j, ‖D (v j)‖ ^ 2 := by
     rw [show (∑ ij ∈ s, |e ij| ^ 2) =
         ∑ j, ∑ i, |⟪u i, D (v j)⟫_ℝ| ^ 2 by
       simp only [s, Finset.mem_univ, ↓reduceIte]
       rw [Fintype.sum_prod_type, Finset.sum_comm]]
-    calc
-      ∑ j, ∑ i, |⟪u i, D (v j)⟫_ℝ| ^ 2 =
-          ∑ j, ‖D (v j)‖ ^ 2 := by
-        apply Fintype.sum_congr
-        intro j
-        simpa [sq_abs] using u.sum_sq_inner_right (D (v j))
-      _ ≤ ∑ _j : I, ‖D‖ ^ 2 := by
-        apply Finset.sum_le_sum
-        intro j _hj
-        have hDj : ‖D (v j)‖ ≤ ‖D‖ := by
-          simpa using D.le_opNorm (v j)
-        exact pow_le_pow_left₀ (norm_nonneg _) hDj 2
-      _ = Fintype.card I * ‖D‖ ^ 2 := by simp
+    apply Fintype.sum_congr
+    intro j
+    simpa [sq_abs] using u.sum_sq_inner_right (D (v j))
   rw [hexpand]
   calc
     |∑ i, ∑ j, ⟪u i, q⟫_ℝ * ⟪v j, q⟫_ℝ * ⟪u i, v j⟫_ℝ *
@@ -152,10 +130,6 @@ theorem spectralSum_lipschitz_sub_le
         Real.sqrt (∑ ij ∈ s, |e ij| ^ 2) :=
       Real.sum_mul_le_sqrt_mul_sqrt s _ _
     _ = Real.sqrt (∑ ij ∈ s, |e ij| ^ 2) := by rw [hfirst]; simp
-    _ ≤ Real.sqrt (Fintype.card I * ‖D‖ ^ 2) :=
-      Real.sqrt_le_sqrt hsecond
-    _ = Real.sqrt (Fintype.card I) * ‖D‖ := by
-      rw [Real.sqrt_mul (Nat.cast_nonneg (Fintype.card I)), Real.sqrt_sq_eq_abs,
-        abs_of_nonneg (norm_nonneg D)]
+    _ = Real.sqrt (∑ j, ‖D (v j)‖ ^ 2) := by rw [hsecond]
 
 end FinitePrecisionLanczos

@@ -1,13 +1,6 @@
-import FinitePrecisionLanczos.Lanczos.Greenbaum.Interface
+import FinitePrecisionLanczos.Core.Matrix
 import Mathlib.Algebra.Ring.GeomSum
 
-/-!
-# Nilpotent triangular augmentation
-
-This is the exact algebra in `eq:CKsy`--`lem:isometry`.  We use the
-finite Neumann series for `C`; hence invertibility is proved from strict-upper
-nilpotence rather than delegated to a matrix inverse operation.
--/
 
 namespace FinitePrecisionLanczos
 
@@ -15,15 +8,12 @@ open Matrix
 
 variable {k : ℕ}
 
-/-- Entrywise strict upper triangularity. -/
 def StrictUpper (U : Mat k k) : Prop :=
   ∀ i j, ¬i.1 < j.1 → U i j = 0
 
-/-- Entrywise upper triangularity. -/
 def Upper (U : Mat k k) : Prop :=
   ∀ i j, j.1 < i.1 → U i j = 0
 
-/-- A path through `U^r` must advance at least `r` indices. -/
 theorem StrictUpper.pow_entry_zero (U : Mat k k) (hU : StrictUpper U) :
     ∀ r : ℕ, ∀ i j : Fin k, j.1 < i.1 + r → (U ^ r) i j = 0 := by
   intro r
@@ -42,7 +32,6 @@ theorem StrictUpper.pow_entry_zero (U : Mat k k) (hU : StrictUpper U) :
       · have hmj : ¬m.1 < j.1 := by omega
         rw [hU m j hmj, mul_zero]
 
-/-- A strictly upper `k`-by-`k` matrix has `U^k=0`. -/
 theorem StrictUpper.pow_card_eq_zero (U : Mat k k) (hU : StrictUpper U) :
     U ^ k = 0 := by
   ext i j
@@ -91,11 +80,9 @@ lemma StrictUpper.neg_pow_upper (U : Mat k k) (hU : StrictUpper U) (r : ℕ) :
     Upper ((-U) ^ r) := by
   exact StrictUpper.pow_upper (-U) (StrictUpper.neg U hU) r
 
-/-- Finite Neumann inverse in `eq:CKsy`. -/
 def triangularC (U : Mat k k) : Mat k k :=
   (Finset.range k).sum fun r => (-U) ^ r
 
-/-- `K=I-C` in `eq:CKsy`. -/
 def triangularK (U : Mat k k) : Mat k k := 1 - triangularC U
 
 lemma triangularC_upper (U : Mat k k) (hU : StrictUpper U) :
@@ -108,21 +95,18 @@ lemma neg_pow_card_eq_zero (U : Mat k k) (hU : StrictUpper U) :
     (-U) ^ k = 0 := by
   exact StrictUpper.pow_card_eq_zero (-U) (StrictUpper.neg U hU)
 
-/-- Left inverse identity `(I+U)C=I`. -/
 theorem add_one_mul_triangularC (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     (1 + U) * triangularC U = 1 := by
   have hgeom := mul_neg_geom_sum (-U) k
   rw [neg_pow_card_eq_zero U hU] at hgeom
   simpa [triangularC] using hgeom
 
-/-- Right inverse identity `C(I+U)=I`. -/
 theorem triangularC_mul_add_one (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     triangularC U * (1 + U) = 1 := by
   have hgeom := geom_sum_mul_neg (-U) k
   rw [neg_pow_card_eq_zero U hU] at hgeom
   simpa [triangularC] using hgeom
 
-/-- `K=UC`. -/
 theorem triangularK_eq_mul (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     triangularK U = U * triangularC U := by
   have hinv := add_one_mul_triangularC hk U hU
@@ -131,7 +115,6 @@ theorem triangularK_eq_mul (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     1 - triangularC U = (1 + U) * triangularC U - triangularC U := by rw [hinv]
     _ = U * triangularC U := by noncomm_ring
 
-/-- `K=CU`. -/
 theorem triangularK_eq_mul' (hk : 0 < k) (U : Mat k k) (hU : StrictUpper U) :
     triangularK U = triangularC U * U := by
   have hinv := triangularC_mul_add_one hk U hU
@@ -160,7 +143,6 @@ lemma triangularK_pow_card_eq_zero (hk : 0 < k) (U : Mat k k)
     (hU : StrictUpper U) : triangularK U ^ k = 0 :=
   StrictUpper.pow_card_eq_zero _ (triangularK_strictUpper hk U hU)
 
-/-- The identity `eq:CGC-identity`. -/
 theorem triangular_isometry_identity (hk : 0 < k)
     (G U : Mat k k) (hU : StrictUpper U)
     (hG : G = 1 + U + Uᵀ) :

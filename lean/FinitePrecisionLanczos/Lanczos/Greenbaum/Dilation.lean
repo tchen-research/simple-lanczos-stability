@@ -1,13 +1,6 @@
-import FinitePrecisionLanczos.Lanczos.Greenbaum.NormalizedCommutator
+import FinitePrecisionLanczos.Lanczos.Normalized.Commutator
+import FinitePrecisionLanczos.Core.DilationSaad
 
-/-!
-# Instantiating the nilpotent physical dilation
-
-The generic identities from `Core.Dilation`, `Core.DilationRecurrence`, and
-`Core.DilationBounds` are instantiated here with the normalized finite-precision
-Lanczos run.  Thus every object in `eq:CKsy` through `lem:dilation` has a
-named Lean definition.
--/
 
 namespace FinitePrecisionLanczos
 
@@ -18,336 +11,300 @@ namespace LanczosRun
 
 variable {n k : ℕ} (L : LanczosRun n k)
 
-noncomputable def greenbaumC : Mat k k := triangularC L.normalizedU
-noncomputable def greenbaumK : Mat k k := triangularK L.normalizedU
-noncomputable def greenbaumS : Vec k := L.greenbaumC *ᵥ L.normalizedA
-noncomputable def greenbaumY : Vec n :=
-  L.normalizedVNext - L.normalizedV *ᵥ L.greenbaumS
+
+noncomputable def normalizedRsucc : Mat (k + 1) (k + 1) :=
+  strictUpperPart (L.normalizedVsuccᵀ * L.normalizedVsucc)
+
+lemma normalizedRsucc_strictUpper : StrictUpper L.normalizedRsucc :=
+  strictUpperPart_strictUpper _
+
+theorem normalized_gram_split_succ :
+    L.normalizedVsuccᵀ * L.normalizedVsucc =
+      1 + L.normalizedRsuccᵀ + L.normalizedRsucc := by
+  have h := eq_one_add_strictUpperPart (L.normalizedVsuccᵀ * L.normalizedVsucc)
+    (by rw [Matrix.transpose_mul, Matrix.transpose_transpose])
+    (fun j => by
+      have hsq := vnorm_sq (fun i => L.normalizedVsucc i j)
+      rw [L.normalizedVsucc_unit] at hsq
+      simpa [Matrix.mul_apply, vdot, dotProduct] using hsq.symm)
+  rw [h, normalizedRsucc]
+  abel
+
+lemma leadBlock_normalizedRsucc : leadBlock L.normalizedRsucc = L.normalizedR := by
+  rw [normalizedRsucc, leadBlock_strictUpperPart_gram, leadCols_normalizedVsucc]
+  rfl
+
+theorem normalizedRsucc_block :
+    leadBlock L.normalizedRsucc = L.normalizedR ∧
+      (∀ i : Fin k, L.normalizedRsucc i.castSucc (Fin.last k) =
+        (L.normalizedVᵀ *ᵥ L.normalizedVNext) i) ∧
+      (∀ j, L.normalizedRsucc (Fin.last k) j = 0) := by
+  refine ⟨L.leadBlock_normalizedRsucc, fun i => ?_, strictUpperPart_last _⟩
+  rw [normalizedRsucc, strictUpperPart_gram_castSucc_last, leadCols_normalizedVsucc,
+    lastCol_normalizedVsucc]
+
+
+noncomputable def greenbaumCsucc : Mat (k + 1) (k + 1) := triangularC L.normalizedRsucc
+
+noncomputable def greenbaumKsucc : Mat (k + 1) (k + 1) := triangularK L.normalizedRsucc
+
+noncomputable def greenbaumC : Mat k k := triangularC L.normalizedR
+
+noncomputable def greenbaumK : Mat k k := triangularK L.normalizedR
+
 noncomputable def greenbaumL : Mat k k :=
   L.greenbaumC * L.normalizedCommutator * L.greenbaumC
-noncomputable def greenbaumE0 : Mat n k :=
-  L.normalizedE * L.greenbaumC - L.normalizedV * L.greenbaumL
 
-/-- `hat H=I_k\otimes H` in `lem:dilation`. -/
+noncomputable def greenbaumD (r : ℕ) : Mat k k :=
+  powerResidual L.greenbaumK L.greenbaumL r
+
+theorem greenbaum_CK_blocks :
+    leadBlock L.greenbaumCsucc = L.greenbaumC ∧
+      leadBlock L.greenbaumKsucc = L.greenbaumK ∧
+      L.greenbaumKsucc = L.normalizedRsucc * L.greenbaumCsucc ∧
+      L.greenbaumK = L.normalizedR * L.greenbaumC := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [greenbaumCsucc, leadBlock_triangularC L.hk_pos _ L.normalizedRsucc_strictUpper,
+      L.leadBlock_normalizedRsucc]
+    rfl
+  · rw [greenbaumKsucc, leadBlock_triangularK L.hk_pos _ L.normalizedRsucc_strictUpper,
+      L.leadBlock_normalizedRsucc]
+    rfl
+  · exact triangularK_eq_mul (Nat.succ_pos k) _ L.normalizedRsucc_strictUpper
+  · exact triangularK_eq_mul L.hk_pos _ L.normalizedR_strictUpper
+
+
 def greenbaumBlockOperator :
-    Matrix (Fin k × Fin n) (Fin k × Fin n) ℝ := blockDiagonal L.H
+    Matrix (Fin (k + 1) × Fin n) (Fin (k + 1) × Fin n) ℝ := blockDiagonal L.H
 
-/-- The stacked matrix `\widehat V` in `lem:dilation`. -/
-noncomputable def greenbaumX : Matrix (Fin k × Fin n) (Fin k) ℝ :=
-  physicalX L.normalizedV L.greenbaumC L.greenbaumK
+noncomputable def greenbaumVhat : Matrix (Fin (k + 1) × Fin n) (Fin (k + 1)) ℝ :=
+  dilationStack (k + 1) L.normalizedVsucc L.greenbaumCsucc L.greenbaumKsucc
 
-/-- The stacked boundary vector `\widehat v` in `lem:dilation`. -/
-noncomputable def greenbaumP : (Fin k × Fin n) → ℝ :=
-  physicalP L.normalizedV L.greenbaumC L.greenbaumK L.greenbaumS L.greenbaumY
+noncomputable def greenbaumX : Matrix (Fin (k + 1) × Fin n) (Fin k) ℝ :=
+  leadCols L.greenbaumVhat
 
-/-- The stacked residual in `lem:dilation`. -/
-noncomputable def greenbaumError : Matrix (Fin k × Fin n) (Fin k) ℝ :=
-  physicalError L.normalizedV L.greenbaumE0 L.greenbaumC
-    L.greenbaumK L.greenbaumL
+noncomputable def greenbaumVNext : (Fin (k + 1) × Fin n) → ℝ :=
+  lastCol L.greenbaumVhat
 
-/-- Block `r` of `\widehat V` in `eq:block-recurrence`. -/
+noncomputable def greenbaumVhatBlock (r : ℕ) : Mat n (k + 1) :=
+  L.normalizedVsucc * L.greenbaumCsucc * L.greenbaumKsucc ^ r
+
 noncomputable def greenbaumVBlock (r : ℕ) : Mat n k :=
   L.normalizedV * L.greenbaumC * L.greenbaumK ^ r
 
-/-- Block `r` of `\widehat v` in `eq:block-recurrence`. -/
-noncomputable def greenbaumBoundaryBlock (r : ℕ) : Vec n :=
-  physicalPBlock L.normalizedV L.greenbaumC L.greenbaumK
-    L.greenbaumS L.greenbaumY r
+noncomputable def greenbaumError : Matrix (Fin (k + 1) × Fin n) (Fin k) ℝ :=
+  physicalError L.normalizedV L.normalizedFmat L.greenbaumC L.greenbaumK L.greenbaumD
 
-/-- Block `r` of `\widehat E` in `eq:block-recurrence`. -/
 noncomputable def greenbaumErrorBlock (r : ℕ) : Mat n k :=
-  physicalErrorBlock L.normalizedV L.greenbaumE0 L.greenbaumC
-    L.greenbaumK L.greenbaumL r
+  physicalErrorBlock L.normalizedV L.normalizedFmat L.greenbaumC
+    L.greenbaumK L.greenbaumD r
 
-lemma greenbaum_isometry_identity :
-    L.greenbaumCᵀ * (L.normalizedVᵀ * L.normalizedV) * L.greenbaumC =
-      1 - L.greenbaumKᵀ * L.greenbaumK := by
-  exact triangular_isometry_identity L.hk_pos
-    (L.normalizedVᵀ * L.normalizedV) L.normalizedU
-    L.normalizedU_strictUpper L.normalized_gram_split
+theorem leadCols_greenbaumVhatBlock (r : ℕ) :
+    leadCols (L.greenbaumVhatBlock r) = L.greenbaumVBlock r :=
+  saad_leadCols_block L.hk_pos L.normalizedVsucc L.normalizedV L.normalizedRsucc
+    L.normalizedR L.normalizedRsucc_strictUpper L.leadBlock_normalizedRsucc
+    L.leadCols_normalizedVsucc r
 
-/-- First orthogonality conclusion in `lem:dilation`. -/
-theorem greenbaumX_orthonormal : L.greenbaumXᵀ * L.greenbaumX = 1 := by
-  exact physicalX_orthonormal L.hk_pos L.normalizedV L.normalizedU
-    L.normalizedU_strictUpper L.normalized_gram_split
 
-/-- The first-column conclusion in `lem:dilation`. -/
-theorem greenbaumX_first :
-    L.greenbaumX *ᵥ firstCoord L.hk_pos = physicalFirst L.hk_pos L.normalizedV := by
-  exact physicalX_first L.hk_pos L.normalizedV L.normalizedU
-    L.normalizedU_strictUpper
+theorem greenbaum_isometry_identity :
+    L.greenbaumCsuccᵀ * (L.normalizedVsuccᵀ * L.normalizedVsucc) * L.greenbaumCsucc =
+      1 - L.greenbaumKsuccᵀ * L.greenbaumKsucc :=
+  triangular_isometry_identity (Nat.succ_pos k) _ L.normalizedRsucc
+    L.normalizedRsucc_strictUpper (by rw [L.normalized_gram_split_succ]; abel)
 
-lemma normalizedVNext_dot_self : vdot L.normalizedVNext L.normalizedVNext = 1 := by
-  have h := vnorm_sq L.normalizedVNext
-  rw [L.normalizedVNext_unit] at h
-  simpa using h.symm
+lemma greenbaumKsucc_nilpotent : L.greenbaumKsucc ^ (k + 1) = 0 :=
+  triangularK_pow_card_eq_zero (Nat.succ_pos k) _ L.normalizedRsucc_strictUpper
 
-lemma greenbaum_one_step_cross :
-    L.greenbaumKᵀ *ᵥ L.greenbaumS +
-      L.greenbaumCᵀ *ᵥ (L.normalizedVᵀ *ᵥ L.greenbaumY) = 0 := by
-  exact one_step_cross L.normalizedV L.greenbaumC L.greenbaumK L.normalizedVNext
-    L.greenbaum_isometry_identity (by
-      simp [greenbaumC, greenbaumK, triangularK])
+theorem greenbaum_Kkp_power :
+    L.greenbaumKsucc ^ (k + 1) = 0 ∧
+      L.greenbaumCsucc *ᵥ firstCoord (Nat.succ_pos k) = firstCoord (Nat.succ_pos k) ∧
+      L.greenbaumKsucc *ᵥ firstCoord (Nat.succ_pos k) = 0 :=
+  ⟨L.greenbaumKsucc_nilpotent,
+    triangularC_first (Nat.succ_pos k) _ L.normalizedRsucc_strictUpper,
+    triangularK_first (Nat.succ_pos k) _ L.normalizedRsucc_strictUpper⟩
 
-lemma greenbaum_one_step_norm :
-    vdot L.greenbaumY L.greenbaumY + vdot L.greenbaumS L.greenbaumS = 1 := by
-  exact one_step_norm L.normalizedV L.greenbaumC L.greenbaumK L.normalizedVNext
-    L.normalizedVNext_dot_self L.greenbaum_isometry_identity (by
-      simp [greenbaumC, greenbaumK, triangularK])
+theorem greenbaumVhat_orthonormal : L.greenbaumVhatᵀ * L.greenbaumVhat = 1 :=
+  dilationStack_orthonormal (k + 1) _ _ _ L.greenbaum_isometry_identity
+    L.greenbaumKsucc_nilpotent
 
-lemma greenbaumK_nilpotent : L.greenbaumK ^ k = 0 := by
-  exact triangularK_pow_card_eq_zero L.hk_pos L.normalizedU
-    L.normalizedU_strictUpper
+theorem greenbaumVhat_first :
+    L.greenbaumVhat *ᵥ firstCoord (Nat.succ_pos k) =
+      physicalFirst L.hk_pos L.normalizedV := by
+  rw [greenbaumVhat, greenbaumCsucc, greenbaumKsucc,
+    dilationStack_first (k + 1) (Nat.succ_pos k) _ _ L.normalizedRsucc_strictUpper]
+  ext ri
+  have h := congrFun (L.normalizedV_column_eq ⟨0, L.hk_pos⟩) ri.2
+  simp only [physicalFirst]
+  split_ifs
+  · simpa [normalizedVsucc, ofCols] using h.symm
+  · rfl
 
-/-- Second orthogonality conclusion in `lem:dilation`. -/
-theorem greenbaumX_transpose_mul_P : L.greenbaumXᵀ *ᵥ L.greenbaumP = 0 := by
-  exact physicalX_transpose_mul_p L.hk_pos L.normalizedV L.greenbaumC
-    L.greenbaumK L.greenbaumS L.greenbaumY L.greenbaum_isometry_identity
-    L.greenbaum_one_step_cross L.greenbaumK_nilpotent
+theorem greenbaumX_orthonormal : L.greenbaumXᵀ * L.greenbaumX = 1 :=
+  leadCols_orthonormal _ L.greenbaumVhat_orthonormal
 
-/-- Boundary-vector norm conclusion in `lem:dilation`. -/
-theorem greenbaumP_norm_le_one : coordNorm L.greenbaumP ≤ 1 := by
-  exact physicalP_norm_le_one L.hk_pos L.normalizedV L.greenbaumC L.greenbaumK
-    L.greenbaumS L.greenbaumY L.greenbaum_isometry_identity
-    L.greenbaum_one_step_norm
 
-/-- The exact identity in `eq:L-commutator`. -/
-theorem greenbaumL_identity :
-    L.greenbaumL =
-      L.Tmat * L.greenbaumK - L.greenbaumK * L.Tmat -
-        L.normalizedBeta • lastOuter L.hk_pos L.greenbaumS := by
-  simpa [greenbaumL, greenbaumC, greenbaumK, greenbaumS,
-    normalizedCommutator] using
-      (transformed_commutator L.hk_pos L.Tmat L.normalizedU
-        L.normalizedA L.normalizedBeta L.normalizedU_strictUpper)
+theorem greenbaumKsucc_norm_le_one : ‖L.greenbaumKsucc‖ ≤ 1 :=
+  triangularK_norm_le_one (Nat.succ_pos k) L.normalizedVsucc L.greenbaumCsucc
+    L.greenbaumKsucc L.greenbaum_isometry_identity
 
-/-- The initial error block displayed below `eq:block-recurrence`. -/
-theorem greenbaumErrorBlock_zero :
-    L.greenbaumErrorBlock 0 =
-      L.normalizedE * L.greenbaumC - L.normalizedV * L.greenbaumL := by
-  simp [greenbaumErrorBlock, physicalErrorBlock, greenbaumE0]
-
-/-- The residual induction printed after `eq:block-recurrence`. -/
-theorem greenbaumErrorBlock_succ (r : ℕ) :
-    L.greenbaumErrorBlock (r + 1) =
-      L.greenbaumErrorBlock r * L.greenbaumK +
-        L.greenbaumVBlock r * L.greenbaumL := by
-  exact physicalErrorBlock_succ L.normalizedV L.greenbaumE0
-    L.greenbaumC L.greenbaumK L.greenbaumL r
-
-/-- The block boundary convention printed before `eq:block-recurrence`. -/
-theorem greenbaumBoundaryBlock_zero :
-    L.greenbaumBoundaryBlock 0 = L.greenbaumY := by
-  simp [greenbaumBoundaryBlock, physicalPBlock]
-
-theorem greenbaumBoundaryBlock_succ (r : ℕ) :
-    L.greenbaumBoundaryBlock (r + 1) =
-      L.greenbaumVBlock r *ᵥ L.greenbaumS := by
-  simp [greenbaumBoundaryBlock, greenbaumVBlock, physicalPBlock]
-
-/-- The base case of `eq:block-recurrence`. -/
-theorem greenbaum_block_recurrence_zero :
-    L.H * L.greenbaumVBlock 0 =
-      L.greenbaumVBlock 0 * L.Tmat +
-        L.normalizedBeta • lastOuter L.hk_pos (L.greenbaumBoundaryBlock 0) +
-        L.greenbaumErrorBlock 0 := by
-  simpa [greenbaumVBlock, greenbaumBoundaryBlock, greenbaumErrorBlock,
-    greenbaumC, greenbaumK, greenbaumS, greenbaumY, greenbaumL, greenbaumE0,
-    normalizedCommutator, physicalPBlock, physicalErrorBlock] using
-      (VC_recurrence L.hk_pos L.H L.normalizedV L.normalizedE L.Tmat
-        L.normalizedU L.normalizedVNext L.normalizedA L.normalizedBeta
-        L.normalizedU_strictUpper L.normalized_governing)
-
-/-- The induction step of `eq:block-recurrence`. -/
-theorem greenbaum_block_recurrence_succ (r : ℕ) :
-    L.H * L.greenbaumVBlock (r + 1) =
-      L.greenbaumVBlock (r + 1) * L.Tmat +
-        L.normalizedBeta •
-          lastOuter L.hk_pos (L.greenbaumBoundaryBlock (r + 1)) +
-        L.greenbaumErrorBlock (r + 1) := by
-  have hbase := L.greenbaum_block_recurrence_zero
-  have hs : (1 + L.normalizedU) *ᵥ L.greenbaumS = L.normalizedA := by
-    simp [greenbaumS, greenbaumC, Matrix.mulVec_mulVec,
-      add_one_mul_triangularC L.hk_pos L.normalizedU
-        L.normalizedU_strictUpper]
-  have hstep := propagated_block_succ L.hk_pos L.H L.normalizedV
-    L.greenbaumE0 L.Tmat L.normalizedU L.greenbaumS L.greenbaumY
-    L.normalizedBeta r L.normalizedU_strictUpper (by
-      simpa [greenbaumVBlock, greenbaumBoundaryBlock, greenbaumErrorBlock,
-        greenbaumC, greenbaumK, greenbaumS, greenbaumY, greenbaumL,
-        greenbaumE0, normalizedCommutator, physicalPBlock,
-        physicalErrorBlock] using hbase) (by
-      rw [hs]
-      exact transformed_commutator L.hk_pos L.Tmat L.normalizedU
-        L.normalizedA L.normalizedBeta L.normalizedU_strictUpper)
-  rw [hs] at hstep
-  simpa [greenbaumVBlock, greenbaumBoundaryBlock, greenbaumErrorBlock,
-    greenbaumC, greenbaumK, greenbaumS, greenbaumY, greenbaumL,
-    normalizedCommutator, physicalPBlock, physicalErrorBlock] using hstep
-
-/-- The exact per-block recurrence `eq:block-recurrence`. -/
-theorem greenbaum_block_recurrence (r : ℕ) :
-    L.H * L.greenbaumVBlock r =
-      L.greenbaumVBlock r * L.Tmat +
-        L.normalizedBeta • lastOuter L.hk_pos (L.greenbaumBoundaryBlock r) +
-        L.greenbaumErrorBlock r := by
-  cases r with
-  | zero => exact L.greenbaum_block_recurrence_zero
-  | succ r => exact L.greenbaum_block_recurrence_succ r
-
-/-- Exact recurrence in `lem:dilation` for the actual run. -/
-theorem greenbaum_dilation_recurrence :
-    L.greenbaumBlockOperator * L.greenbaumX =
-      L.greenbaumX * L.Tmat +
-        L.normalizedBeta • lastOuter L.hk_pos L.greenbaumP + L.greenbaumError := by
-  exact physical_dilation_recurrence L.hk_pos L.H L.normalizedV L.normalizedE
-    L.Tmat L.normalizedU L.normalizedVNext L.normalizedA L.normalizedBeta
-    L.normalizedU_strictUpper L.normalized_governing
-
-/-- The two triangular-factor bounds in `lem:isometry`. -/
-theorem greenbaumK_norm_le_one : ‖L.greenbaumK‖ ≤ 1 := by
-  exact triangularK_norm_le_one L.hk_pos L.normalizedV L.greenbaumC
-    L.greenbaumK L.greenbaum_isometry_identity
-
-theorem greenbaumC_norm_le_two : ‖L.greenbaumC‖ ≤ 2 := by
-  exact triangularC_norm_le_two L.hk_pos L.normalizedU L.normalizedV
+theorem greenbaumCsucc_norm_le_two : ‖L.greenbaumCsucc‖ ≤ 2 :=
+  triangularC_norm_le_two (Nat.succ_pos k) L.normalizedRsucc L.normalizedVsucc
     L.greenbaum_isometry_identity
 
-lemma greenbaumL_bound :
-    ‖L.greenbaumL‖ ≤ (200000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖ := by
-  have hcommScale : 0 ≤ (50000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖ :=
-    mul_nonneg
-      (mul_nonneg (show 0 ≤ (50000 : ℝ) * (k : ℝ) ^ 5 by positivity)
-        L.hε_nonneg)
-      (norm_nonneg _)
+theorem greenbaumK_norm_le_one : ‖L.greenbaumK‖ ≤ 1 := by
+  rw [← L.greenbaum_CK_blocks.2.1]
+  exact (norm_leadBlock_le _).trans L.greenbaumKsucc_norm_le_one
+
+theorem greenbaumC_norm_le_two : ‖L.greenbaumC‖ ≤ 2 := by
+  rw [← L.greenbaum_CK_blocks.1]
+  exact (norm_leadBlock_le _).trans L.greenbaumCsucc_norm_le_two
+
+theorem normalizedCommutator_padRow :
+    L.underlineTmat * L.normalizedR - L.normalizedRsucc * L.underlineTmat =
+      padRow L.normalizedCommutator := by
+  obtain ⟨hlead, hcol, hlast⟩ := L.normalizedRsucc_block
+  exact saad_commutator_block L.hk_pos L.Tmat (L.β k) L.normalizedRsucc L.normalizedR _
+    L.normalizedR_strictUpper hlead hcol hlast
+
+theorem greenbaumL_commutator :
+    L.underlineTmat * L.greenbaumK - L.greenbaumKsucc * L.underlineTmat =
+      padRow L.greenbaumL :=
+  saad_exchange L.hk_pos L.Tmat (L.β k) L.normalizedRsucc L.normalizedR
+    L.normalizedCommutator L.normalizedRsucc_strictUpper L.leadBlock_normalizedRsucc
+    L.normalizedCommutator_padRow
+
+lemma greenbaumL_le_four_mul : ‖L.greenbaumL‖ ≤ 4 * ‖L.normalizedCommutator‖ := by
   calc
     ‖L.greenbaumL‖ ≤
-        (‖L.greenbaumC‖ * ‖L.normalizedCommutator‖) * ‖L.greenbaumC‖ := by
-      exact (norm_mul_le _ _).trans
+        ‖L.greenbaumC‖ * ‖L.normalizedCommutator‖ * ‖L.greenbaumC‖ :=
+      (norm_mul_le _ _).trans
         (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))
-    _ ≤ (2 * ((50000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖)) * 2 := by
-      exact mul_le_mul
-        (mul_le_mul L.greenbaumC_norm_le_two L.normalizedCommutator_bound
-          (norm_nonneg _) (by norm_num))
-        L.greenbaumC_norm_le_two (norm_nonneg _)
-          (mul_nonneg (by norm_num) hcommScale)
-    _ = (200000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖ := by ring
+    _ ≤ 2 * ‖L.normalizedCommutator‖ * 2 := by
+      gcongr
+      · exact L.greenbaumC_norm_le_two
+      · exact L.greenbaumC_norm_le_two
+    _ = 4 * ‖L.normalizedCommutator‖ := by ring
 
-lemma greenbaumE0_bound :
-    ‖L.greenbaumE0‖ ≤ (205200 * (k : ℝ) ^ 6) * L.ε * ‖L.H‖ := by
-  have hk1 : (1 : ℝ) ≤ k := by exact_mod_cast L.hk_pos
-  have hk46 : (k : ℝ) ^ 4 ≤ (k : ℝ) ^ 6 := by
-    nlinarith [mul_nonneg (show 0 ≤ (k : ℝ) ^ 4 by positivity)
-      (show 0 ≤ (k : ℝ) ^ 2 - 1 by nlinarith [sq_nonneg ((k : ℝ) - 1)])]
-  have hscale : 0 ≤ L.ε * ‖L.H‖ := mul_nonneg L.hε_nonneg (norm_nonneg _)
-  calc
-    ‖L.greenbaumE0‖ ≤
-        ‖L.normalizedE * L.greenbaumC‖ + ‖L.normalizedV * L.greenbaumL‖ :=
-      norm_sub_le _ _
-    _ ≤ ‖L.normalizedE‖ * ‖L.greenbaumC‖ +
-        ‖L.normalizedV‖ * ‖L.greenbaumL‖ :=
-      add_le_add (norm_mul_le _ _) (norm_mul_le _ _)
-    _ ≤ ((2600 * (k : ℝ) ^ 4) * L.ε * ‖L.H‖) * 2 +
-        (k : ℝ) * ((200000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖) := by
-      exact add_le_add
-        (mul_le_mul L.normalizedE_bound L.greenbaumC_norm_le_two
-          (norm_nonneg _)
-          (mul_nonneg
-            (mul_nonneg (show 0 ≤ (2600 : ℝ) * (k : ℝ) ^ 4 by positivity)
-              L.hε_nonneg)
-            (norm_nonneg _)))
-        (mul_le_mul L.normalizedV_norm L.greenbaumL_bound
-          (norm_nonneg _) (Nat.cast_nonneg _))
-    _ = (5200 * (k : ℝ) ^ 4 + 200000 * (k : ℝ) ^ 6) *
-        (L.ε * ‖L.H‖) := by ring
-    _ ≤ (5200 * (k : ℝ) ^ 6 + 200000 * (k : ℝ) ^ 6) *
-        (L.ε * ‖L.H‖) := by
-      have hcoef : 5200 * (k : ℝ) ^ 4 + 200000 * (k : ℝ) ^ 6 ≤
-          5200 * (k : ℝ) ^ 6 + 200000 * (k : ℝ) ^ 6 := by
-        simpa [add_comm] using add_le_add_right
-          (mul_le_mul_of_nonneg_left hk46 (show 0 ≤ (5200 : ℝ) by norm_num))
-          (200000 * (k : ℝ) ^ 6)
-      exact mul_le_mul_of_nonneg_right hcoef hscale
-    _ = (205200 * (k : ℝ) ^ 6) * L.ε * ‖L.H‖ := by ring
+lemma greenbaumL_bound :
+    ‖L.greenbaumL‖ ≤ (38400 * (k : ℝ) ^ 3) * L.ε * ‖L.H‖ := by
+  have h := L.greenbaumL_le_four_mul
+  have hM := L.normalizedCommutator_bound
+  nlinarith
 
-/-- Explicit representative of the per-block estimate in
-`eq:block-recurrence`. -/
-theorem greenbaumErrorBlock_bound (r : ℕ) (hr : r < k) :
+theorem greenbaum_power_exchange (r : ℕ) :
+    L.underlineTmat * L.greenbaumK ^ r - L.greenbaumKsucc ^ r * L.underlineTmat =
+      padRow (L.greenbaumD r) :=
+  power_exchange_of_commutator L.underlineTmat L.greenbaumKsucc L.greenbaumK L.greenbaumL
+    (triangularK_upper (Nat.succ_pos k) _ L.normalizedRsucc_strictUpper)
+    L.greenbaum_CK_blocks.2.1 L.greenbaumL_commutator r
+
+lemma greenbaumD_zero : L.greenbaumD 0 = 0 := rfl
+
+lemma greenbaumD_succ (r : ℕ) :
+    L.greenbaumD (r + 1) = L.greenbaumD r * L.greenbaumK + L.greenbaumK ^ r * L.greenbaumL :=
+  rfl
+
+theorem greenbaumD_norm (r : ℕ) : ‖L.greenbaumD r‖ ≤ (r : ℝ) * ‖L.greenbaumL‖ :=
+  powerResidual_norm L.hk_pos _ _ L.greenbaumK_norm_le_one r
+
+
+theorem greenbaumErrorBlock_eq (r : ℕ) :
+    L.greenbaumErrorBlock r =
+      L.normalizedFmat * L.greenbaumC * L.greenbaumK ^ r +
+        L.normalizedV * (L.greenbaumD r - L.greenbaumD (r + 1)) :=
+  rfl
+
+lemma greenbaumCsucc_eq : L.greenbaumCsucc = 1 - L.greenbaumKsucc := by
+  rw [greenbaumKsucc, triangularK]; abel
+
+lemma greenbaumC_eq : L.greenbaumC = 1 - L.greenbaumK := by
+  rw [greenbaumK, triangularK]; abel
+
+theorem greenbaum_block_recurrence (r : ℕ) :
+    L.H * L.greenbaumVBlock r =
+      L.greenbaumVhatBlock r * L.underlineTmat + L.greenbaumErrorBlock r :=
+  saad_block_recurrence L.H L.normalizedVsucc L.normalizedV L.normalizedFmat
+    L.underlineTmat L.greenbaumCsucc L.greenbaumKsucc L.greenbaumC L.greenbaumK
+    L.greenbaumD L.leadCols_normalizedVsucc L.normalized_governing_succ
+    L.greenbaumCsucc_eq L.greenbaumC_eq L.greenbaum_power_exchange r
+
+theorem greenbaum_dilation_recurrence :
+    L.greenbaumBlockOperator * L.greenbaumX =
+      L.greenbaumVhat * L.underlineTmat + L.greenbaumError :=
+  saad_dilation_recurrence L.H L.normalizedVsucc L.normalizedV L.normalizedFmat
+    L.underlineTmat L.greenbaumCsucc L.greenbaumKsucc L.greenbaumC L.greenbaumK
+    L.greenbaumD L.leadCols_greenbaumVhatBlock L.leadCols_normalizedVsucc
+    L.normalized_governing_succ L.greenbaumCsucc_eq L.greenbaumC_eq
+    L.greenbaum_power_exchange
+
+/-- The displayed block-error bound in the proof of `lem:dilated-recurrence`. -/
+theorem greenbaumErrorBlock_norm_sqrt (r : ℕ) (hr : r ≤ k) :
     ‖L.greenbaumErrorBlock r‖ ≤
-      (1000000 * (k : ℝ) ^ 7) * L.ε * ‖L.H‖ := by
-  have hgeneric := physicalErrorBlock_norm L.hk_pos L.normalizedV
-    L.greenbaumE0 L.greenbaumC L.greenbaumK L.greenbaumL r hr
-    L.normalizedV_norm L.greenbaumC_norm_le_two L.greenbaumK_norm_le_one
+      2 * ‖L.normalizedFmat‖ + (2 * (k : ℝ) + 1) * Real.sqrt (k : ℝ) * ‖L.greenbaumL‖ := by
+  have h := physicalErrorBlock_norm_le L.hk_pos L.normalizedV L.normalizedFmat
+    L.greenbaumC L.greenbaumK L.greenbaumD ‖L.greenbaumL‖ r
+    L.greenbaumC_norm_le_two L.greenbaumK_norm_le_one L.greenbaumD_norm
+  have hrk : (r : ℝ) ≤ k := by exact_mod_cast hr
+  exact h.trans (by gcongr; exact L.normalizedV_norm_sqrt)
+
+/-- Stacking the blocks with √(k+1), exactly as in the paper. -/
+theorem greenbaumError_norm_sqrt :
+    ‖L.greenbaumError‖ ≤ Real.sqrt ((k + 1 : ℕ) : ℝ) *
+      (2 * ‖L.normalizedFmat‖ + (2 * (k : ℝ) + 1) * Real.sqrt (k : ℝ) * ‖L.greenbaumL‖) := by
+  exact norm_stackBlocks_le_sqrt (fun r : Fin (k + 1) => L.greenbaumErrorBlock r.1)
+    _ (by positivity) (fun r => L.greenbaumErrorBlock_norm_sqrt r.1 (by omega))
+
+theorem greenbaumErrorBlock_norm (r : ℕ) (hr : r ≤ k) :
+    ‖L.greenbaumErrorBlock r‖ ≤
+      2 * ‖L.normalizedFmat‖ + (2 * (k : ℝ) + 1) * (k : ℝ) * ‖L.greenbaumL‖ := by
+  have hk : (1 : ℝ) ≤ k := by exact_mod_cast L.hk_pos
+  have hs : Real.sqrt (k : ℝ) ≤ k := by
+    nlinarith [Real.sq_sqrt (Nat.cast_nonneg k), Real.sqrt_nonneg (k : ℝ)]
+  exact (L.greenbaumErrorBlock_norm_sqrt r hr).trans (by gcongr)
+
+theorem greenbaumErrorBlock_bound (r : ℕ) (hr : r ≤ k) :
+    ‖L.greenbaumErrorBlock r‖ ≤ (120000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖ := by
+  have h := L.greenbaumErrorBlock_norm r hr
+  have hF := L.normalizedFmat_bound
+  have hL := L.greenbaumL_bound
   have hk1 : (1 : ℝ) ≤ k := by exact_mod_cast L.hk_pos
-  have hscale : 0 ≤ L.ε * ‖L.H‖ := mul_nonneg L.hε_nonneg (norm_nonneg _)
-  have hk67 : (k : ℝ) ^ 6 ≤ (k : ℝ) ^ 7 := by
-    nlinarith [mul_nonneg (show 0 ≤ (k : ℝ) ^ 6 by positivity)
-      (show 0 ≤ (k : ℝ) - 1 by linarith)]
+  have hs : 0 ≤ L.ε * ‖L.H‖ := mul_nonneg L.hε_nonneg (norm_nonneg _)
+  have hk2 : (k : ℝ) ^ 2 ≤ (k : ℝ) ^ 5 := pow_le_pow_right₀ hk1 (by norm_num)
+  have hk4 : (k : ℝ) ^ 4 ≤ (k : ℝ) ^ 5 := pow_le_pow_right₀ hk1 (by norm_num)
+  have hcoef : 0 ≤ (2 * (k : ℝ) + 1) * (k : ℝ) := by positivity
   calc
     ‖L.greenbaumErrorBlock r‖ ≤
-        2 * ‖L.greenbaumE0‖ + 2 * (k : ℝ) ^ 2 * ‖L.greenbaumL‖ := hgeneric
-    _ ≤ 2 * ((205200 * (k : ℝ) ^ 6) * L.ε * ‖L.H‖) +
-        2 * (k : ℝ) ^ 2 *
-          ((200000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖) := by
-      exact add_le_add
-        (mul_le_mul_of_nonneg_left L.greenbaumE0_bound (by norm_num))
-        (mul_le_mul_of_nonneg_left L.greenbaumL_bound (by positivity))
-    _ = (410400 * (k : ℝ) ^ 6 + 400000 * (k : ℝ) ^ 7) *
+        2 * ‖L.normalizedFmat‖ + (2 * (k : ℝ) + 1) * (k : ℝ) * ‖L.greenbaumL‖ := h
+    _ ≤ 2 * ((1500 * (k : ℝ) ^ 2) * L.ε * ‖L.H‖) +
+        (2 * (k : ℝ) + 1) * (k : ℝ) * ((38400 * (k : ℝ) ^ 3) * L.ε * ‖L.H‖) := by
+      gcongr
+    _ = (3000 * (k : ℝ) ^ 2 + 76800 * (k : ℝ) ^ 5 + 38400 * (k : ℝ) ^ 4) *
         (L.ε * ‖L.H‖) := by ring
-    _ ≤ (410400 * (k : ℝ) ^ 7 + 400000 * (k : ℝ) ^ 7) *
-        (L.ε * ‖L.H‖) := by
-      have hcoef : 410400 * (k : ℝ) ^ 6 + 400000 * (k : ℝ) ^ 7 ≤
-          410400 * (k : ℝ) ^ 7 + 400000 * (k : ℝ) ^ 7 := by
-        simpa [add_comm] using add_le_add_right
-          (mul_le_mul_of_nonneg_left hk67 (show 0 ≤ (410400 : ℝ) by norm_num))
-          (400000 * (k : ℝ) ^ 7)
-      exact mul_le_mul_of_nonneg_right hcoef hscale
-    _ = (810400 * (k : ℝ) ^ 7) * (L.ε * ‖L.H‖) := by ring
-    _ ≤ (1000000 * (k : ℝ) ^ 7) * (L.ε * ‖L.H‖) := by
-      exact mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_right (by norm_num)
-          (show 0 ≤ (k : ℝ) ^ 7 by positivity)) hscale
-    _ = (1000000 * (k : ℝ) ^ 7) * L.ε * ‖L.H‖ := by ring
+    _ ≤ (3000 * (k : ℝ) ^ 5 + 76800 * (k : ℝ) ^ 5 + 38400 * (k : ℝ) ^ 5) *
+        (L.ε * ‖L.H‖) := by gcongr
+    _ ≤ (120000 * (k : ℝ) ^ 5) * (L.ε * ‖L.H‖) := by
+      apply mul_le_mul_of_nonneg_right _ hs
+      nlinarith [pow_nonneg (show (0 : ℝ) ≤ k by positivity) 5]
+    _ = (120000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖ := by ring
 
-/-- Explicit polynomial representative for the residual estimate in
-`lem:dilation`. -/
 theorem greenbaumError_bound :
-    ‖L.greenbaumError‖ ≤ (1000000 * (k : ℝ) ^ 8) * L.ε * ‖L.H‖ := by
-  have hgeneric := physicalError_norm L.hk_pos L.normalizedV L.greenbaumE0
-    L.greenbaumC L.greenbaumK L.greenbaumL L.normalizedV_norm
-    L.greenbaumC_norm_le_two L.greenbaumK_norm_le_one
+    ‖L.greenbaumError‖ ≤ (240000 * (k : ℝ) ^ 6) * L.ε * ‖L.H‖ := by
+  have hR : 0 ≤ (120000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖ :=
+    mul_nonneg (mul_nonneg (by positivity) L.hε_nonneg) (norm_nonneg _)
+  have hs := norm_stackBlocks_le (Nat.succ_pos k)
+    (fun r : Fin (k + 1) => L.greenbaumErrorBlock r.1)
+    ((120000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖) hR
+    (fun r => L.greenbaumErrorBlock_bound r.1 (Nat.lt_succ_iff.mp r.2))
   have hk1 : (1 : ℝ) ≤ k := by exact_mod_cast L.hk_pos
-  have hscale : 0 ≤ L.ε * ‖L.H‖ := mul_nonneg L.hε_nonneg (norm_nonneg _)
-  have hk78 : (k : ℝ) ^ 7 ≤ (k : ℝ) ^ 8 := by
-    nlinarith [mul_nonneg (show 0 ≤ (k : ℝ) ^ 7 by positivity)
-      (show 0 ≤ (k : ℝ) - 1 by linarith)]
+  have hE : L.greenbaumError =
+      stackBlocks (fun r : Fin (k + 1) => L.greenbaumErrorBlock r.1) := rfl
+  rw [hE]
   calc
-    ‖L.greenbaumError‖ ≤
-        2 * (k : ℝ) * ‖L.greenbaumE0‖ +
-          2 * (k : ℝ) ^ 3 * ‖L.greenbaumL‖ := hgeneric
-    _ ≤ 2 * (k : ℝ) *
-          ((205200 * (k : ℝ) ^ 6) * L.ε * ‖L.H‖) +
-        2 * (k : ℝ) ^ 3 *
-          ((200000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖) := by
-      exact add_le_add
-        (mul_le_mul_of_nonneg_left L.greenbaumE0_bound (by positivity))
-        (mul_le_mul_of_nonneg_left L.greenbaumL_bound (by positivity))
-    _ = (410400 * (k : ℝ) ^ 7 + 400000 * (k : ℝ) ^ 8) *
-        (L.ε * ‖L.H‖) := by ring
-    _ ≤ (410400 * (k : ℝ) ^ 8 + 400000 * (k : ℝ) ^ 8) *
-        (L.ε * ‖L.H‖) := by
-      have hcoef : 410400 * (k : ℝ) ^ 7 + 400000 * (k : ℝ) ^ 8 ≤
-          410400 * (k : ℝ) ^ 8 + 400000 * (k : ℝ) ^ 8 := by
-        simpa [add_comm] using add_le_add_right
-          (mul_le_mul_of_nonneg_left hk78 (show 0 ≤ (410400 : ℝ) by norm_num))
-          (400000 * (k : ℝ) ^ 8)
-      exact mul_le_mul_of_nonneg_right hcoef hscale
-    _ = (810400 * (k : ℝ) ^ 8) * (L.ε * ‖L.H‖) := by ring
-    _ ≤ (1000000 * (k : ℝ) ^ 8) * (L.ε * ‖L.H‖) := by
-      exact mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_right (by norm_num)
-          (show 0 ≤ (k : ℝ) ^ 8 by positivity)) hscale
-    _ = (1000000 * (k : ℝ) ^ 8) * L.ε * ‖L.H‖ := by ring
+    _ ≤ ((k + 1 : ℕ) : ℝ) * ((120000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖) := hs
+    _ ≤ (2 * (k : ℝ)) * ((120000 * (k : ℝ) ^ 5) * L.ε * ‖L.H‖) := by
+      apply mul_le_mul_of_nonneg_right _ hR
+      push_cast; linarith
+    _ = (240000 * (k : ℝ) ^ 6) * L.ε * ‖L.H‖ := by ring
 
 end LanczosRun
 end FinitePrecisionLanczos

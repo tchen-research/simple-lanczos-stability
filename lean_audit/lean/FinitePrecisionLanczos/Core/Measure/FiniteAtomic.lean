@@ -2,21 +2,11 @@ import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Tactic
 
 
-
-
-
-
-
-
-
-
 namespace FinitePrecisionLanczos
 
 open Polynomial
 
-
 abbrev AtomicMass := ℝ →₀ ℝ
-
 
 noncomputable def atomicMoment (μ : AtomicMass) (m : ℕ) : ℝ :=
   μ.sum fun x w => w * x ^ m
@@ -34,8 +24,6 @@ noncomputable def atomicMoment (μ : AtomicMass) (m : ℕ) : ℝ :=
     atomicMoment (Finsupp.single x w) m = w * x ^ m := by
   classical
   simp [atomicMoment]
-
-
 
 lemma polynomial_sum_eq_zero_of_moments
     (S : Finset ℝ) (w : ℝ → ℝ)
@@ -56,8 +44,6 @@ lemma polynomial_sum_eq_zero_of_moments
           intro x _hx
           ring
         _ = 0 := by rw [hmom m, mul_zero]
-
-
 
 theorem finite_support_eq_zero_of_moments
     (S : Finset ℝ) (w : ℝ → ℝ)
@@ -88,7 +74,6 @@ theorem finite_support_eq_zero_of_moments
       ring
     · simp [hx]
   · simpa using hsupport x hx
-
 
 theorem atomicMass_ext_moments (μ ν : AtomicMass)
     (h : ∀ m : ℕ, atomicMoment μ m = atomicMoment ν m) : μ = ν := by

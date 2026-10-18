@@ -1,0 +1,156 @@
+⚠ [3184/3255] Replayed FinitePrecisionLanczos.Core.Matrix
+warning: FinitePrecisionLanczos/Core/Matrix.lean:180:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [3191/3255] Replayed FinitePrecisionLanczos.Core.Spectral
+warning: FinitePrecisionLanczos/Core/Spectral.lean:132:44: Variable name `hn` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3192/3255] Replayed FinitePrecisionLanczos.Core.Nilpotent
+warning: FinitePrecisionLanczos/Core/Nilpotent.lean:50:8: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  simp [M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵hij]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/Nilpotent.lean:98:33: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: FinitePrecisionLanczos/Core/Nilpotent.lean:104:33: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3193/3255] Replayed FinitePrecisionLanczos.Core.Dilation
+warning: FinitePrecisionLanczos/Core/Dilation.lean:96:33: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: FinitePrecisionLanczos/Core/Dilation.lean:180:37: This simp argument is unused:
+  Pi.single_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.mulVec, firstCoord,̵ ̵P̵i̵.̵s̵i̵n̵g̵l̵e̵_̵a̵p̵p̵l̵y̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3198/3255] Replayed FinitePrecisionLanczos.Core.Measure.SpectralWassersteinCore
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:11:0: automatically included section variable(s) unused in theorem `FinitePrecisionLanczos.spectralSum_sub_eq_crossSum`:
+  [DecidableEq I]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq I] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:102:22: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [s, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵↓reduceIte]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:102:39: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  simp only [s, Finset.mem_univ,̵ ̵↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:108:20: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [s, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵↓reduceIte]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:108:37: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  simp only [s, Finset.mem_univ,̵ ̵↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:119:20: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [s, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵↓reduceIte]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.lean:119:37: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  simp only [s, Finset.mem_univ,̵ ̵↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3199/3255] Replayed FinitePrecisionLanczos.Core.Frobenius
+warning: FinitePrecisionLanczos/Core/Frobenius.lean:27:41: This simp argument is unused:
+  WithLp.toLp_ofLp
+
+Hint: Omit it from the simp argument list.
+  simp only [Real.norm_eq_abs, sq_abs,̵ ̵W̵i̵t̵h̵L̵p̵.̵t̵o̵L̵p̵_̵o̵f̵L̵p̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3200/3255] Replayed FinitePrecisionLanczos.Core.Measure.SpectralWasserstein
+warning: FinitePrecisionLanczos/Core/Measure/SpectralWasserstein.lean:85:55: This simp argument is unused:
+  mul_comm
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.mulVec, dotProduct, PiLp.inner_apply,̵ ̵m̵u̵l̵_̵c̵o̵m̵m̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3207/3255] Replayed FinitePrecisionLanczos.Core.SaadGramCommutator
+warning: FinitePrecisionLanczos/Core/SaadGramCommutator.lean:99:41: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  simp [strictUpperPart, G.hgram, hij, Matrix.o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵diagonal_apply, hne, hji]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Core/SaadGramCommutator.lean:99:59: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [strictUpperPart, G.hgram, hij, Matrix.one_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵hne, hji]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3236/3255] Replayed FinitePrecisionLanczos.Lanczos.Bounds
+warning: FinitePrecisionLanczos/Lanczos/Bounds.lean:126:38: Variable name `hj` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: FinitePrecisionLanczos/Lanczos/Bounds.lean:465:69: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: FinitePrecisionLanczos/Lanczos/Bounds.lean:479:67: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3237/3255] Replayed FinitePrecisionLanczos.Lanczos.Assembly
+warning: FinitePrecisionLanczos/Lanczos/Assembly.lean:147:6: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: FinitePrecisionLanczos/Lanczos/Assembly.lean:147:6: 'abel' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+⚠ [3251/3255] Replayed FinitePrecisionLanczos.Lanczos.Greenbaum.Measure
+warning: FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.lean:34:27: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  simp [blockDiagonal, M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵hij, hp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.lean:54:29: This simp argument is unused:
+  Matrix.mul_apply
+
+Hint: Omit it from the simp argument list.
+  simp [physicalFirst, hr, Matrix.mul_̵a̵p̵p̵l̵y̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵m̵u̵l̵Vec, dotProduct]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Build completed successfully (3255 jobs).

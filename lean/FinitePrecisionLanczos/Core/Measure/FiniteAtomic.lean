@@ -1,23 +1,13 @@
 import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Tactic
 
-/-!
-# Finite atomic measures are determined by their moments
-
-This elementary lemma closes the logical step used after
-`greenbaum_starting_moment`: equality of all moments is equality of the
-underlying finite atomic spectral measures.  It is proved by a Lagrange
-polynomial on the finite union of the two supports.
--/
 
 namespace FinitePrecisionLanczos
 
 open Polynomial
 
-/-- A finitely supported signed mass function. -/
 abbrev AtomicMass := ℝ →₀ ℝ
 
-/-- Its `m`-th moment. -/
 noncomputable def atomicMoment (μ : AtomicMass) (m : ℕ) : ℝ :=
   μ.sum fun x w => w * x ^ m
 
@@ -35,8 +25,6 @@ noncomputable def atomicMoment (μ : AtomicMass) (m : ℕ) : ℝ :=
   classical
   simp [atomicMoment]
 
-/-- Vanishing monomial moments imply vanishing against every polynomial on
-the same finite support. -/
 lemma polynomial_sum_eq_zero_of_moments
     (S : Finset ℝ) (w : ℝ → ℝ)
     (hmom : ∀ m : ℕ, ∑ x ∈ S, w x * x ^ m = 0)
@@ -57,8 +45,6 @@ lemma polynomial_sum_eq_zero_of_moments
           ring
         _ = 0 := by rw [hmom m, mul_zero]
 
-/-- A signed mass supported on a finite set and having all moments zero is
-identically zero. -/
 theorem finite_support_eq_zero_of_moments
     (S : Finset ℝ) (w : ℝ → ℝ)
     (hsupport : ∀ x, x ∉ S → w x = 0)
@@ -89,7 +75,6 @@ theorem finite_support_eq_zero_of_moments
     · simp [hx]
   · simpa using hsupport x hx
 
-/-- Two finite atomic mass functions with the same moments are equal. -/
 theorem atomicMass_ext_moments (μ ν : AtomicMass)
     (h : ∀ m : ℕ, atomicMoment μ m = atomicMoment ν m) : μ = ν := by
   let S := μ.support ∪ ν.support

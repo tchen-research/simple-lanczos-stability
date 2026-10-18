@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: FinitePrecisionLanczos.Core.Measure.SpectralWasserstein
-// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Core.Measure.SpectralWassersteinCore
+// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Core.Measure.SpectralWassersteinCore public import FinitePrecisionLanczos.Core.Frobenius
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -16,6 +16,7 @@ extern "C" {
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralWassersteinCore(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Frobenius(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralWasserstein(uint8_t builtin) {
 lean_object * res;
@@ -28,6 +29,9 @@ res = initialize_Init(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralWassersteinCore(builtin);
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Frobenius(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));

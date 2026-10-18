@@ -1,13 +1,13 @@
 {"synthetic": false,
  "schemaVersion": "2025-09-10",
  "outputs":
- {"o": ["18f45d8fab9531b9.olean"],
+ {"o": ["ed74393c4db22eb1.olean"],
   "m": false,
-  "i": "0b42c73290e8616f.ilean",
+  "i": "418bd13110137241.ilean",
   "c": "e55a0598a673a26d.c"},
  "log":
  [{"message":
-   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.lean -o /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.olean -i /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.ilean -c /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.c --setup /home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.setup.json --json",
+   ".> LEAN_PATH=/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean /home/tyler/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lean /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.lean -o /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.olean -i /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.ilean -c /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.c --setup /home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/ir/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.setup.json --json",
    "level": "trace"}],
  "inputs":
  [["FinitePrecisionLanczos.Core.Measure.FiniteAtomic:deps",
@@ -28,12 +28,12 @@
       ["module plugins", "00000000000006bb"]]]]],
   ["Lean 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c",
    "7508232886a2752a"],
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.lean",
-   "aadfabc5abc5f0a0"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.lean",
+   "323bc912225e8fd2"],
   ["options", "00000000000006bb"],
   ["isModule: false", "feefd2a0d3a1847e"],
   ["Module.name: FinitePrecisionLanczos.Core.Measure.FiniteAtomic",
    "44a2896358e08e60"],
   ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
   ["Module.leanArgs: #[]", "00000000000006bb"]],
- "depHash": "5e2b9d7fe1f5487e"}
+ "depHash": "80f4cc2f8ad44e37"}

@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: FinitePrecisionLanczos.Lanczos.Greenbaum.Wasserstein
-// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.SpectralMass public import FinitePrecisionLanczos.Core.Measure.SpectralWasserstein
+// Imports: public import Init public meta import Init public import FinitePrecisionLanczos.Lanczos.Greenbaum.SpectralMass public import FinitePrecisionLanczos.Core.Measure.FunctionalCalculus
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -16,7 +16,7 @@ extern "C" {
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_Init(uint8_t builtin);
 lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_SpectralMass(uint8_t builtin);
-lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralWasserstein(uint8_t builtin);
+lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_FunctionalCalculus(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_Wasserstein(uint8_t builtin) {
 lean_object * res;
@@ -31,7 +31,7 @@ lean_dec_ref(res);
 res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Lanczos_Greenbaum_SpectralMass(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_SpectralWasserstein(builtin);
+res = initialize_FinitePrecisionLanczos_FinitePrecisionLanczos_Core_Measure_FunctionalCalculus(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));

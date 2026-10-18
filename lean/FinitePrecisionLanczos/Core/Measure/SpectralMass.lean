@@ -1,26 +1,17 @@
 import FinitePrecisionLanczos.Core.Measure.FiniteAtomic
-import FinitePrecisionLanczos.Lanczos.Greenbaum.Measure
+import FinitePrecisionLanczos.Core.BlockSpectral
 
-/-!
-# Finite atomic spectral measures
-
-The spectral measure of a finite real symmetric matrix is represented as a
-finitely supported mass function on `ℝ`.  Repeated eigenvalues are combined
-automatically by `Finsupp` addition.
--/
 
 namespace FinitePrecisionLanczos
 
 open Matrix
 open scoped InnerProductSpace Matrix.Norms.L2Operator
 
-/-- Finite atomic spectral measure of `(A,q)`. -/
 noncomputable def spectralMass {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (q : I → ℝ) : AtomicMass :=
   ∑ i : I, Finsupp.single (hA.eigenvalues i)
     ((⇑(hA.eigenvectorBasis i) ⬝ᵥ q) ^ 2)
 
-/-- Direct expansion of a moment of the finite atomic spectral measure. -/
 lemma atomicMoment_spectralMass_expansion
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (q : I → ℝ) (m : ℕ) :
@@ -40,7 +31,6 @@ lemma atomicMoment_spectralMass_expansion
   | empty => simp
   | insert i s hi ih => simp [hi, ih, g, a]
 
-/-- Powers act diagonally on the chosen spectral eigenbasis. -/
 lemma mulVec_pow_eigenvectorBasis
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (i : I) (m : ℕ) :
@@ -53,7 +43,6 @@ lemma mulVec_pow_eigenvectorBasis
         hA.mulVec_eigenvectorBasis, Matrix.mulVec_smul, ih]
       simp [smul_smul, pow_succ, mul_comm]
 
-/-- Coordinate expansion in the chosen orthonormal eigenbasis. -/
 lemma sum_eigenvector_coefficients
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (q : I → ℝ) :
@@ -76,7 +65,6 @@ lemma sum_eigenvector_coefficients
     simp [hcoef]]
   rw [hsum]
 
-/-- Matrix moments equal moments of the finite atomic spectral measure. -/
 theorem atomicMoment_spectralMass
     {I : Type*} [Fintype I] [DecidableEq I]
     (A : Matrix I I ℝ) (hA : A.IsHermitian) (q : I → ℝ) (m : ℕ) :

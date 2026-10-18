@@ -14795,11 +14795,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.private"],
   "FinitePrecisionLanczos.Lanczos.Run":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Run.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Run.olean"],
   "FinitePrecisionLanczos.Lanczos.Bounds":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Bounds.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Bounds.olean"],
   "FinitePrecisionLanczos.Core.Matrix":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
   "Batteries.Util.ProofWanted":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.ir",

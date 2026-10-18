@@ -1,0 +1,549 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=20mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,booktabs,array,tabularx,longtable,xcolor}
+\usepackage{enumitem,microtype,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Statement audit: body.tex and the Lean formalization},pdfauthor={Codex}}
+\definecolor{ink}{HTML}{18344B}
+\definecolor{accent}{HTML}{236B65}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Lanczos statement audit}
+\fancyhead[R]{\small 18 October 2026}
+\fancyfoot[L]{\footnotesize Local source snapshot; references are source line numbers}
+\fancyfoot[R]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\setlist[itemize]{leftmargin=*,itemsep=3pt,topsep=3pt}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\loc}[2]{\code{#1}, line #2}
+\newcommand{\head}[1]{\vspace{4pt}{\Large\bfseries\color{ink}#1}\par\vspace{3pt}}
+\newcommand{\subhead}[1]{\vspace{3pt}{\bfseries\color{accent}#1}\par}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\begin{document}
+
+{\huge\bfseries\color{ink}Do the paper's claims match Lean?}\par
+{\large Statement audit of \code{body.tex}}\par
+18 October 2026\quad\textbullet\quad 42 Lean source files, 6,632 lines
+
+\head{Verdict}
+The main mathematical results are substantially aligned. Each of the paper's
+\textbf{13 labelled theorems, lemmas, and corollaries} has a corresponding Lean
+result, with explicit constants for the bounds hidden by $\lesssim_k$.
+The backward construction, exact Lanczos output, localization, containment,
+and the Lipschitz spectral-measure estimate are supported by actual proofs.
+
+\textbf{The paper does not fully match as written.} Its divided Ritz-residual
+inequality omits a nonzero-vector hypothesis that the Lean theorem explicitly
+requires. A permitted run can have $V_k y=0$ for a unit eigenvector $y$ of $T_k$.
+The general commutator bound also needs an empty-maximum convention at $k=1$.
+The claim that Lean proves ``all of the statements in this paper'' is too broad
+for this source tree.
+
+\subhead{Verification evidence}
+\begin{itemize}
+\item \texttt{lake build} succeeded: \textbf{3,255 jobs}, with linter warnings.
+The build used the existing local dependency/build cache.
+\item An executable Lean audit checked the transitive axiom dependencies of
+\textbf{1,156 declarations} under \code{FinitePrecisionLanczos}, including
+\textbf{890 theorem declarations} (these counts include generated declarations).
+Only \code{propext}, \code{Classical.choice}, and \code{Quot.sound} occurred.
+\item A source scan of all 42 project Lean files found no occurrences of
+\code{sorry}, \code{admit}, \code{axiom}, \code{unsafe},
+\code{implemented_by}, or \code{native_decide} as whole words.
+\item The root import reaches every project module. The backward-model import
+closure does not include \code{LossOfOrthogonality}; the Paige proof's import
+closure does not include the normalized-vector modules.
+\end{itemize}
+
+\subhead{Findings at a glance}
+\begin{tabularx}{\textwidth}{@{}p{17mm}Yp{27mm}@{}}
+\toprule
+Priority & Finding & Paper location\\\midrule
+Required & Add $V_k y\ne0$ before dividing by $\norm{V_k y}$. & Lines 585--594\\
+Required & Restrict the blanket formalization claim to the statements actually covered. & Line 102\\
+Minor & Define $\max\varnothing=0$ for the nonnegative defect-jump maximum. & Lines 510--515\\
+Clarify & Distinguish Ritz-value localization from normalized Ritz-vector convergence; quantify substantial loss of orthogonality. & Line 596\\
+Scope & Lean assumes a run satisfying a kernel-error model; it does not verify an IEEE implementation or the experiments. & Lines 108--259; 1043--1062\\
+\bottomrule
+\end{tabularx}
+
+\subhead{What this report compares}
+The supplied \code{body.tex} and \code{lean/FinitePrecisionLanczos*.lean}
+source tree are authoritative for this audit. The README was used as a navigation
+aid, not as proof evidence. The paper and Lean sources were left unchanged.
+Historical attributions and cited external papers were not independently audited.
+The referenced \code{AI} include and experiment assets are absent from this
+workspace snapshot.
+
+\newpage
+\head{1. A real missing hypothesis}
+\subhead{Divided residual: paper lines 585--594}
+For $x=V_k y$, the paper displays
+\[
+ \frac{\norm{(A-\theta I)x}}{\norm{x}}
+ \le \frac{\sqrt{1+\eps}\,\beta_k|e_k^T y|+\norm{F_k}}{\norm{x}}
+\]
+without assuming $x\ne0$. In \loc{Lanczos/Ritz.lean}{146},
+\code{ritz_residual_bound_div} has the additional hypothesis
+\begin{quote}\verb|(hx : 0 < vnorm (L.ritzVector y))|.\end{quote}
+Its undivided counterpart, \code{ritz_residual_bound} (line 126), needs no such
+hypothesis. The condition cannot be inferred merely from $\norm{y}=1$:
+the computed columns may be linearly dependent.
+
+\subhead{Explicit admissible example}
+Take $n=1$, $k=k_{\max}=2$, $A=[1]$, and $\eta=\eps=1/1000$.
+All vector quantities below are scalars. Set
+\[
+ v_0=0,\quad v_1=v_2=1,\quad v_3=0,\qquad
+ \beta_0=0,\quad\beta_1=\eta,\quad\beta_2=0.
+\]
+The two steps are
+\[
+\begin{array}{c|ccccc}
+j&u_j&w_j&\alpha_j&z_j&e^\alpha_j\\\hline
+1&1&1&1-\eta&\eta&-\eta\\
+2&1&1-\eta&1-\eta&0&0
+\end{array}
+\]
+All other arithmetic errors and normalization errors are zero. These data satisfy
+the kernel identities and bounds: in particular
+$|e^\alpha_1|=\eps\norm{v_1}\norm{w_1}$,
+$\beta_1v_2=z_1$, and $2\eps\le1/100$.
+The final step is terminal, exactly as allowed by the paper.
+But
+\[
+ T_2=\begin{pmatrix}1-\eta&\eta\\\eta&1-\eta\end{pmatrix},\qquad
+ y=\frac1{\sqrt2}\binom{1}{-1},\quad
+ \theta=1-2\eta,\qquad V_2y=0.
+\]
+Thus the displayed ratios and $x/\norm{x}$ are undefined in ordinary real analysis.
+The example's model identities were independently checked with exact rational
+arithmetic in \code{check_zero_ritz.py}; it is not a claim about which errors a
+particular IEEE implementation would produce. Lean's totalized division at zero
+would not repair the mathematical interpretation.
+
+\subhead{Recommended change}
+Before the divided display, insert: ``If $x\ne0$, dividing the undivided residual
+bound by $\norm{x}$ gives\ldots'' Keep the undivided inequality as the unconditional
+statement. Apply the same qualification to the normalized-vector discussion.
+
+\subhead{The convergence sentence needs care, not a new main theorem}
+Line 596 identifies a small scalar residual with convergence of the Ritz pair.
+The proved Paige result is the product bound
+$s\rho\le C_k\eps\norm{A}$, where
+$s=|x^Tv_{k+1}|$, $\rho=\beta_k|e_k^Ty|$, and $C_k=3000k^3$.
+A small $\rho$ alone does not control the divided residual.
+For a nonterminal step and a specified $s\ge\tau>0$, however,
+$\norm{x}\ge\tau/\sqrt{1+\eps}$, giving
+\[
+\frac{\norm{(A-\theta I)x}}{\norm{x}}
+\le \frac{(1+\eps)C_k\eps\norm{A}}{\tau^2}
+   +\frac{\sqrt{1+\eps}\norm{F_k}}{\tau}.
+\]
+This is a mathematical consequence of the checked bounds, not a separate theorem
+in this project. Alternatively, cite \code{thm:stabilized} for the conclusion that
+the \emph{Ritz value} is near the spectrum, which requires no lower bound on $\norm{x}$.
+
+\newpage
+\head{2. Assumptions and boundary cases}
+\subhead{The common model is consistent}
+\texttt{LanczosRun n k}, defined in \loc{Lanczos/Run.lean}{9}, stores the matrix,
+vectors, coefficients, local errors, and their hypotheses. Paper $A$ is Lean
+\code{L.H}; paper $\eps$ is \texttt{L.}$\varepsilon$. The vector norms use Euclidean space,
+and the matrix norms use \code{Matrix.Norms.L2Operator}; they are the paper's
+induced 2-norms, not entrywise norms.
+
+\begin{tabularx}{\textwidth}{@{}p{53mm}YY@{}}
+\toprule
+Paper hypothesis & Lean interface & Assessment\\\midrule
+$A=A^T$; real data & \code{hHsymm}; real matrices and vectors & Matches.\\
+$0\le\eps\le1/(100k_{\max})$, completed prefix $k\le k_{\max}$ & \texttt{h}$\varepsilon$\texttt{\_nonneg}, \code{hk_pos}, \code{hsmall}: $k\eps\le1/100$ & Paper implies Lean's prefix condition for $k\ge1$.\\
+Kernel equations and bounds & \code{h_u}, \code{heu}, \code{h_w}, \code{hew}, \code{h_al}, \code{heal}, \code{h_z}, \code{hez} & Matches; $|\beta|$ in Lean equals $\beta$ by nonnegativity.\\
+Normalization equation and error & \code{h_be}, \texttt{h}$\Delta$ & Matches.\\
+Near-unit formed columns; conditional last column & \code{hnear}, \code{hnext} & Matches, including terminal case.\\
+$\beta_0=0$; internal $\beta_j>0$; final $\beta_k\ge0$ & \texttt{h}$\beta$\texttt{\_zero}, \texttt{h}$\beta$\texttt{\_internal}, \texttt{h}$\beta$\texttt{\_nonneg} & Matches.\\
+Initial normalization of original input $v$ & No original-input field or normalization routine & Only the near-unit $v_1$ property is represented.\\
+\bottomrule
+\end{tabularx}
+
+\subhead{Termination is handled, with a choice of auxiliary vector}
+Paper lines 195--259 allow $\beta_k=0$ and set the unformed $v_{k+1}=0$.
+Lean does not require that terminal raw vector to be zero; it is used multiplied
+by $\beta_k$ where needed. This weakens the assumptions and causes no conflict
+for the paper's run.
+
+For the backward construction the paper allows any unit $\bar v_{k+1}$ and sets
+$d_{k+1}=1$ (line 677). Lean makes the specific permitted choice
+$\bar v_{k+1}=v_1/\norm{v_1}$ in \code{normalizedVec}
+(\loc{Lanczos/Normalized/Normalization.lean}{138}). The packaged run theorems
+therefore certify that choice. The generic dilation algebra is parameterized by
+matrices and supports the paper's construction, but there is no packaged
+run-level theorem quantifying over every terminal unit-vector choice.
+For literal correspondence, specify the same choice in the paper or generalize
+the run-level interface.
+
+\code{GreenbaumBackwardModel.exact_next} deliberately assumes $\beta_k>0$.
+The theorem unconditionally reproduces $T_k$, $\beta_k$, and the first $k$ exact
+vectors; it does not identify an auxiliary unit vector with an exact Lanczos
+output after termination. This agrees with the stated output claim in
+\code{thm:greenbaum}. The final sentence of its proof (line 954) should be read
+with this distinction.
+
+\subhead{Small indexing clarification in the generic commutator lemma}
+At $k=1$, $\max_{1\le i<k}\beta_i|\gamma_{i+1}-\gamma_i|$ is a maximum over
+an empty set. The paper gives no convention. Lean's \code{defectJump}
+(\loc{Core/SaadGramCommutator.lean}{40}) inserts zero at the final index and
+takes a maximum over a nonempty \texttt{Fin k}. Consequently this term is zero
+when $k=1$. State that convention, and write the lower index limits explicitly.
+Lean uses $|T_{i,i+1}(\gamma_{i+1}-\gamma_i)|$; this equals the printed
+expression because the paper's internal $\beta_i$ are positive. If the lemma is
+restated for arbitrary signed off-diagonal entries, keep the absolute value on
+the coefficient. Also make $1\le k\le k_{\max}$ explicit in the setup.
+
+\newpage
+\head{3. Correspondence: local analysis and Paige}
+All paths below are relative to \code{lean/FinitePrecisionLanczos/}.
+Names in the run-specific rows belong to \code{FinitePrecisionLanczos.LanczosRun}.
+``Matches'' includes substituting the explicit constants into the paper's
+$\lesssim_k$ convention, and the assumptions described on page 3.
+
+\begin{longtable}{@{}p{44mm}p{121.7mm}@{}}
+\toprule
+Paper result & Checked Lean statement and assessment\\\midrule
+\code{lem:coefficients}\newline lines 289--417 &
+\code{coefficients_paper}, \loc{Lanczos/Bounds.lean}{449}, proves
+\[
+\norm{u_j}\le2\norm A,\quad\norm{w_j}\le5j\norm A,\quad
+|\alpha_j|\le6j\norm A,
+\]
+\[
+\norm{z_j}\le7j\norm A,\qquad\beta_j\le4j\norm A.
+\]
+These match the detailed proof as well as the weaker lemma statement.
+\code{beta_recurrence_paper} (line 389) proves
+$\beta_{j+1}\le(1+10\eps)\beta_j+2\norm A$.
+\code{coefficient_multipliers} (line 10) proves the two multiplier
+inequalities on the larger interval $[0,1/20]$. \textbf{Matches.}\\\addlinespace
+
+\code{thm:local-errors}\newline lines 421--468 &
+\code{local_errors}, \loc{Lanczos/Bounds.lean}{714}, proves for $1\le j\le k$
+\[
+\norm{f_j}\le700j\eps\norm A,\quad |g_j|\le\eps,\quad
+|p_j|\le1200j\eps\norm A.
+\]
+The error-sum and cancellation identities are proved in
+\code{recurrence_error_identity} and \code{local_product_identity}
+(\code{Lanczos/Run.lean}, lines 72 and 93). \textbf{Matches.}\\\addlinespace
+
+\code{lem:gram-commutator}\newline lines 502--565 &
+\code{SaadGramRecurrence.gram_commutator},
+\loc{Core/SaadGramCommutator.lean}{141}, proves upper triangularity and
+$\norm N\le2k(P+c\norm Z+D)$, where $P$ is the maximum adjacent product,
+$c$ is the maximum norm of the first $k$ columns, and $D$ is the
+maximum absolute defect jump, padded by zero. The rectangular identity is
+\code{padded_commutator} (line 103). Symmetry, tridiagonality, Gram splitting,
+and the recurrence are explicit structure hypotheses. \textbf{Matches after
+the $k=1$ convention on page 3.}\\\addlinespace
+
+\code{cor:gram-commutator}\newline lines 495--498 &
+\code{computed_gram_commutator},
+\loc{Lanczos/ComputedCommutator.lean}{178}, supplies the printed matrix
+definition, the Gram split, upper triangularity, and
+$\norm{M_k}\le3000k^3\eps\norm A$.
+\textbf{Matches.}\\\addlinespace
+
+\code{thm:paige}\newline lines 612--633 &
+\code{paige_bound}, \loc{Lanczos/LossOfOrthogonality.lean}{41}, proves
+$|\langle V_ky,\beta_kv_{k+1}\rangle y_k|
+\le3000k^3\eps\norm A$ for a unit eigenpair.
+Nonnegative $\beta_k$ makes this exactly the paper's product.
+\code{computed_paige_identity} (line 26) gives the signed identity
+$\langle V_ky,\beta_kv_{k+1}\rangle y_k=-y^TM_ky$.
+\textbf{Matches.}\\\addlinespace
+
+\code{lem:normalized-errors}\newline lines 694--716 &
+\code{normalized_local_errors},
+\loc{Lanczos/Normalized/LocalErrors.lean}{144}, proves
+$\norm{\bar f_j}\le1500k\eps\norm A$ and
+$|\bar p_j|\le4800k\eps\norm A$.
+The same computed $\alpha_j,\beta_j$ are used throughout; there is no
+replacement boundary coefficient. \textbf{Matches for the chosen terminal
+completion.}\\\addlinespace
+
+\code{cor:normalized-commutator}\newline lines 732--740 &
+\code{normalized_gram_commutator},
+\loc{Lanczos/Normalized/Commutator.lean}{104}, proves upper triangularity and
+$\norm{\bar M_k}\le9600k^3\eps\norm A$ using the normalized recurrence and
+unit columns. \textbf{Matches for the chosen terminal completion.}\\
+\bottomrule
+\end{longtable}
+
+\newpage
+\head{4. Correspondence: backward model and Ritz values}
+\begin{longtable}{@{}p{44mm}p{121.7mm}@{}}
+\toprule
+Paper result & Checked Lean statement and assessment\\\midrule
+\code{lem:dilation}\newline lines 767--809 &
+\code{physical_dilation}, \loc{Lanczos/Greenbaum/Statements.lean}{23},
+proves $\widehat V_{k+1}^T\widehat V_{k+1}=I$ and the prescribed first column.
+The definitions in \code{Greenbaum/Dilation.lean} use exactly $k+1$ blocks
+$\bar V_{k+1}C_{k+1}K_{k+1}^r$, $0\le r\le k$.
+\code{triangularC} is a finite geometric sum, with both inverse identities
+proved in \code{Core/Nilpotent.lean}; this is the paper's inverse, not a
+different construction. \textbf{Matches for the chosen terminal completion.}\\\addlinespace
+
+\code{lem:exchange}\newline lines 824--864 &
+\code{exchange_rule}, \loc{Lanczos/Greenbaum/Statements.lean}{38}, proves
+$\norm{K_k}\le1$, $\norm{C_k}\le2$,
+$\norm{L_k}\le38400k^3\eps\norm A$, and for each $r\in\mathbb N$ an exchange
+matrix $D_r$ with $\norm{D_r}\le r\norm{L_k}$.
+\code{greenbaumD_zero} and \code{greenbaumD_succ}
+(\code{Greenbaum/Dilation.lean}, lines 201 and 203) prove the printed recurrence
+for $D_r$. \textbf{Matches.}\\\addlinespace
+
+\code{lem:dilated-recurrence}\newline lines 868--904 &
+\code{dilated_recurrence}, \loc{Lanczos/Greenbaum/Statements.lean}{76}, proves
+$\widehat A\widehat V_k=\widehat V_{k+1}\underline T_k+\widehat E$ with
+$\norm{\widehat E}\le240000k^6\eps\norm A$.
+\code{greenbaumErrorBlock_eq} gives precisely
+$E_r=\bar F_k C_kK_k^r+\bar V_k(D_r-D_{r+1})$.
+The sharper $\sqrt k$ and $\sqrt{k+1}$ intermediate estimates are also present
+in \code{greenbaumErrorBlock_norm_sqrt} and
+\code{greenbaumError_norm_sqrt} (\code{Greenbaum/Dilation.lean}, lines 241 and
+251). \textbf{Matches.}\\\addlinespace
+
+\code{thm:greenbaum}\newline lines 911--955 &
+\code{greenbaum_backward_model}, \loc{Lanczos/Greenbaum/Backward.lean}{43},
+proves dimension $n(k+1)$, symmetry, the corrected recurrence,
+orthonormality, the starting vector, exact output $T_k$ and $\beta_k$, and
+no breakdown before step $k$.
+The perturbation satisfies $\norm\Delta\le480000k^6\eps\norm A$.
+\code{greenbaumDelta_eq} and \code{greenbaumDelta_projector}
+(\code{Greenbaum/Correction.lean}, lines 66 and 54) prove both of the paper's
+formulas, with $\Delta=\widetilde A-\widehat A$.
+\code{greenbaumDelta_norm} proves $\norm\Delta\le2\norm{\widehat E}$.
+\textbf{Matches; terminal output is qualified as on page 3.}\\\addlinespace
+
+\code{thm:stabilized}\newline lines 981--1008 &
+\code{greenbaum_localization_exists},
+\loc{Lanczos/Greenbaum/Corollaries.lean}{86}, proves that an actual eigenvalue
+$\lambda$ of $A$ satisfies
+\[
+ |\theta-\lambda|\le\beta_k|y_k|+480000k^6\eps\norm A.
+\]
+The sharper perturbation form and the exact dilated Ritz-residual identity
+also occur in this file. This is at least as strong as the printed
+$\lesssim_k$ bound on the sum. \textbf{Matches.}\\\addlinespace
+
+\code{thm:containment}\newline lines 1013--1039 &
+\code{greenbaum_containment_eigenvalue},
+\loc{Lanczos/Greenbaum/Corollaries.lean}{161}, proves, for every eigenvalue
+$\theta$ of $T_k$,
+\[
+\lambda_{\min}(A)-480000k^6\eps\norm A\le\theta
+\le\lambda_{\max}(A)+480000k^6\eps\norm A.
+\]
+The code constructs a unit eigenvector for each enumerated eigenvalue;
+the conclusion is not limited to eigenpairs supplied externally.
+\textbf{Matches.}\\
+\bottomrule
+\end{longtable}
+
+\newpage
+\head{5. The spectral-measure remark is supported}
+\code{rem:wasserstein}, paper lines 958--964, contains several distinct claims.
+The code proves their substantive analytic content, including the actual matrix
+functional calculus and the rank bound.
+
+\subhead{Eigenvalue localization of the backward matrix}
+\code{greenbaumTildeA_eigenvalue_localization}
+(\loc{Lanczos/Greenbaum/Spectral.lean}{37}) proves
+\[
+ \operatorname{dist}(\widetilde\lambda,\operatorname{spec}(A))
+ \le\norm\Delta
+\]
+for every eigenvalue of $\widetilde A$. This matches the paper's one-sided
+localization conclusion. The proof uses a symmetric residual estimate, rather
+than a separately invoked ordered-eigenvalue version of Weyl's theorem.
+It does not package a multiplicity-preserving matching of all eigenvalues into
+clusters, which is a different statement from this one-sided bound.
+
+\subhead{Equality of the unperturbed starting spectral measures}
+\code{starting_spectralMass}
+(\loc{Lanczos/Greenbaum/SpectralMass.lean}{14}) proves the equality of the
+finite atomic spectral masses of $(\widehat A,\widetilde v)$ and
+$(A,\bar v_1)$. The mass at an eigenvalue is the sum of the squared starting-vector
+coordinates over its eigenspace, so repeated eigenvalues are combined correctly.
+\code{starting_functional_calculus}
+(\loc{Lanczos/Greenbaum/Wasserstein.lean}{28}) then proves, for every real function
+$f$,
+\[
+ \bar v_1^T f(A)\bar v_1=\widetilde v^T f(\widehat A)\widetilde v.
+\]
+Here $f(A)$ is Mathlib's matrix \code{cfc}, with its eigenbasis interpretation
+proved in \code{Core/Measure/FunctionalCalculus.lean}.
+
+\subhead{The full inequality chain}
+For every $1$-Lipschitz $f$, the formalization proves
+\begin{align*}
+\big|\bar v_1^Tf(A)\bar v_1-\widetilde v^Tf(\widetilde A)\widetilde v\big|
+&\le\norm{f(\widehat A)-f(\widetilde A)}_{\mathrm F}\\
+&\le\norm\Delta_{\mathrm F}
+\le\sqrt{2k}\,\norm\Delta.
+\end{align*}
+The relevant declarations are:
+\begin{itemize}
+\item \code{cfc_lipschitz_frobNorm},
+\loc{Core/Measure/FunctionalCalculus.lean}{82}: the full Frobenius-norm
+Lipschitz inequality for real symmetric matrices.
+\item \code{greenbaumDelta_rank},
+\loc{Lanczos/Greenbaum/Correction.lean}{74}: $\operatorname{rank}\Delta\le2k$.
+\item \code{frobNorm_le_sqrt_rank}, \loc{Core/SpectralFrobenius.lean}{28}:
+the symmetric rank-to-Frobenius estimate.
+\item \code{starting_lipschitz_frobNorm} and \code{starting_lipschitz},
+\loc{Lanczos/Greenbaum/Wasserstein.lean}{37} and line 48:
+the exact scalar bounds printed in the paper.
+\end{itemize}
+
+\subhead{Meaning of ``Wasserstein distance'' in this project}
+\code{atomicWasserstein} (\loc{Core/Measure/Wasserstein.lean}{26}) is defined as
+the supremum of absolute integral differences over all $1$-Lipschitz functions.
+\code{starting_wasserstein} proves its bound by $\sqrt{2k}\norm\Delta$;
+\code{starting_wasserstein_explicit} inserts $480000k^6\eps\norm A$.
+This matches the paper's explicitly stated Lipschitz-test formulation.
+
+There is no project theorem identifying this finite-atomic dual definition with
+an infimum over transport couplings or a library probability-measure Wasserstein
+metric. That is a formalization boundary, not a failure of the displayed
+Lipschitz inequality. If that identification is intended to be part of the
+formalization claim, state the dual convention or add the bridge theorem.
+
+\newpage
+\head{6. Coverage limits and recommended wording}
+\subhead{The ``all statements'' claim is not supported literally}
+Paper line 102 says that formal Lean proofs are supplied for all statements.
+The source tree supports the numbered analytic results described in this report,
+subject to the qualifications above, but does not contain all of the following:
+\begin{itemize}
+\item A formal execution semantics for Algorithm 1, an IEEE arithmetic model,
+or a theorem constructing \code{LanczosRun} from an execution of that algorithm.
+The kernel bounds and normalization properties are hypotheses, as the paper's
+assumption-based analysis intends.
+\item A theorem relating the given original starting vector to the first
+computed vector through the initial normalization perturbation (lines 190--193).
+The run model starts with its stored near-unit $v_1$.
+\item A general theorem that exact Lanczos on an arbitrary symmetric input
+produces an orthonormal Krylov basis, including the span equality in lines
+24--30. \code{Core/ExactLanczos.lean} defines a process and identifies its outputs
+\emph{given} an orthonormal recurrence; its structure
+\code{OrthonormalRecurrence} assumes orthogonality. This is sufficient for the
+backward theorem, where orthogonality is independently proved by dilation.
+\item Verification of the numerical values, cluster counts, or weight errors
+in the figures and numerical illustration (lines 41--44, 603--608, 1043--1062).
+There is no instantiation of the Lean model with those experiment data.
+\item Proofs of historical comparisons, claims about practical accuracy,
+or statements about the precision needed for kernels and downstream algorithms.
+Those require their own evidence; they are not consequences certified by the
+current project merely because they occur in the paper.
+\end{itemize}
+
+Suggested replacement for line 102:
+\begin{quote}
+The accompanying Lean development proves counterparts of the main local-error,
+Gram-commutator, loss-of-orthogonality, backward-model, localization, containment,
+and Lipschitz spectral-measure results, with explicit constants, for runs
+satisfying the stated arithmetic model. The implementation-to-model connection,
+introductory background results, and numerical experiments are not formalized.
+\end{quote}
+
+\subhead{Numerical illustrations need separate validation}
+The formal perturbation theorem is about the exact real matrices in its
+construction. Forming the model in double precision, as described in the paper,
+introduces additional errors that the Lean theorem does not bound. Likewise,
+double precision with full reorthogonalization is a numerical reference for
+exact Lanczos, not an exact-arithmetic certificate (figure caption, line 42).
+The observed $4\cdot10^{-6}$ weight agreement and $2.5\cdot10^{-7}$ perturbation
+norm should be presented as experimental measurements.
+
+The one-sided localization theorem does not by itself certify that each
+original eigenvalue has a cluster of exactly $k+1$ numerical model eigenvalues.
+Such a count needs a matching/separation argument or direct validated numerical
+evidence. This audit makes no claim that the reported experiment is incorrect.
+
+\subhead{Documentation drift}
+\code{lean/README.md}, lines 30--31, says the nonzero condition on the divided
+Ritz residual appears in both paper and code. It is present in the code but
+absent from this \code{body.tex}. The README also links to a correspondence map
+and prior reports not supplied in this workspace. Those assertions were not
+used to establish the verdict.
+
+\subhead{Minimum changes to align the paper}
+Add the nonzero condition, define the empty defect-jump maximum, narrow the
+formalization claim, and qualify the convergence sentence. For exact statement
+correspondence at termination, specify the same auxiliary unit-vector choice as
+Lean. None of these changes requires weakening the proved main stability bounds.
+
+\newpage
+\head{7. Traceability and reproduction}
+\subhead{Additional displayed identities checked}
+\begin{tabularx}{\textwidth}{@{}p{53mm}Y@{}}
+\toprule
+Paper equation or proof step & Lean evidence (paths relative to the project namespace)\\\midrule
+\code{eq:governing} & \code{governing}, \code{Lanczos/Ritz.lean}:63\\
+\code{eq:gram-split}, \code{eq:M-def} & \code{computed_gram_split}, \code{computedCommutator}, \code{Lanczos/ComputedCommutator.lean}:31,63; generic \code{padded_commutator}\\
+\code{eq:gram-commutator-full} & \code{GramRecurrence.gram_commutator_full}, \code{Core/GramCommutator.lean}:129\\
+\code{eq:generic-commutator} & \code{SaadGramRecurrence.N_skew}, \code{Core/SaadGramCommutator.lean}:112\\
+\code{eq:ritz-residual-identity} & \code{ritz_residual_identity}, \code{Lanczos/Ritz.lean}:92\\
+\code{eq:normalized-interface} & \code{normalized_governing_succ}, \code{Lanczos/Normalized/Recurrence.lean}:47\\
+Normalized error comparison & \code{normalizedF_sub_identity}, \code{normalizedP_identity}, \code{Lanczos/Normalized/Recurrence.lean}:53,67\\
+\code{eq:normalized-gram} & \code{normalized_gram_split_succ}, \code{normalizedRsucc_block}, \code{Lanczos/Greenbaum/Dilation.lean}:21,37\\
+\code{eq:CKsy}, \code{eq:Kkp-power} & \code{greenbaum_CK_blocks}, \code{greenbaum_Kkp_power}, \code{Lanczos/Greenbaum/Dilation.lean}:61,118\\
+\code{eq:CGC-identity} & \code{greenbaum_isometry_identity}, \code{Lanczos/Greenbaum/Dilation.lean}:109\\
+\code{eq:L-commutator} & \code{greenbaumL_commutator}, \code{Lanczos/Greenbaum/Dilation.lean}:169\\
+\code{eq:delta_as_projector} & \code{greenbaumDelta_projector}, \code{Lanczos/Greenbaum/Correction.lean}:54\\
+\bottomrule
+\end{tabularx}
+
+\subhead{Reproduce the checks}
+From \code{lean_audit/lean}, run:
+\begin{verbatim}
+lake build
+lake env lean ../audit_report/AxiomAudit.lean
+\end{verbatim}
+From \code{lean_audit}, run:
+\begin{verbatim}
+python3 audit_report/check_zero_ritz.py
+pdflatex -interaction=nonstopmode -halt-on-error \
+  -output-directory=audit_report audit_report/statement_audit.tex
+\end{verbatim}
+The report is standalone; it does not require the paper's missing preamble,
+figures, bibliography, or \code{AI} include.
+
+\subhead{Evidence retained alongside this PDF}
+\code{build.log}, \code{axiom_audit.log}, \code{AxiomAudit.lean},
+\code{source_scan.txt}, \code{source_hashes.json}, \code{import_audit.json},
+\code{check_zero_ritz.py}, and \code{zero_ritz_check.log}.
+The axiom audit uses Lean's \code{collectAxioms} on every imported declaration
+with the namespace prefix; private dependencies are covered transitively when
+used by those declarations. It rejects any axiom outside the stated allowlist.
+
+\subhead{Snapshot identification and limits}
+Toolchain: \code{leanprover/lean4:v4.32.2}. Mathlib manifest revision:
+\code{905b95818eb32af7874a58b427f50c1711a5e96c}.
+The dependency packages are provided by the existing local symlink/cache;
+this was not a clean bootstrap or an independent rebuild of Mathlib.
+Paper SHA-256:
+\code{18244124f5f6aa17a9324ea298a75aa1959136a390404dc169b9a845d9344e28}.
+
+The source manifest records individual hashes for the paper and all 42 Lean
+files. The prose-to-formula comparison is a human-readable semantic audit,
+not a mechanized translation of LaTeX into Lean. Kernel acceptance of Lean
+proofs and correspondence of their statements to the paper are separate checks;
+this report records both and states the remaining gaps explicitly.
+
+\end{document}

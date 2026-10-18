@@ -1054,16 +1054,56 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousOn.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousOn.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousOn.olean.private"],
+  "Mathlib.Topology.ContinuousMap.Weierstrass":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Weierstrass.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Weierstrass.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Weierstrass.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Weierstrass.olean.private"],
+  "Mathlib.Topology.ContinuousMap.Units":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Units.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Units.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Units.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Units.olean.private"],
+  "Mathlib.Topology.ContinuousMap.StoneWeierstrass":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StoneWeierstrass.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StoneWeierstrass.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StoneWeierstrass.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StoneWeierstrass.olean.private"],
+  "Mathlib.Topology.ContinuousMap.StarOrdered":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StarOrdered.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StarOrdered.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StarOrdered.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/StarOrdered.olean.private"],
   "Mathlib.Topology.ContinuousMap.Star":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Star.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Star.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Star.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Star.olean.private"],
+  "Mathlib.Topology.ContinuousMap.Polynomial":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Polynomial.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Polynomial.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Polynomial.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Polynomial.olean.private"],
+  "Mathlib.Topology.ContinuousMap.Ordered":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Ordered.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Ordered.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Ordered.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Ordered.olean.private"],
+  "Mathlib.Topology.ContinuousMap.Lattice":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Lattice.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Lattice.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Lattice.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Lattice.olean.private"],
   "Mathlib.Topology.ContinuousMap.Defs":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Defs.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Defs.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Defs.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Defs.olean.private"],
+  "Mathlib.Topology.ContinuousMap.ContinuousMapZero":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/ContinuousMapZero.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/ContinuousMapZero.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/ContinuousMapZero.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/ContinuousMapZero.olean.private"],
   "Mathlib.Topology.ContinuousMap.Compact":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Compact.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/ContinuousMap/Compact.ir",
@@ -1314,6 +1354,16 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Support.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Support.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Support.olean.private"],
+  "Mathlib.Topology.Algebra.StarSubalgebra":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/StarSubalgebra.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/StarSubalgebra.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/StarSubalgebra.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/StarSubalgebra.olean.private"],
+  "Mathlib.Topology.Algebra.Star.Real":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Star/Real.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Star/Real.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Star/Real.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Star/Real.olean.private"],
   "Mathlib.Topology.Algebra.Star":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Star.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Star.ir",
@@ -1384,6 +1434,16 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Nonarchimedean/Bases.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Nonarchimedean/Bases.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/Nonarchimedean/Bases.olean.private"],
+  "Mathlib.Topology.Algebra.NonUnitalStarAlgebra":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalStarAlgebra.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalStarAlgebra.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalStarAlgebra.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalStarAlgebra.olean.private"],
+  "Mathlib.Topology.Algebra.NonUnitalAlgebra":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalAlgebra.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalAlgebra.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalAlgebra.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/NonUnitalAlgebra.olean.private"],
   "Mathlib.Topology.Algebra.MulAction":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/MulAction.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Topology/Algebra/MulAction.ir",
@@ -4024,6 +4084,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Content.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Content.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Content.olean.private"],
+  "Mathlib.RingTheory.Polynomial.Bernstein":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Bernstein.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Bernstein.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Bernstein.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Bernstein.olean.private"],
   "Mathlib.RingTheory.Polynomial.Basic":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Basic.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Polynomial/Basic.ir",
@@ -4644,6 +4709,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/DiscreteValuationRing/Basic.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/DiscreteValuationRing/Basic.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/DiscreteValuationRing/Basic.olean.private"],
+  "Mathlib.RingTheory.Derivation.Basic":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Derivation/Basic.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Derivation/Basic.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Derivation/Basic.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/Derivation/Basic.olean.private"],
   "Mathlib.RingTheory.DedekindDomain.IntegralClosure":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/DedekindDomain/IntegralClosure.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/RingTheory/DedekindDomain/IntegralClosure.ir",
@@ -8654,6 +8724,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Composition.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Composition.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Composition.olean.private"],
+  "Mathlib.Data.Matrix.ColumnRowPartitioned":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/ColumnRowPartitioned.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/ColumnRowPartitioned.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/ColumnRowPartitioned.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/ColumnRowPartitioned.olean.private"],
   "Mathlib.Data.Matrix.Block":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Block.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Block.ir",
@@ -10624,6 +10699,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Complex/Arg.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Complex/Arg.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Complex/Arg.olean.private"],
+  "Mathlib.Analysis.SpecialFunctions.Bernstein":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Bernstein.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Bernstein.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Bernstein.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/SpecialFunctions/Bernstein.olean.private"],
   "Mathlib.Analysis.Seminorm":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Seminorm.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Seminorm.ir",
@@ -10999,6 +11079,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/Normed.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/Normed.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/Normed.olean.private"],
+  "Mathlib.Analysis.Matrix.HermitianFunctionalCalculus":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/HermitianFunctionalCalculus.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/HermitianFunctionalCalculus.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/HermitianFunctionalCalculus.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/HermitianFunctionalCalculus.olean.private"],
   "Mathlib.Analysis.Matrix.Hermitian":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/Hermitian.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/Matrix/Hermitian.ir",
@@ -11079,11 +11164,6 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/Projection/Basic.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/Projection/Basic.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/Projection/Basic.olean.private"],
-  "Mathlib.Analysis.InnerProductSpace.ProdL2":
-  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.olean",
-   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.ir",
-   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.olean.server",
-   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/ProdL2.olean.private"],
   "Mathlib.Analysis.InnerProductSpace.PiL2":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/PiL2.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/InnerProductSpace/PiL2.ir",
@@ -11454,6 +11534,21 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/Matrix.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/Matrix.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/Matrix.olean.private"],
+  "Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Unital":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unital.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unital.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unital.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unital.olean.private"],
+  "Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Unique":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unique.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unique.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unique.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/Unique.olean.private"],
+  "Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.NonUnital":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/NonUnital.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/NonUnital.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/NonUnital.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/ContinuousFunctionalCalculus/NonUnital.olean.private"],
   "Mathlib.Analysis.CStarAlgebra.Basic":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/Basic.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Analysis/CStarAlgebra/Basic.ir",
@@ -12494,6 +12589,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Defs.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Defs.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Defs.olean.private"],
+  "Mathlib.Algebra.Order.Module.Basic":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Basic.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Basic.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Basic.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Module/Basic.olean.private"],
   "Mathlib.Algebra.Order.Kleene":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Kleene.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Order/Kleene.ir",
@@ -12974,6 +13074,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Rename.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Rename.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Rename.olean.private"],
+  "Mathlib.Algebra.MvPolynomial.PDeriv":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/PDeriv.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/PDeriv.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/PDeriv.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/PDeriv.olean.private"],
   "Mathlib.Algebra.MvPolynomial.Monad":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Monad.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Monad.ir",
@@ -12989,6 +13094,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Equiv.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Equiv.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Equiv.olean.private"],
+  "Mathlib.Algebra.MvPolynomial.Derivation":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Derivation.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Derivation.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Derivation.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Derivation.olean.private"],
   "Mathlib.Algebra.MvPolynomial.Degrees":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Degrees.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/MvPolynomial/Degrees.ir",
@@ -14674,6 +14784,11 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/Subalgebra/Basic.ir",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/Subalgebra/Basic.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/Subalgebra/Basic.olean.private"],
+  "Mathlib.Algebra.Algebra.StrictPositivity":
+  ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/StrictPositivity.olean",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/StrictPositivity.ir",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/StrictPositivity.olean.server",
+   "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/StrictPositivity.olean.private"],
   "Mathlib.Algebra.Algebra.Spectrum.Quasispectrum":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/Spectrum/Quasispectrum.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Algebra/Algebra/Spectrum/Quasispectrum.ir",
@@ -14825,85 +14940,81 @@
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.server",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/importGraph/.lake/build/lib/lean/ImportGraph/Graph/TransitiveClosure.olean.private"],
   "FinitePrecisionLanczos.Lanczos.Run":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Run.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Stabilized":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Stabilized.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Ritz":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Ritz.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Prefix":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Prefix.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.LossBounds":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/LossBounds.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Loss":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Loss.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Descent":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Descent.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Containment":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Containment.olean"],
-  "FinitePrecisionLanczos.Lanczos.Paige.Commutator":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Paige/Commutator.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Run.olean"],
+  "FinitePrecisionLanczos.Lanczos.Ritz":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Ritz.olean"],
+  "FinitePrecisionLanczos.Lanczos.Normalized.Recurrence":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Normalized/Recurrence.olean"],
+  "FinitePrecisionLanczos.Lanczos.Normalized.Normalization":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Normalized/Normalization.olean"],
+  "FinitePrecisionLanczos.Lanczos.Normalized.LocalErrors":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Normalized/LocalErrors.olean"],
+  "FinitePrecisionLanczos.Lanczos.Normalized.Commutator":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Normalized/Commutator.olean"],
+  "FinitePrecisionLanczos.Lanczos.Greenbaum.Statements":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Statements.olean"],
   "FinitePrecisionLanczos.Lanczos.Greenbaum.SpectralMass":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/SpectralMass.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/SpectralMass.olean"],
   "FinitePrecisionLanczos.Lanczos.Greenbaum.Spectral":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Spectral.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.NormalizedRecurrence":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/NormalizedRecurrence.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.NormalizedCommutator":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/NormalizedCommutator.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Normalization":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Normalization.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Model":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Model.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Spectral.olean"],
   "FinitePrecisionLanczos.Lanczos.Greenbaum.Measure":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Interface":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Interface.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Measure.olean"],
   "FinitePrecisionLanczos.Lanczos.Greenbaum.Dilation":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Dilation.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Dilation.olean"],
   "FinitePrecisionLanczos.Lanczos.Greenbaum.Correction":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Correction.olean"],
-  "FinitePrecisionLanczos.Lanczos.Greenbaum.Completion":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Completion.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Correction.olean"],
+  "FinitePrecisionLanczos.Lanczos.Greenbaum.Backward":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Greenbaum/Backward.olean"],
+  "FinitePrecisionLanczos.Lanczos.ComputedCommutator":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/ComputedCommutator.olean"],
   "FinitePrecisionLanczos.Lanczos.Bounds":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Bounds.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Bounds.olean"],
   "FinitePrecisionLanczos.Lanczos.Assembly":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Assembly.olean"],
-  "FinitePrecisionLanczos.Core.Tridiagonalization":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Tridiagonalization.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Lanczos/Assembly.olean"],
+  "FinitePrecisionLanczos.Core.Underline":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Underline.olean"],
+  "FinitePrecisionLanczos.Core.SpectralFrobenius":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/SpectralFrobenius.olean"],
   "FinitePrecisionLanczos.Core.Spectral":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Spectral.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Spectral.olean"],
+  "FinitePrecisionLanczos.Core.SaadGramCommutator":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/SaadGramCommutator.olean"],
   "FinitePrecisionLanczos.Core.Nilpotent":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Nilpotent.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Nilpotent.olean"],
   "FinitePrecisionLanczos.Core.Measure.Wasserstein":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/Wasserstein.olean"],
-  "FinitePrecisionLanczos.Core.Measure.Transport":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/Transport.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/Wasserstein.olean"],
   "FinitePrecisionLanczos.Core.Measure.SpectralWassersteinCore":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralWassersteinCore.olean"],
   "FinitePrecisionLanczos.Core.Measure.SpectralWasserstein":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralWasserstein.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralWasserstein.olean"],
   "FinitePrecisionLanczos.Core.Measure.SpectralMass":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralMass.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/SpectralMass.olean"],
+  "FinitePrecisionLanczos.Core.Measure.FunctionalCalculus":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FunctionalCalculus.olean"],
   "FinitePrecisionLanczos.Core.Measure.FiniteAtomic":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Measure/FiniteAtomic.olean"],
   "FinitePrecisionLanczos.Core.Matrix":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Matrix.olean"],
+  "FinitePrecisionLanczos.Core.GramCommutator":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/GramCommutator.olean"],
+  "FinitePrecisionLanczos.Core.Frobenius":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Frobenius.olean"],
+  "FinitePrecisionLanczos.Core.ExactLanczos":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/ExactLanczos.olean"],
+  "FinitePrecisionLanczos.Core.DilationSaad":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationSaad.olean"],
   "FinitePrecisionLanczos.Core.DilationRecurrence":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationRecurrence.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationRecurrence.olean"],
   "FinitePrecisionLanczos.Core.DilationBounds":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/DilationBounds.olean"],
   "FinitePrecisionLanczos.Core.Dilation":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Dilation.olean"],
-  "FinitePrecisionLanczos.Core.Descent":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Descent.olean"],
-  "FinitePrecisionLanczos.Core.CompletionCorrection":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/CompletionCorrection.olean"],
-  "FinitePrecisionLanczos.Core.CompletionBasis":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/CompletionBasis.olean"],
-  "FinitePrecisionLanczos.Core.Completion":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Completion.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Dilation.olean"],
   "FinitePrecisionLanczos.Core.Commutator":
-  ["/home/tyler/Documents/Papers/simpler Lanczos/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Commutator.olean"],
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/Commutator.olean"],
+  "FinitePrecisionLanczos.Core.BlockSpectral":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/BlockSpectral.olean"],
+  "FinitePrecisionLanczos.Core.BackwardCorrection":
+  ["/home/tyler/Documents/Research Code/simple-lanczos-stability/lean_audit/lean/.lake/build/lib/lean/FinitePrecisionLanczos/Core/BackwardCorrection.olean"],
   "Batteries.Util.ProofWanted":
   ["/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.olean",
    "/home/tyler/Documents/Papers/Block-Paige/lean/.lake/packages/batteries/.lake/build/lib/lean/Batteries/Util/ProofWanted.ir",

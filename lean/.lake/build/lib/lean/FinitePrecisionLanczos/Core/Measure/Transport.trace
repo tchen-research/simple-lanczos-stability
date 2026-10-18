@@ -1,7 +1,7 @@
 {"synthetic": false,
  "schemaVersion": "2025-09-10",
  "outputs":
- {"o": ["b151e69dc6fa5431.olean"],
+ {"o": ["57341f4b0b795a7e.olean"],
   "m": false,
   "i": "e50ef522beaeeac5.ilean",
   "c": "fcfbacda913d409a.c"},
@@ -16,9 +16,9 @@
        [["@FinitePrecisionLanczos:extraDep", "00000000000006bb"]]],
       ["imports",
        [["FinitePrecisionLanczos.Core.Measure.SpectralMass transitive imports (legacy)",
-         "832bc29b759283a0"],
+         "6a8c27f974b16f7d"],
         ["FinitePrecisionLanczos.Core.Measure.SpectralMass:importAllArts",
-         "4f6d6dc9529470a9"]]]]],
+         "157dc9c56391e8c2"]]]]],
     ["libs",
      [["import dynlibs", "00000000000006bb"],
       ["package external libraries", "00000000000006bb"],
@@ -34,4 +34,4 @@
    "d34c6d510bd58feb"],
   ["Package.id?: (some FinitePrecisionLanczos)", "da844cfdc4e35ff3"],
   ["Module.leanArgs: #[]", "00000000000006bb"]],
- "depHash": "4a604cca16b81542"}
+ "depHash": "f571986a544a01da"}
